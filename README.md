@@ -1,2 +1,2 @@
-# wddlz.github.io
-personal website
+# mysite
+Repo for my personal site
