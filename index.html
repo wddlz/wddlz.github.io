@@ -53,10 +53,11 @@
                                         <p>PhD Student in Cognitive Science at UC San Diego</p>
                                     </header>
                                     <p>I am currently a PhD student in Cognitive Science at UC San Diego in <b><a href="http://designlab.ucsd.edu/">The Design Lab</a></b> under the direction of <b><a href="http://pgbovine.net/">Philip Guo</a></b>.
-                                        I am interested in doing research in the areas of <b>human-computer interaction</b>, <b>creating programming tools</b>, and <b>software engineering</b>.
+                                        I am interested in doing research in the areas of human-computer interaction, leveraging creative and expert live streams to create better tutorials for novices, and 
+                                        designing tools to support and enhance the workflows of content creators, developers, and data scientists
                                         Previously, I was a research intern at <b>Microsoft</b>, a member of the <b><a href="http://chrisparnin.me/alt-code/">alt-code lab</a></b> under the direction of <b><a href="http://chrisparnin.me">Chris Parnin</a></b>
                                         while obtaining my MS in Computer Science, and a full-stack software engineer at <b>Verizon</b>.
-                                        Below are some selected research projects I've done.</p>
+                                        Below are some selected research projects I've done. Download my CV here: <a href="/images/IanDrosos_CV.pdf" download>CV Link</a></p> 
                                         <p>If you would like to contact me, select one of the links on the bottom of the side bar.</p>
                                 </div>
                             </section>
@@ -82,31 +83,35 @@
                                     <p>Here are a few things I have worked on as a graduate student</p>
                                     <div class="features">
                                         <article>
+                                            <a class="image"><img src="images/chrome-png-highres.png" alt="" /></a>
+                                            <div class="inner">
+                                                <h4>Cicero: A Unified Programming-by-Example Interaction for Synthesizing Readable Code for Data Scientists</h4>
+                                                <p>We propose a unified interaction model basedon programming-by-example that generates readable code fora variety of useful data transformations, implemented as a Jupyter notebook extension called Cicero. User study results demonstrate that data scientists are significantly more effective and efficient at data wrangling with Cicero over manual programming. Qualitative participant feedback indicates that Cicero was useful and reduced barriers in havingto recall or lookup the usage of various data transform functions.</p>
+                                                <p>(*In Submission*)</p>
+                                            </div>
+                                        </article>
+                                        <article>
+                                            <a class="image"><img src="images/janus.PNG" alt="" /></a>
+                                            <div class="inner">
+                                                <h4>Aiding Collaborative Reuse of Computational Notebooks with Annotated Cell Folding</h4>
+                                                <p>We present the design and evaluation of a Jupyter Notebook extension providing facilities for annotated cell folding. Through a lab study and multi-week deployment we find cell folding aids notebook navigation and comprehension, not only by the original author, but also by collaborators viewing the notebook in a meeting or revising it on their own. These findings extend our understanding of code folding’s trade-offs to a new medium and demonstrate its benefits for everyday collaboration.</p>
+                                                <p><a href=https://dl.acm.org/citation.cfm?id=3274419>Paper Link</a></p>
+                                            </div>
+                                        </article>
+                                        <article>
+                                            <a class="image"><img src="images/issta.PNG" alt="" /></a>
+                                                <div class="inner">
+                                                <h4>Comparing developer-provided to user-provided tests for fault localization and automated program repair</h4>
+                                                <p>We compared, both quantitatively and qualitatively, the developer-provided tests committed along with fixes (as found in the version control repository) versus the user-provided tests extracted from bug reports (as found in the issue tracker). We provided evidence that developer-provided tests are more targeted toward the defect and encode more information than user-provided tests, which can skew results for fault localization techniques and automated program repair.</p>
+                                                <p><a href=https://dl.acm.org/citation.cfm?id=3213870>Paper Link</a></p>
+                                            </div>
+                                        </article>
+                                        <article>
                                             <a class="image"><img src="images/hfbar.PNG" alt="" /></a>
                                             <div class="inner">
-                                                <h4>HappyFace: Frustration Research</h4>
+                                                <h4>HappyFace: Identifying and predicting frustrating obstacles for learning programming at scale</h4>
                                                 <p>HappyFace aims to discover frustrating experiences felt by learners during the programming process. We performed a large-scale collection of code snippets from PythonTutor, and collected a frustration rating through a light-weight feedback mechanism. We then devised a technique that is able to automatically identify sources of frustration based on participants labeling frustrating learning experiences.</p>
-                                            </div>
-                                        </article>
-                                        <article>
-                                            <a href="https://github.com/wddlz/CSC720" class="image"><img src="images/6g0kjwnbhxg-luis-llerena.jpg" alt="" /></a>
-                                            <div class="inner">
-                                                <h4>Gender Prediction with Code Stylometrics</h4>
-                                                <p>For CSC 720 (Aritificial Intelligence II) I developed a system that extracts stylometric features (whitespace usage, code complexity, keyword usage, etc.) from code snippets and uses these features to predict the gender of the developer who wrote the code. Abstract syntax trees were parsed using Esprima and these trees were traversed for feature data. Predicitons were then made using various prediction algorithms. Using crossvalidation the most successful prediction algorithm was logistic regression with an average precision of 78% for predicting the code author’s gender. </p>
-                                            </div>
-                                        </article>
-                                        <article>
-                                            <a class="image"><img src="images/t7rlfc8dh60-lola-guti.jpg" alt="" /></a>
-                                            <div class="inner">
-                                                <h4>How is the Weather: Game World Adaptation Based on Player's Local Weather</h4>
-                                                <p>For CSC 582 (Interactive Narrative) I developed a system that took in a player's location to gather their local weather via the Weather Underground API. This weather was then used to adapt the game world created in Twine, a text-based interactive narrative framework. A normally dry creek bed may become an impassible river if the player's current weather is a rainstorm or the player may require certain tools to open a frozen door if their weather is freezing.</p>
-                                            </div>
-                                        </article>
-                                        <article>
-                                            <a href="https://github.com/wddlz/fss16iad" class="image"><img src="images/model_state.png" alt="" /></a>
-                                            <div class="inner">
-                                                <h4>Optimiziation of the Alternating Offers Protocol (Rubenstein)</h4>
-                                                <p>Bargaining between buyers and sellers is an activity that has been around since the dawn of civilization. The large number of decisions that affect the bargaining and the non-deterministic nature of this process’s model, make finding the best solutions difficult and model simulation a slow process. This project made use of prism model simulator to simulate the model and used three different genetic algorithms, namely GA, NSGA2, and SPEA2, to find the best decision sets for the buyer-seller model. It also used parallelism and early termination to improve the overall run time of running optimizers on the model.</p>
+                                                <p><a href=https://ieeexplore.ieee.org/abstract/document/8103465>Paper Link</a></p>
                                             </div>
                                         </article>
                                     </div>
