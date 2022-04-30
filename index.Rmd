@@ -1,0 +1,49 @@
+---
+title: "Ian Drosos"
+image: "avatar.png"
+links:
+  - label: linkedin
+    url: "https://www.linkedin.com/in/ian-drosos/"
+  - label: scholar
+    url: "https://scholar.google.com/citations?hl=en&user=3gqaN9YAAAAJ"
+  - label: cv
+    url: "https://drive.google.com/file/d/1IXGg6gthgj5QWxGwTehzbnZXgwMuP26Z/view?usp=sharing"
+  - label: twitter
+    url: "https://twitter.com/iandrosos"
+output:
+  postcards::solana
+---
+ 
+## Bio
+
+I am an HCI researcher who investigates the designing and implementing of tools to support and enhance the workflows of content creators, developers, data scientists, and learners.
+
+## Education
+
+**UCSD** | La Jolla, California
+
+PhD Cognitive Science | 2017 - 2022
+
+**NCSU** | Raleigh, North Carolina
+
+MS Computer Science | 2015 - 2017
+
+**SPSU** | Marietta, Georgia
+
+BS Computer Science | 2007 - 2011
+
+## Experience
+
+**Researcher** | TBA | 2022 - 
+
+**Researcher** | The Design Lab | 2017 - 2022
+
+**Instructor** | UCSD | 2022 - 2022
+
+**Teaching Assistant** | UCSD | 2018 - 2022
+
+**Research Intern** | Autodesk Research | 2021 - 2021
+
+**Research Intern** | Microsoft | 2018 - 2018
+
+**Software Engineer** | Verizon | 2011 - 2015
