@@ -7,7 +7,7 @@ links:
   - label: scholar
     url: "https://scholar.google.com/citations?hl=en&user=3gqaN9YAAAAJ"
   - label: cv
-    url: "https://drive.google.com/file/d/1IXGg6gthgj5QWxGwTehzbnZXgwMuP26Z/view?usp=sharing"
+    url: "iandrosos.me/images/iandrosos_cv.pdf"
   - label: twitter
     url: "https://twitter.com/iandrosos"
 output:
