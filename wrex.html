@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Wrex: A Unifed Programming-by-Example Interaction for Synthesizing Readable Code for Data Scientists</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" class="title">Home</a>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="wrex.html" class="active">Wrex</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">Wrex</h1>
+							<p>Data wrangling is a difficult and time-consuming activity in computational notebooks, 
+								and existing wrangling tools do not fit the exploratory workflow for data scientists in 
+								these environments. We propose a unified interaction model based on programming-by-example 
+								that generates readable code for a variety of useful data transformations, implemented as 
+								a Jupyter notebook extension called Wrex. User study results demonstrate that data scientists 
+								are significantly more effective and efficient at data wrangling with Wrex over manual programming. 
+								Qualitative participant feedback indicates that Wrex was useful and reduced barriers in having 
+								to recall or look up the usage of various data transform functions. The synthesized code allowed 
+								data scientists to verify the intended data transformation, increased their trust and confidence 
+								in Wrex, and fit seamlessly within their cell-based notebook workflows. This work suggests that 
+								presenting readable code to professional data scientists is an indispensable component of offering 
+								data wrangling tools in notebooks.</p>
+							<p>Wrex was published at CHI 2020 and won a best paper award. 
+								It was the result of a 6 month internship with the Microsoft PROSE team. </p>
+							<p>	You can find the full paper <a href="https://dl.acm.org/doi/10.1145/3313831.3376442" class="link">here</a>. Below you will find a summary of the full research paper.</p>
+
+						</div>
+					</section>
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">Introduction</h1>
+							<span class="image fit"><img src="images/chrome-png-highres.png" alt="" /></span>
+							<p>
+								Data wrangling - the process of transforming, munging, shaping, and cleaning data to make it suitable for 
+								downstream analysis - is a difficult and time-consuming activity. Consequently, data scientists spend a 
+								substantial portion of their time preparing data rather than performing data analysis tasks such as modeling 
+								and prediction.
+							</p>
+							<p>
+								Through formative interviews with professional data scientists, we identified 
+								an unaddressed gap between existing data wrangling tools and how data scientists prefer to work within their notebooks. 
+								First, data scientists did not want to leave their native notebook environment to perform wrangling. 
+								Second, data scientists were reluctant to use data wrangling tools that transformed their data through "black boxes", 
+								and instead wanted to inspect the code that transformed their data.
+
+								To address this gap, we introduce a hybrid interaction model that reconciles the productivity benefits of interactivity with the versatility 
+								of programmability called Wrex.
+							</p>
+							<p>
+								Wrex is a programming-by-example environment within a computational notebook, 
+								which supports a variety of program transformations to accelerate common data wrangling activities. 
+								(A) Users create a dataframe with their dataset and sample it. 
+								(B) Wrex's interactive grid where users can derive a new column and give data transformation examples. 
+								(C) Wrex's code window containing synthesized code generated from grid interactions. 
+								(D) Synthesized code inserted into a new input cell.
+								(E) Applying synthesized code to full dataframe and plotting results.
+								<br/>								<br/>
+
+								We propose this hybrid interaction model that combines programming-by-example with readable code synthesis 
+								within the cell-based workflow of computational notebooks. We implement this interaction model as a Jupyter 
+								notebook extension for Python, using an interactive grid and provisional code cell.
+								<br/>								<br/>
+								
+								We apply program synthesis to the domain of data science in a scalable way. Up until now, program synthesis has been restricted to Excel-like settings where the user wants to transform a small amount of data. Our approach allows data scientists to synthesize code on subsets of their data and to apply this code to other, larger datasets. The synthesized code can be incorporated into existing data pipelines.
+								<br/>								<br/>
+
+								Through a user study, we find that data scientists are significantly more effective and efficient at performing 
+								data wrangling tasks than manual programming. Through qualitative feedback, participants report that Wrex reduced 
+								barriers in having to recall or look up the usage of various data transform functions. Data scientists indicated 
+								that the availability of readable code allowed them to verify that the data transform would do what they intended and 
+								increased their trust and confidence in the wrangling tool. Moreover, inserting synthesized code as cells is useful and 
+								fits naturally with the way data scientists already work in notebooks.
+							</p>
+						</div>
+					</section>
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">Use case example</h1>
+							<span class="image fit"><img src="images/pic04.jpg" alt="" /></span>
+							<p></p>
+							<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+						</div>
+					</section>
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">Design and implementation</h1>
+							<span class="image fit"><img src="images/pic04.jpg" alt="" /></span>
+							<p></p>
+							<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+						</div>
+					</section>
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">In-lab comparative study</h1>
+							<p></p>
+							<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+						</div>
+					</section>
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">Results</h1>
+							<span class="image fit"><img src="images/pic04.jpg" alt="" /></span>
+							<p></p>
+							<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+						</div>
+					</section>
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">Discussion and conclusion</h1>
+							<p></p>
+							<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+						</div>
+					</section>
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; Ian Drosos. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
