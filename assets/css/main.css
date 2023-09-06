@@ -172,6 +172,7 @@ input, select, textarea {
 
 	p {
 		margin: 0 0 2em 0;
+		color: rgba(255, 255, 255, 0.75);
 	}
 
 	h1, h2, h3, h4, h5, h6 {
@@ -2596,7 +2597,7 @@ input, select, textarea {
 		.image.fit {
 			display: block;
 			margin: 0 0 2em 0;
-			width: 100%;
+			width: 50%;
 		}
 
 			.image.fit img {
@@ -2867,7 +2868,7 @@ input, select, textarea {
 	}
 
 	header p {
-		color: rgba(255, 255, 255, 0.35);
+		color: rgba(255, 255, 255, 0.75);
 		position: relative;
 		margin: 0 0 1.5em 0;
 	}
@@ -3370,7 +3371,7 @@ input, select, textarea {
 		display: -webkit-flex;
 		display: -ms-flex;
 		display: flex;
-		background-color: #5e42a6;
+		background-color: #5052b5;
 		cursor: default;
 		padding: 1.75em 2em;
 	}
