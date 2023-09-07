@@ -70,13 +70,11 @@
 					<section id="wrexintro" class="wrapper style2 fullscreen fade-up">
 						<div class="inner">
 							<h1 class="major">Introduction</h1>
-							<span class="image fit"><img src="images/chrome-png-highres.png" alt="" /></span>
 							<p>
 								Data wrangling is a difficult and time-consuming activity. Consequently, data scientists spend a 
 								substantial portion of their time preparing data rather than performing data analysis tasks such as modeling 
 								and prediction.
-							</p>
-							<p>
+
 								Through formative interviews with seven professional data scientists, we identified 
 								an unaddressed gap between existing data wrangling tools and how data scientists prefer to work within their notebooks. 
 								<br/>
@@ -100,9 +98,10 @@
 								To address this gap, we introduce a hybrid interaction model that reconciles the productivity benefits of interactivity with the versatility 
 								of programmability called Wrex.
 							</p>
+							<span class="image right"><img src="images/chrome-png-highres.png" alt="" /></span>
 							<p>
 								Wrex is a programming-by-example environment within a computational notebook, 
-								which supports a variety of program transformations to accelerate common data wrangling activities (Figure above). 
+								which supports a variety of program transformations to accelerate common data wrangling activities (Figure right). 
 								<br/>
 								(A) Users create a dataframe with their dataset and sample it. 
 								<br/>
@@ -125,8 +124,8 @@
 								(2) We apply program synthesis to the domain of data science in a scalable way. Up until now, program synthesis has been restricted to Excel-like settings where the user wants to transform a small amount of data. Our approach allows data scientists to synthesize code on subsets of their data and to apply this code to other, larger datasets. The synthesized code can be incorporated into existing data pipelines.
 								<br/>								<br/>
 
-								(3) Through a user study, we find that data scientists are significantly more effective and efficient at performing 
-								data wrangling tasks than manual programming. Through qualitative feedback, participants report that Wrex reduced 
+								(3) A user study found that data scientists are significantly more effective and efficient at performing 
+								data wrangling tasks than manual programming. Participants report through qualitative feedback that Wrex reduced 
 								barriers in having to recall or look up the usage of various data transform functions. Data scientists indicated 
 								that the availability of readable code allowed them to verify that the data transform would do what they intended and 
 								increased their trust and confidence in the wrangling tool. Moreover, inserting synthesized code as cells is useful and 
@@ -137,18 +136,79 @@
 
 					<section id="usecase" class="wrapper style2-alt fullscreen fade-up">
 						<div class="inner">
-							<h1 class="major">Use case example</h1>
-							<span class="image fit">
-								<img src="images/pic04.jpg" alt="" /></span>
-							<p></p>
-							<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+							<h1 class="major">Example usage scenario</h1>
+							<p>Dan is a professional data scientist who uses computational notebooks. 
+								He has recently installed Wrex as a notebook extension. 
+								Dan has an open-ended task that requires him to explore an unfamiliar dataset 
+								relating to emergency calls (911) for Montgomery County, PA. The dataset contains 
+								several columns, including the emergency call's location as a latitude and longitude pair, 
+								the time of the incident, the title of the emergency, and an assortment of other columns.
+							</p>
+							
+							<span class="image right"><img src="images/screen1.png" alt="" /></span>
+							<p><strong>First steps:</strong>
+								As with most of his data explorations, Dan starts with a blank Python notebook and loads the dataset 
+								into a dataframe using pandas. He previews a slice of the dataframe, the 'latlng' and 'title' columns for the 
+								first ten rows (1). Wrex displays an interactive grid representing the returned dataframe (2). Through the interactive grid, 
+								Dan can view, filter, or search his data. He can also perform data wrangling using "Derive Column by Example".
+							</p>
+
+							<span class="image right"><img src="images/screen2.png" alt="" /></span>
+							<p><strong>From Examples to Code:</strong>
+								Dan notices that cells in the 'title' column seem to start with "EMS", "Fire", and "Traffic". 
+								As a sanity check, he wants to confirm that these are the only types of incidents in his data, 
+								and also get a sense of how frequently these types of incidents are happening. 
+								Dan selects the 'title' column by clicking its header (3), then clicks the "Derive column by example" 
+								button to activate this feature (4). The result is a new empty column (5) through which Dan can 
+								provide an example (or more, if necessary) of the transform he needs.
+							
+							<p>He arbitrarily types in his intention, "EMS", into the second row of the newly created column 
+								in the grid (6). When Dan presses Enter or leaves the cell, Wrex detects a cell change in the 
+								derived column. Wrex uses the example provided by Dan ("EMS") with the input example taken 
+								from the derived from column 'title' ('EMS: DIABETIC EMERGENCY') to automatically fill in the 
+								remaining rows (7).
+								<span class="image right"><img src="images/screen3.png" alt="" /></span>
+
+								<br/><br/>
+								In addition, Wrex presents the actual data transformation to Dan as Python code through a 
+								<i>provisional code cell</i> (8). This allows Dan to inspect the code 
+								Python code before committing to the code. In this case, the code seems like what he probably 
+								would have written had he done this transformation manually: split the string on a colon, and then 
+								return the first split. Dan decides to insert this code into a cell below this one, but defers executing 
+								it (9). If Dan had actually intended to uppercase all of the types, he could have provided Wrex with a 
+								second example: "Fire" to "FIRE". If desired, Dan could have also changed the target from Python to R for 
+								comparison (or even PySpark), since Dan is a bit more familiar with R.
+								<br/><br/>
+								Since the new input cell is just Python code, Dan is free to use it however he wants: he can use it as is, 
+								modify the function, or even copy the snippet elsewhere. Dan decides to apply the synthesized function to the larger 
+								dataframe---this results in adding a 'type' column to the dataframe. 
+							</p>
+							
+							<span class="image right"><img src="images/screen4.png" alt="" /></span>
+							<p><strong>From Code to Insights:</strong>
+							Having wrangled the 'title' column to 'type', and given the 'latlng' column already present, 
+							Dan thinks it might be interesting to plot the locations on a map. To do so, the 'latlng' column is a string 
+							and needs to be separated into 'lat' and 'lng' columns. Once again, he repeats the data wrangling steps as before: 
+							Dan returns a subset of the data, and uses the interactive grid in Wrex to wrangle the latitude and longitude transforms 
+							out of the 'latlng' column. He applies these functions to his dataframe. Having done the tricky part of data wrangling 
+							the three columns---'lat', 'lng', and 'type'---he cobbles together some code to add this information 
+							onto 'folium' (10), a map visualization tool. 
+							</p>
+
+							<span class="image left"><img src="images/nbmap_camera.png" alt="" /></span>
+
+							<p>
+								Like the data scientists in our study, Dan finds that data wrangling is a roadblock to doing more impactful data analysis. 
+								With Wrex, Dan can accelerate the tedious process of data wrangling to focus on more interesting data explorations---all in Python, 
+								and without having to leave his notebook.
+							</p>
+
 						</div>
 					</section>
 					
 					<section id="design" class="wrapper style2 fullscreen fade-up">
 						<div class="inner">
 							<h1 class="major">Design and implementation</h1>
-							<span class="image fit"><img src="images/WrexTable.png" alt="" /></span>
 							<p><strong>Wrex - notebook extension</strong></p>
 							<p>Wrex is implemented as a Jupyter notebook extension. The front-end display component is based on Qgrid, an interactive grid view for editing data frames. 
 								Several changes were made to this component to support code generation: <br/> 
@@ -156,7 +216,10 @@
 								Second, we added the ability to add new columns to the grid. By implementing both of these changes, users are able to give examples through virtual columns without affecting the underlying data. 
 								Third, we added a view component to Qgrid to render the code block.
 								Finally, we bound to appropriate event handlers to invoke our program synthesis engine on cell changes.
-								To automatically display the interactive grid for dataframes, the back-end component injects configuration options to the Python pandas library and overrides its HTML display mechanism.</p>
+								To automatically display the interactive grid for dataframes, the back-end component injects configuration options to the Python pandas library and overrides its HTML display mechanism.
+							</p>
+							<span class="image left"><img src="images/WrexTable.png" alt="" /></span>
+
 							<p><strong>Readable program synthesis algorithm</strong></p>
 							The program synthesis engine that powers Wrex substantially extends the FlashFill toolkit, which provide several domain specific languages (DSLs) with operators that support 
 							string transformations, number transformations, date transformations, and table lookup transformations.
@@ -273,11 +336,37 @@
 					<section id="disc" class="wrapper style2-alt fullscreen fade-up">
 						<div class="inner">
 							<h1 class="major">Discussion and conclusion</h1>
-							<p>disc1</p>
-							<p>disc1</p>
-							<p>disc1</p>
-							<p>disc1</p>
-							<p>concl copy</p>
+							<p><strong></strong></p>
+							<p><strong>Data Scientists Need In-Situ Tools Within Their Workflow:</strong>
+								Computational notebooks are not just for wrangling, but for the entire data analysis workflow. Thus, PBE tools that enhance the user experience 
+								at each stage of data analysis need to reside where data scientists perform these tasks: <i>within the notebook</i>.
+		
+								These in-situ workflows are an efficiency boost for data scientists in two ways: First, providing PBE within the notebook removes 
+								the need for users to leave their notebook and spend valuable time web searching for code solutions, as the solutions are 
+								generated based on user examples. Second, users no longer need to export their data, open an external tool, load the data 
+								into that tool, perform any data wrangling required, export the wrangled data, and reload that data back into their notebook.
+							</p>
+							<p><strong>Data Scientists Need Readable Synthesized Code:</strong>
+								Data scientists need to be able to read and comprehend the code so they can verify it is accomplishing their task. 
+								Thus, if a system synthesizes unreadable code, users have much more trouble performing verification of the output. 
+								Verifiability increases trust in the system, and gives data scientists confidence that the synthesized code handles edge cases 
+								and performs the task without errors. Readability also improves maintainability. If a data scientist wants to reuse the 
+								synthesized code elsewhere but make edits based on the context of their data, they need to be able to first understand that code. 
+							</p>
+							<p><strong>Code Makes Data Science More Accessible:</strong>
+								Our study participants noted that Wrex was useful in learning how to perform the transforms they were interested in, 
+								or even assist them in discovering different programming patterns for regular expressions. Wrex also alleviates the 
+								tedium felt by data scientists having to learn new APIs and even lessens the burden of having to keep up with API updates. 
+								This also benefits polyglot programmers who might be weaker in a new language, as they can quickly get up to speed by leveraging Wrex 
+								to produce code that they can use and learn from. In the future we see potential for interactive program synthesis tools as learning 
+								instruments if they are able to synthesize readable and pedagogically-suitable code.
+							</p>
+							<p><strong>Conclusion:</strong>
+								Our formative study found that professional data scientists are reluctant to use existing wrangling tools that did not fit within their notebook-based workflows. 
+								To address this gap, we developed Wrex, a notebook-based programming-by-example system that generates readable code for common data transformations. 
+								Our user study found that data scientists are significantly more effective and efficient at data wrangling with Wrex over manual programming.
+								In particular, users reported that the synthesis of readable code (and the transparency that code offers) was an essential requirement for supporting their data wrangling workflows.
+							</p>
 						</div>
 					</section>
 			</div>
