@@ -55,7 +55,6 @@
 								Our findings suggest that dynamic prompt middleware can improve the user experience of generative AI workflows.</p>
 							<p>Promptly was published at CHIWORK 2025 and won 2nd/1,064 projects in the Every Day AI Executive Challenge as part of the 2024 MS Hackathon.</p>
 							<p>	You can find the full paper <a href="https://arxiv.org/abs/2412.02357" class="link">here</a>. Below you will find a summary of the full research paper.</p>
-
 						</div>
 					</section>
 
@@ -63,300 +62,230 @@
 						<div class="inner">
 							<h1 class="major">Introduction</h1>
 							<p>
-								Data wrangling is a difficult and time-consuming activity. Consequently, data scientists spend a 
-								substantial portion of their time preparing data rather than performing data analysis tasks such as modeling 
-								and prediction.
+								Prompting seems easy right? You just tell the chatbot to "Plan a workshop" and it knows exactly what you want and gives you a good response...
+								<span class="image fit"><img src="images/DPM/Prob1.png" alt="" /></span>
+								
+								Well, not quite, because what you really wanted was a 3-day, in-person, machine learning workshop, etc.
+								<span class="image fit"><img src="images/DPM/Prob2.png" alt="" /></span>
 
-								Through formative interviews with seven professional data scientists, we identified 
-								an unaddressed gap between existing data wrangling tools and how data scientists prefer to work within their notebooks. 
-								<br/>
-								<br/>
 
-								First, data scientists did not want to leave their native notebook environment to perform wrangling. 
-								This lead to design goal 1: 
-								<br/>
-								&emsp;&emsp;<strong>DG1: </strong><i>Data wrangling tools should be available where the data scientist works—within their notebooks.</i>
-								<br/>
-								<br/>
+								And then you wanted to go even further by telling the AI how you want it to respond. For example, the format of the response.
+								<span class="image fit"><img src="images/DPM/Prob3.png" alt="" /></span>
 
-								Second, data scientists were reluctant to use data wrangling tools that transformed their data through "black boxes", 
-								and instead wanted to inspect the code that transformed their data.								
-								This lead to design goal 2: 
-								<br/>
-								&emsp;&emsp;<strong>DG2: </strong><i>Data wrangling tools should produce code as an inspectable and modifable artifact, using programming languages already familiar to the data scientist.</i>
-								<br/>
-								<br/>
+								Each one of these represents context, or prompt options, that the user needs to provide to the AI to control it and get the response they need most. However, expressing this context via natural language is challenging and tedious for users to do.
+								<span class="image fit"><img src="images/DPM/Prob4.png" alt="" /></span>
 
-								To address this issue, I designed and implemented an approach for generating prompt refinements through dynamic UX interfaces called Dynamic Prompt Middleware (insantiated as the prototype called Promptly).
-							</p>
-							<span class="image right"><img src="images/chrome-png-highres.png" alt="" /></span>
-							<p>
-								Wrex is a programming-by-example environment within a computational notebook, 
-								which supports a variety of program transformations to accelerate common data wrangling activities (Figure right). 
+								<strong>A better way... Promptly:</strong>
 								<br/>
-								(A) Users create a dataframe with their dataset and sample it. 
-								<br/>
-								(B) Wrex's interactive grid where users can derive a new column and give data transformation examples. 
-								<br/>
-								(C) Wrex's code window containing synthesized code generated from grid interactions. 
-								<br/>
-								(D) Synthesized code inserted into a new input cell.
-								<br/>
-								(E) Applying synthesized code to full dataframe and plotting results.
-								<br/>								<br/>
+								We propose instead to <b>generate</b> prompt middleware customized to the user and task. 
+								Our approach instantiates a language model agent (the "Option Module") whose responsibility is to analyze the user's prompt and generate a set of options for refining that prompt. 
+								These options are rendered using graphical elements such as radio buttons, checkboxes, and free text boxes, which the user can select and edit to cause deterministic additions, removals, and modifications of their original prompt, which are passed as context to a conventional language model agent (the "Chat Module").
+								This not only produces a better result for the user by producing higher-detailed initial prompt, but also allows users to quickly select from alternatives to help steer the AI towards producing the best personalized response for their task.
+								<br/>	
 
+								<span class="image"><img src="images/DPM/Teaser.png" alt="" /></span>
+								<p><small><i>Schematic overview of Dynamic Prompt Refinement Control interface for generating inline prompt refinement options to increase user control of AI-generated explanations (derived from real system use). 
+									(1) User prompts the system.
+									(2) The Option Module takes the user's prompt as context to generate prompt options which provide prompt refinements for the user to select. 
+									(3) The Chat Module uses the user's prompt and pre-selected options to generate an initial response.
+									(4) The user can initiate refinements by selecting their preferred options in the UI.
+									(5) On each change, the Chat Module regenerates the response based on the new selections.</i></small></p>
+								<br/>								<br/>		
+								
 								<strong>Contributions of this project:</strong>
 								<br/>								
-								(1) We propose this hybrid interaction model that combines programming-by-example with readable code synthesis 
-								within the cell-based workflow of computational notebooks. We implement this interaction model as a Jupyter 
-								notebook extension for Python, using an interactive grid and provisional code cell.
+								(1) A formative survey (n = 38) including an interactive design probe to understand user needs around
+								customized explanations of GenAI output which found users desire greater direct control over AI
+								responses than afforded by traditional chat interfaces, and that controls should adapt to the task and user.
 								<br/>								<br/>
 								
-								(2) We apply program synthesis to the domain of data science in a scalable way. Up until now, program synthesis has been restricted to Excel-like settings where the user wants to transform a small amount of data. Our approach allows data scientists to synthesize code on subsets of their data and to apply this code to other, larger datasets. The synthesized code can be incorporated into existing data pipelines.
+								(2) We develop two variations of an interface with graphical controls for steering AI responses, one with static
+								controls, and one with dynamic controls that are generated based on the user's prompt. We report a
+								second controlled, within-subjects study comparing the two interfaces (n = 16), finding that users
+								preferred dynamic controls because they lower barriers to providing context, offer guidance for better prompts,
+								facilitate greater exploration and reflection.
 								<br/>								<br/>
 
-								(3) A user study found that data scientists are significantly more effective and efficient at performing 
-								data wrangling tasks than manual programming. Participants report through qualitative feedback that Wrex reduced 
-								barriers in having to recall or look up the usage of various data transform functions. Data scientists indicated 
-								that the availability of readable code allowed them to verify that the data transform would do what they intended and 
-								increased their trust and confidence in the wrangling tool. Moreover, inserting synthesized code as cells is useful and 
-								fits naturally with the way data scientists already work in notebooks.
+								(3) We derive design implications for dynamic controls, such as greater control of how the AI interprets and applies
+								options, leveraging of user context and data to generate helpful controls, and expanding dynamic prompt middleware
+								to richer modalities.			
 							</p>
 						</div>
 					</section>
 
 					<section id="usecase" class="wrapper style2-alt fullscreen fade-up">
 						<div class="inner">
-							<h1 class="major">Example usage scenario</h1>
-							<p>Dan is a professional data scientist who uses computational notebooks. 
-								He has recently installed Wrex as a notebook extension. 
-								Dan has an open-ended task that requires him to explore an unfamiliar dataset 
-								relating to emergency calls (911) for Montgomery County, PA. The dataset contains 
-								several columns, including the emergency call's location as a latitude and longitude pair, 
-								the time of the incident, the title of the emergency, and an assortment of other columns.
-							</p>
-							
-							<span class="image right"><img src="images/screen1.png" alt="" /></span>
-							<p><strong>First steps:</strong>
-								As with most of his data explorations, Dan starts with a blank Python notebook and loads the dataset 
-								into a dataframe using pandas. He previews a slice of the dataframe, the 'latlng' and 'title' columns for the 
-								first ten rows (1). Wrex displays an interactive grid representing the returned dataframe (2). Through the interactive grid, 
-								Dan can view, filter, or search his data. He can also perform data wrangling using "Derive Column by Example".
-							</p>
-
-							<span class="image right"><img src="images/screen2.png" alt="" /></span>
-							<p><strong>From Examples to Code:</strong>
-								Dan notices that cells in the 'title' column seem to start with "EMS", "Fire", and "Traffic". 
-								As a sanity check, he wants to confirm that these are the only types of incidents in his data, 
-								and also get a sense of how frequently these types of incidents are happening. 
-								Dan selects the 'title' column by clicking its header (3), then clicks the "Derive column by example" 
-								button to activate this feature (4). The result is a new empty column (5) through which Dan can 
-								provide an example (or more, if necessary) of the transform he needs.
-							
-							<p>He arbitrarily types in his intention, "EMS", into the second row of the newly created column 
-								in the grid (6). When Dan presses Enter or leaves the cell, Wrex detects a cell change in the 
-								derived column. Wrex uses the example provided by Dan ("EMS") with the input example taken 
-								from the derived from column 'title' ('EMS: DIABETIC EMERGENCY') to automatically fill in the 
-								remaining rows (7).
-								<span class="image right"><img src="images/screen3.png" alt="" /></span>
-
-								<br/><br/>
-								In addition, Wrex presents the actual data transformation to Dan as Python code through a 
-								<i>provisional code cell</i> (8). This allows Dan to inspect the code 
-								Python code before committing to the code. In this case, the code seems like what he probably 
-								would have written had he done this transformation manually: split the string on a colon, and then 
-								return the first split. Dan decides to insert this code into a cell below this one, but defers executing 
-								it (9). If Dan had actually intended to uppercase all of the types, he could have provided Wrex with a 
-								second example: "Fire" to "FIRE". If desired, Dan could have also changed the target from Python to R for 
-								comparison (or even PySpark), since Dan is a bit more familiar with R.
-								<br/><br/>
-								Since the new input cell is just Python code, Dan is free to use it however he wants: he can use it as is, 
-								modify the function, or even copy the snippet elsewhere. Dan decides to apply the synthesized function to the larger 
-								dataframe---this results in adding a 'type' column to the dataframe. 
-							</p>
-							
-							<span class="image right"><img src="images/screen4.png" alt="" /></span>
-							<p><strong>From Code to Insights:</strong>
-							Having wrangled the 'title' column to 'type', and given the 'latlng' column already present, 
-							Dan thinks it might be interesting to plot the locations on a map. To do so, the 'latlng' column is a string 
-							and needs to be separated into 'lat' and 'lng' columns. Once again, he repeats the data wrangling steps as before: 
-							Dan returns a subset of the data, and uses the interactive grid in Wrex to wrangle the latitude and longitude transforms 
-							out of the 'latlng' column. He applies these functions to his dataframe. Having done the tricky part of data wrangling 
-							the three columns---'lat', 'lng', and 'type'---he cobbles together some code to add this information 
-							onto 'folium' (10), a map visualization tool. 
-							</p>
-
-							<span class="image left"><img src="images/nbmap_camera.png" alt="" /></span>
-
+							<h1 class="major">Formative Design Probe</h1>
 							<p>
-								Like the data scientists in our study, Dan finds that data wrangling is a roadblock to doing more impactful data analysis. 
-								With Wrex, Dan can accelerate the tedious process of data wrangling to focus on more interesting data explorations---all in Python, 
-								and without having to leave his notebook.
+								First, we needed to understand what to build to address this issue. So, we ran a design probe survey of 38 copilot users with the idea of a set of options that helped control AI responses as a primer to collect user needs for AI explanations.
 							</p>
+							<span class="image right"><img src="images/DPM/DesignProbeCensoredLetters.png" alt="" /></span>
+							
+							Through these survey responses we found that users found it difficult to control AI responses due to current AI chat prompting interfaces. 
 
+							Participants wanted the AI to respond in a predictable manner, and saw the control afforded by the design as a way to "tailor the experience to your specific needs" and put users in control of the AI. 
+							This lead to design goal 1: 
+							<br/>
+							&emsp;&emsp;<strong>DG1: </strong><i>Generative AI tools should afford users <strong>direct control</strong> of the AI's responses.</i>
+							<br/>
+							<br/>
+
+							Participants also wanted options generated based on the prompt they gave AI, and wanted these options to be quick to change within the chat interface and adapted to the type of task the user was trying to accomplish.								
+							This lead to design goal 2: 
+							<br/>
+							&emsp;&emsp;<strong>DG2: </strong><i>Control affordances should be <strong>flexible</strong>, so users can quickly correct AI assumptions, and <strong>dynamic</strong>, so control surfaces adapt to the task and user.</i>
+							<br/>
 						</div>
 					</section>
 					
 					<section id="design" class="wrapper style2 fullscreen fade-up">
 						<div class="inner">
-							<h1 class="major">Design and implementation</h1>
-							<p><strong>Wrex - notebook extension</strong></p>
-							<p>Wrex is implemented as a Jupyter notebook extension. The front-end display component is based on Qgrid, an interactive grid view for editing data frames. 
-								Several changes were made to this component to support code generation: <br/> 
-								First, we modified Qgrid to render views of the underlying dataframe, rather than the dataframe itself. 
-								Second, we added the ability to add new columns to the grid. By implementing both of these changes, users are able to give examples through virtual columns without affecting the underlying data. 
-								Third, we added a view component to Qgrid to render the code block.
-								Finally, we bound to appropriate event handlers to invoke our program synthesis engine on cell changes.
-								To automatically display the interactive grid for dataframes, the back-end component injects configuration options to the Python pandas library and overrides its HTML display mechanism.
+							<h1 class="major">Promptly design and implementation</h1>
+							<p>Informed by the formative survey's findings, we developed Dynamic Prompt Middleware or Promptly.  
 							</p>
-							<span class="image left"><img src="images/WrexTable.png" alt="" /></span>
+							<span class="image fit"><img src="images/DPM/UserFlowWithDynamic.png" alt="" /></span>
+							<p><small><i>User flow with the Dynamic Prompt Middleware system. (1) User submits their prompt. 
+								(2) The Option Module generates a set of options to help steer the Chat Module's response. 
+								(3) User can update the refinements sent to the Chat Module by clicking their preferences. 
+								(4) On change, Chat Module regenerates the response with the new chosen refinements. 
+								(5) User can request controls through NL prompting. 
+								(6) The Option Module generates a set of session options based on this prompt. 
+								(7) The session options apply to the current and every subsequent response from the Chat Module.</i></small></p>
+							
+							<p><strong>System Overview</strong></p>
+							<span class="image fit"><img src="images/DPM/SystemOverview.png" alt="" /></span>
+							<br/>
+							<i>Inline: </i>
+							(1) The Option Module takes the user's prompt input and conversation history. 
+							(2) The Option Module returns a set of prompt options with initial values based on the prompt. 
+							(3) Prompt options are rendered inline using a rendering engine. 
+							(4) The Chat Module uses these refinements as grounding, along with the user's prompt input and conversation history, to generate a chat response. 
+							(5) User can adjust GUI controls which updates the refinements and re-invokes the Chat Module to regenerate the current response. 
+							<br/>
+							<i>Session:</i> 
+							(6) Users can directly invoke the Option Module to generate Session options through natural language prompting within the Session control panel. 
+							(7) Users can also directly add and modify options manually through JSON input in the Session control panel. 
+							(8) Users can pin Inline options to the Session by clicking the pin icon on each inline option, which applies the inline option to follow-up queries.
 
-							<p><strong>Readable program synthesis algorithm</strong></p>
-							The program synthesis engine that powers Wrex substantially extends the FlashFill toolkit, which provide several domain specific languages (DSLs) with operators that support 
-							string transformations, number transformations, date transformations, and table lookup transformations.
-							<a href="https://arxiv.org/abs/1909.05964" class="link">A technical report by Gulwani et al.</a> formally describes the semantics of extensions; Wrex uses these extensions and surfaced this PBE algorithm through an interaction that is accessible to data scientists.
 						</div>
 					</section>
 					<section id="methods" class="wrapper style2-alt fullscreen fade-up">
 						<div class="inner">
 							<h1 class="major">In-lab comparative study</h1>
-							<p><strong>Participants:</strong> 12 data scientists (10 male), randomly selected from a directory of computational notebook users with Python familiarity within a large, data-driven software company. 
-								They self-reported an average of 4 years of data science experience within the company. 
-								They self-rated familiarity with Jupyter notebooks with a median of "Extremely familiar" (5) and 
-								their familiarity with Python at a median of "Moderately familiar" (4) on a 5-point Likert scale.
+							<p><strong>Participants:</strong> 16 knowedge workers familiar with generative AI tools with varying experience with data analysis and programming.
 							</p>
-							<p><strong>Tasks:</strong>  Participants completed six tasks using two different datasets. 
-								These tasks involved transformations commonly done by data scientists during data wrangling, 
-								such as extracting part of a string and changing its case, formatting dates, time-binning, 
-								and rounding floating-point numbers.
+							<p><strong>Tasks:</strong>  Participants completed 6 tasks, organized into 2 task-sets. 
+								Each task-set involved 3 common tasks done with GenAI assistance: code explanation, complex topic understanding, and skill learning. 
+								The goal of each task was to interact with the system to craft an explanation based on each task prompt that helped the participant understand each task and made them confident that they could answer questions about the task with the explanation.
 							</p>
-							<p><strong>Protocol:</strong> Participants were assigned A and B datasets through a counterbalanced design, 
-								such that half the participants received the A dataset first (A-dataset group), 
-								and the other half received the B dataset first (B-dataset group). 
-								We randomized task order within each dataset to mitigate learning effects.
-								They first completed three tasks with a Jupyter notebook (manual condition). 
-								They had 5 minutes per task to read the requirements of the task and write code to complete the task. 
-								<br/><br/>								
-								At the end of the manual condition, we interviewed the participants about their experience and 
-								asked them to complete a questionnaire to rate aspects of their experience.
-								<br/><br/>								
-								Next, participants completed a short tutorial that introduced them to Wrex.
-								After participants completed the tutorial, they moved on to the second set of tasks, 
-								this time using Wrex with conditions similar to the first set of tasks. 
-								After the three tasks are completed, we again interviewed them about their experience and 
-								asked them to complete the questionnaire.
+
+
+							<p><strong>Protocol:</strong>
+								<span class="image fit"><img src="images/DPM/StudyDiagram.png" alt="" /></span>
+							Our two conditions for this within-subjects user study were Dynamic and a Static version of the system that provided generally applicable prompt refinements which did not change between prompts or task (see image to right) <span class="image right"><img src="images/DPM/StaticUXOptionsCropped.png" alt="" /></span>. 
+
+							Every other element and interaction within the system was identical between conditions. 
+							We chose a within-subjects protocol so that participants could reflect on the similarities, differences, and trade-offs of using the two systems. 
+							<br/><br/>
+							We did not compare Dynamic or Static systems to a 'baseline' ChatGPT or similar system, as our formative study results showed that users strongly desired control of AI-generated content, which we suspect would be replicated in the comparative tool study. 
+							Instead, we directly compare Dynamic against Static Prompt Middleware to better understand the effectiveness of different approaches of control for users, and the trade-offs of each.
+							<br/><br/>
+							Participants were assigned Dynamic and Static conditions and A and B task-sets through a counterbalanced design, such that half the participants received the Dynamic condition first, and the other half received the Static condition first. 
+							Within each of these condition-first groups, each task-set was balanced such that half of each condition saw the A task-set first, and the other half received the B task-set first. 
+							Therefore, there were four equal groups of participants during the study.
 							</p>
 						</div>
 					</section>
 					<section id="results" class="wrapper style2 fullscreen fade-up">
 						<div class="inner">
 							<h1 class="major">Results</h1>
-						<p><strong>Quantitative results</strong><br/><br/>
-						<i>Task completion:</i>
-						Table 2 shows completion rates by task and condition. There was a significant difference between the Wrex and manual conditions, both dataset subgroups. 
-						Participants in the manual condition completed 12/36 tasks, while those in the Wrex condition completed all 36/36 tasks. 
-						<span class="image fit"><img src="images/WrexTable2.png" alt="" /></span>
+						<p><strong>User preferences for control:</strong>
+						Participants preferred to use the Dynamic system over the Static system, as they felt it made them more successful at interacting with the AI.  
+						<span class="image fit"><img src="images/DPM/boxplot_questions.png" alt="" /></span>
 
 						<br/>
-						<i>Participant Efficiency:</i>
-						Table 3 shows the distribution of completion times by task and condition, and the participants' self-reported frequency of how often they do that type of task. 
-						Participants using Wrex, on average, were about 40 seconds faster (u = 0.60, sd = 0.53) in A dataset, and about 1.6 minutes faster (u = 1.61, $sd = 0.31) in B dataset.
-						<span class="image fit"><img src="images/WrexTable3.png" alt="" /></span>
-
+						<strong>User perceived effectiveness:</strong>
+						Participants thought the dynamic controls were more effective for controlling AI output, and were satisfied with the level of control granted vs in the static condition where many felt they still needed more control over the AI responses.
+						<span class="image fit"><img src="images/DPM/q3_comparison_boxplots.png" alt="" /></span>
+						<p>
 						<br/>
-						<i>Grid and Code Acceptability:</i>
-						Table 4 shows distribution of acceptability for the grid, the code acceptability during the study (Code<sub>1</sub>), and the code acceptability after post-study improvements (Code<sub>2</sub>). 
-						Participants reported the median acceptability of the grid experience as Acceptable (5). The code acceptability during the study (Code<sub>1</sub>) had substantial variation in responses, with a median of Neutral (3). 
-						After improving the program synthesis engine based on the participant feedback (Code<sub>2</sub>), the median score improved to Acceptable (5). 
-						As a measure of user satisfaction, we asked participants if they would use Wrex for data wrangling tasks if a production version of the tool was made available: five participants reported that they would "probably use the tool" (4), 
-						and seven reported that they would "definitely use the tool" (5).
-						<span class="image fit"><img src="images/WrexTable4.png" alt="" /></span>
-						</p>
-
-						<p><strong>Qualitative feedback</strong><br/><br/>
-						<i>Reducing Barriers to Data Wrangling:</i>
-						<br/>
-						(1) Recall of Functions and Syntax -
-						The most common barrier reported by participants, both within our lab study and in their daily work, 
-						is remembering what functions and syntax are required to perform the necessary data transformations as "it is just tough to memorize all the nuances of a language" (P5).
-						Wrex reduces this barrier with the synthesis of readable code via PBE. 
-						This removes the need for data scientists to remember the specific functions or syntax needed for a 
-						transformation. Instead, they need only know what they want to do with the data in order to produce code.
-						<br/>
-						(2) Searching for Solutions -
-						Wrex reduced participants' reliance on web searches. Instead of hunting online for the right syntax or API calls, 
-						they could remain in the context of their wrangling activities and only had to provide the expected output for data transformations.
-						Participants immediately noticed the time it took to complete the three tasks with Wrex compared to doing so with a 
-						default Jupyter notebook and web search: "I super liked it, it was amazing, really quick, I didn't have to look up or browse anything else" (P9); 
-						Wrex also "avoided my back and forth from Stack Overflow" (P12). 
-						By removing the need to search websites and code repositories, Wrex allows data scientists to remain in the context of their analysis.
+						<strong>Promptly lowers barriers to providing context to AI:</strong>
+						Current participant workflows for prompt engineering was seen as tedious (P4), inconsistently effective (P4, P5), time-consuming (P5), and a current barrier participants had with using GenAI that new control affordances, like that of the Dynamic system, could help address. 
+						Participants found it difficult to <i>"even have the words for the context"</i> they wanted to convey in their prompts as there was a noticeable gap in expertise needed between prompting and prompt engineering (P4).
+						Providing task and user context within prompts was seen as critical for obtaining responses that aligned with user needs (P2). 
+						Promptly was described as helpful for assisting the users in providing much of the context necessary for the AI to effectively respond to a user's needs for a task and eliminate much of their struggles due to forming prompts (P2, P4, P8, P15). 
+						For example:  
+						<i>"I felt like [Promptly] would really help me shortcut what I'm doing manually today." (P15)</i>
 						<br/><br/>
-
-						<i>Fitting into Data Scientists' Workflows:</i>
+						
+						<strong>Promptly improves user perception of control over AI:</strong>
+						Participants felt that the Dynamic system gave more effective control over the Static system and their current prompting strategies (P4, P6, P8). 
+						Without the control provided by Promptly, one participant felt: 
+						<br/><i>"restricted by the current Copilot [because I] don't have these options, I'm trying to modify the prompt to get the answer out and the AI just goes out of control after some time, so I have to refresh and start again and change my prompts." (P12)</i>
 						<br/>
-						Wrex helps address the above barriers by providing familiar interactions that reduce the need for syntax recall and code-related web searches. 
-						Wrex's grid felt familiar, lessening the learning curve required to perform data wrangling tasks with the system. This form of interaction 
-						was likened to "the pattern recognition that Excel has when you drag and drop it" and that Wrex had a "nice free text flow" (P5). 
-						Feedback for the grid interaction was overwhelmingly positive, with only minor enhancements suggested such as a right-click 
-						context menu and better horizontal scrolling. Participants agreed that this tool fit into their workflow. 
-						They were enthusiastic about not having to leave the notebook when performing their day-to-day data wrangling tasks. 
-						By having a tool that generates wrangling code directly in their notebook, participants felt that they could easily iterate between data wrangling and analysis.
+						
+						The greater control afforded through generated options was seen as useful for receiving AI responses that fit the personal preferences of the user (P14), which participants felt was made possible through Promptly's afforded flexibility (P7), greater precision in defining the task (P8), better predictability of AI responses (P6), and greater adaptation to user needs (P13).
 						<br/><br/>
-
-						<i>Data Scientists' Expectations of Synthesized Code:</i>
+						<strong>Promptly provides guidance for AI steering interactions. :</strong>
+						Participants saw the Dynamic system as a guide in interacting with AI by providing helpful, and relevant, options (P1, P2, P4, P6, P7, P9, P14). 
+						For example, P7 saw the generated options as a form of debugging the AI's response since it <i>"gives you some ideas around if you change [the response] in this way then you might get better answers."</i>
+						Participants felt that Dynamic PRC guided them towards better responses (P7, P10, P11), giving alternatives of what they might do to solve their problem (P7). 
+						Dynamic options did this by helping participants review potential refinements to their prompt (P1, P4, P9) and give greater structure to their AI interactions through generated options (P14). 
+						P11 said it even helped them learn potential strategies for future prompts, saying that Promptly was <i>"giving me more of a prompt learning experience, and I'm getting out of [the AI] what I want. And actually, it's a better response."</i>
 						<br/>
-						(1) Readability of Synthesized Code - 
-						Participants described readability as being a critical feature of usable synthesized code. 
-						P6 wanted "to read what the code was doing and make sure it was doing what I expect it to do, in case there was an ambiguity I didn't pick up on". 
-						It is also important for collaboration (P12). Participants also cited readability as an enabler for debugging and maintenance, 
-						where readable code would allow them to make small changes to the code themselves rather than provide more examples to the interactive grid.
-						<br/><br/>
-
-						(2) Trust in Synthesized Code -
-						The most salient method to increase trust was reading the synthesized code. Inspecting the resulting wrangled dataframe is not enough, 
-						and that without readable code they "don't know what is going on there, so I don't know if I can trust it if I want to extend it to other tasks. 
-						I saw my examples were correctly transformed, but because the code is hard to read, I would not be able to trust what it is doing" (P10). 
-						Several participants noted that the best way to gain the confidence of a user in these types of tools is to "have the code be readable" (P4).
-
-
-						</p>
-
-
-						</div>
+					
+					</p>
+				</div>
 					</section>
 					<section id="disc" class="wrapper style2-alt fullscreen fade-up">
 						<div class="inner">
-							<h1 class="major">Discussion and conclusion</h1>
-							<p><strong></strong></p>
-							<p><strong>Data Scientists Need In-Situ Tools Within Their Workflow:</strong>
-								Computational notebooks are not just for wrangling, but for the entire data analysis workflow. Thus, PBE tools that enhance the user experience 
-								at each stage of data analysis need to reside where data scientists perform these tasks: <i>within the notebook</i>.
-		
-								These in-situ workflows are an efficiency boost for data scientists in two ways: First, providing PBE within the notebook removes 
-								the need for users to leave their notebook and spend valuable time web searching for code solutions, as the solutions are 
-								generated based on user examples. Second, users no longer need to export their data, open an external tool, load the data 
-								into that tool, perform any data wrangling required, export the wrangled data, and reload that data back into their notebook.
+							<h1 class="major">Design Implications</h1>
+							<p>From our analysis of participants' reflections, we derive four implications for improving the design of Dynamic PRC systems: 
+								balance appropriate/useful mental load to users, provide control over how options are applied, leverage relevant context, and allow direct manipulation of options.</p>
+							
+							<p><strong>Dynamic PRC should provide appropriate mental load to users:</strong>
+								Dynamic PRC was found to be more mentally demanding to use over Static PRC. 
+								This might have been due to the amount of novel prompt refinements generated that the user had to attend to and understand with each prompt. 
+								One potential UX-pattern to address this is progressive disclosure, where Dynamic PRC initially only offers a few critical meta-refinements and allows the user to request that the Dynamic PRC system generates more when interested or required. 
+								Dynamic PRC might also leverage what it knows about the user, through system usage or user personas, to automatically select refinements it is confident about. 
+								Dynamic PRC might present these refinements in a separate part of the UI, so that the user does not have to attend to them while they are effective, while still retaining control over these refinements when necessary.
 							</p>
-							<p><strong>Data Scientists Need Readable Synthesized Code:</strong>
-								Data scientists need to be able to read and comprehend the code so they can verify it is accomplishing their task. 
-								Thus, if a system synthesizes unreadable code, users have much more trouble performing verification of the output. 
-								Verifiability increases trust in the system, and gives data scientists confidence that the synthesized code handles edge cases 
-								and performs the task without errors. Readability also improves maintainability. If a data scientist wants to reuse the 
-								synthesized code elsewhere but make edits based on the context of their data, they need to be able to first understand that code. 
+
+							<p><strong>Dynamic PRC should gather and leverage relevant context for the user:</strong>
+								While the current implementation of Dynamic PRC uses the user's prompt and currently selected options to generate options, participants wanted the system to leverage their past AI usage and 
+								other context or tool usage to inform the generation, and selection, of Dynamic PRC and provide greater context to the AI. 
+								For example, for code generation tasks systems could use previous AI code generation requests to infer what programming language to use (P10), or incorporate the files the user has open in their IDE.
+								As with the previous need for understanding how AI interprets options, transparency was cited as a critical need for understanding and controlling what data the AI uses to form a response (P6, P7, P9, P12). 
+								Forming user personas based on information like user-provided expertise level and job position (P2) and interacting with the user to let the user select what relevant data AI should use to form responses (P1, P11, P12, P15) 
+								were also seen useful features for greater specificity and personalization of responses. 
+								This need might be fulfilled by explicit signals from the AI in the response on when data comes from an external source, or from the model itself, by highlighting each within a response (P6). 
+								Users might then select these highlights to steer the AI toward using sources and data that the users prefer (P4, P10).
+								
+								<br/><br/><span class="image right"><img src="images/DPM/Promptly.png" alt="" /></span>
+								Dynamic PRC systems might also generate richer PRC modalities, like interactive maps to reveal and collect geographic needs or visual representations of options to provide the user inspiration for what kind of context the AI is looking for, 
+								which might improve the process of context gathering from the user (see image). 
+								However, there must be a balance between the amount of context-gathering interactions that the user must attend to, so that information overload and fatigue in providing preferences to the Chat Module is avoided. 
+								This issue can potentially be eased through PRC option reuse, similar to what session options in the Dynamic PRC and options in the Static PRC approaches provide.
 							</p>
-							<p><strong>Code Makes Data Science More Accessible:</strong>
-								Our study participants noted that Wrex was useful in learning how to perform the transforms they were interested in, 
-								or even assist them in discovering different programming patterns for regular expressions. Wrex also alleviates the 
-								tedium felt by data scientists having to learn new APIs and even lessens the burden of having to keep up with API updates. 
-								This also benefits polyglot programmers who might be weaker in a new language, as they can quickly get up to speed by leveraging Wrex 
-								to produce code that they can use and learn from. In the future we see potential for interactive program synthesis tools as learning 
-								instruments if they are able to synthesize readable and pedagogically-suitable code.
+							
+							<p><strong>Dynamic PRC should provide control of how and where the AI applies options:</strong>
+								Though participants believed the control afforded by Dynamic PRC was useful and made them more effective, they felt that more control over the application of options could help address the barriers that remain.
+								Participants noted a need for greater transparency on how the AI interprets the options selected and prompt given to the AI (P1, P14, P15). 
+								This might be achieved through providing several potential examples of the structure and format of the response for selection (P3, P8), supporting interventions within an AI response where users prompt the AI to 
+								adjust specific sections of a response by directly interacting with the response to communicate intent (P6, P10, P15), or even provide response diffs (similar to code diffs) to allow comparisons between responses 
+								based on the selections made by the user to address barriers to user understanding around how the option selections impacted the response (P1). 
+								The current design of the Dynamic PRC system is capable of supporting such response branching and exploration,
+								but the addition of informative diffs would help address the barrier to user understanding of the impact of options on responses.
+								<br/><br/>
+								Another useful ability would be to allow the user to make targeted changes to the response, so that users can keep results that they like, and refine what they do not through Dynamic PRC interactions. 
+								The user might wish to preserve some aspects of the structure of the response while refining the content (P14) which can be lost when modifying prompts.
 							</p>
-							<p><strong>Conclusion:</strong>
-								Our formative study found that professional data scientists are reluctant to use existing wrangling tools that did not fit within their notebook-based workflows. 
-								To address this gap, we developed Wrex, a notebook-based programming-by-example system that generates readable code for common data transformations. 
-								Our user study found that data scientists are significantly more effective and efficient at data wrangling with Wrex over manual programming.
-								In particular, users reported that the synthesis of readable code (and the transparency that code offers) was an essential requirement for supporting their data wrangling workflows.
+
+							<p><strong>Dynamic PRC should provide direct manipulation to update options:</strong>
+								While it was uncommon for participants to want to modify the generated Dynamic PRC options during the study (as participants could either prompt the Option Module to regenerate the option with changes or 
+								modify the JSON representation), some felt the need to directly update options (e.g., click on an option to edit the text and regenerate the option based on the changed text) (P2).
+								The Dynamic PRC system can be improved to allow users to update parts of the UI (e.g., the option labels) to send these modifications to the Option Module as user intent. Based on this intent, the Option Module could regenerate the
+								option to better suit the user's needs, supporting a form of response-by-example similar to programming-by-example interfaces.
 							</p>
 						</div>
 					</section>
