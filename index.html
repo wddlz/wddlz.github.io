@@ -1,109 +1,178 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <!--
 	Hyperspace by HTML5 UP
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
-	<head>
-		<title>Ian Drosos - HCI Researcher</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload">
+  <head>
+    <title>Ian Drosos - HCI Researcher</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript
+      ><link rel="stylesheet" href="assets/css/noscript.css"
+    /></noscript>
+  </head>
+  <body class="is-preload">
+    <!-- Sidebar -->
+    <section id="sidebar">
+      <div class="inner">
+        <nav>
+          <ul>
+            <li><a href="#intro">About Me</a></li>
+            <li><a href="#one">Portfolio</a></li>
+            <li><a href="#two">Education and Experience</a></li>
+            <li><a href="#three">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
 
-		<!-- Sidebar -->
-			<section id="sidebar">
-				<div class="inner">
-					<nav>
-						<ul>
-							<li><a href="#intro">About Me</a></li>
-							<li><a href="#one">Portfolio</a></li>
-							<li><a href="#two">Education and Experience</a></li>
-							<li><a href="#three">Contact</a></li>
-						</ul>
-					</nav>
-				</div>
-			</section>
+    <!-- Wrapper -->
+    <div id="wrapper">
+      <!-- Intro -->
+      <section id="intro" class="wrapper style1 fullscreen fade-up">
+        <div class="inner">
+          <h1>Ian Drosos - HCI Researcher</h1>
+          <p>
+            Hi, I lead UX design and UX engineering at Trent AI, a AI security
+            startup that wants to make code and organizations safer. I am a
+            mixed-methods HCI researcher who designs and develops tools to
+            enhance the workflows of software developers, data scientists,
+            content creators, and learners. I publish at venues like
+            <a href="https://dl.acm.org/conference/chi" class="link">CHI</a>,
+            <a href="https://dl.acm.org/conference/dis" class="link">DIS</a>,
+            and
+            <a href="https://conferences.computer.org/VLHCC/" class="link"
+              >VLHCC.</a
+            >
+          </p>
+          <ul class="actions">
+            <li><a href="#one" class="button scrolly">My work</a></li>
+            <li><a href="#two" class="button scrolly">My stats</a></li>
+            <li>
+              <a
+                href="https://www.iandrosos.me/images/Ian_Drosos_Resume.pdf"
+                class="button scrolly"
+                >Resume</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.iandrosos.me/images/CV_Ian_Drosos.pdf"
+                class="button scrolly"
+                >CV</a
+              >
+            </li>
+          </ul>
+        </div>
+      </section>
 
-		<!-- Wrapper -->
-			<div id="wrapper">
-
-				<!-- Intro -->
-					<section id="intro" class="wrapper style1 fullscreen fade-up">
-						<div class="inner">
-							<h1>Ian Drosos - HCI Researcher</h1>
-							<p>Hi, I am a mixed-methods HCI researcher who designs and
-								develops tools to enhance the workflows of
-								software developers, data scientists, content creators, and
-								learners. I partner with product teams at Excel to provide design 
-								and UX insights to transfer research findings to product managers and designers.
-								I publish at venues like <a href="https://dl.acm.org/conference/chi" class="link">CHI</a>, <a href="https://dl.acm.org/conference/dis" class="link">DIS</a>, and <a href="https://conferences.computer.org/VLHCC/" class="link">VLHCC.</a> </p>
-							<ul class="actions">
-								<li><a href="#one" class="button scrolly">My work</a></li>
-								<li><a href="#two" class="button scrolly">My stats</a></li>
-								<li><a href="https://www.iandrosos.me/images/Ian_Drosos_Resume.pdf" class="button scrolly">Resume</a></li>
-								<li><a href="https://www.iandrosos.me/images/CV_Ian_Drosos.pdf" class="button scrolly">CV</a></li>
-							</ul>
-						</div>
-					</section>
-
-				<!-- One -->
-					<section id="one" class="wrapper style2 spotlights">
-						<section>
-							<a href="#" class="image"><img src="images/DPM/UserFlowWithDynamic.png" alt="" data-position="25% 25%" /></a>
-							<div class="content">
-								<div class="inner">
-									<h2>Promptly / Dynamic Prompt Middleware: Generating UX to help users get more out of AI</h2>
-									<p> Prompting generative AI effectively is challenging for users, particularly in expressing context for comprehension tasks. 
-										We address this challenge by implementing Dynamic Prompt Middleware, which generates UI elements for prompt refinement based on the user's specific prompt. 
-										Users found Dynamic Prompt Middleware afforded more control, lowered barriers to providing context, encouraged task exploration and reflection, and improved the user experience of generative AI workflows.<br />
-										<a href="https://arxiv.org/pdf/2412.02357" class="link">CHIWORK 2025</a></p>
-									<ul class="actions">
-										<li><a href="promptly.html" class="button">Learn more</a></li>
-									</ul>
-								</div>
-							</div>
-						</section>
-						<section>
-							<a href="#" class="image"><img src="images/chrome-png-highres.png" alt="" data-position="center center" /></a>
-							<div class="content">
-								<div class="inner">
-									<h2>Wrex: A Unifed Programming-by-Example Interaction for Synthesizing Readable Code for Data Scientists </h2>
-									<p>Wrex is a unifed interaction model, implemented as a 
-										Jupyter notebook extension, that generates readable code for 
-										a variety of useful data transformations. User study results demonstrate Wrex made data scientists 
-										signifcantly more effective and efficient at data wrangling. <br />
-										<a href="https://dl.acm.org/doi/pdf/10.1145/3313831.3376442" class="link">CHI 2020 - <i class="fa fa-trophy" aria-hidden="true"></i> Best paper award</a></p>
-									<ul class="actions"> 
-										<li><a href="wrex.html" class="button">Learn more</a></li>
-									</ul>
-								</div>
-							</div>
-						</section>
-						<section>
-							<a href="#" class="image"><img src="images/Overview.png" alt="" data-position="top center" /></a>
-							<div class="content">
-								<div class="inner">
-									<h2>FxD: A Functional Debugger For Dysfunctional Spreadsheets</h2>
-									<p> FxD is a novel spreadsheet debugging interface, which provides 
-										structured information needed for spreadsheet users to debug formulas 
-										in systematic ways. A user study revealed users felt more efficient and capable, were more 
-										satisfied with the amount of information shown, and agreed 
-										FxD would enhance existing debugging workflows. 
-										FxD is now released as part of <a href="https://www.microsoft.com/en-us/garage/profiles/excel-labs/" class="link">Excel Labs.</a><br/>
-										<a href="https://www.microsoft.com/en-us/research/publication/fxd-a-functional-debugger-for-dysfunctional-spreadsheets/" class="link">VLHCC 2023 - <i class="fa fa-trophy" aria-hidden="true"></i> Best paper, Honorable Mention award</a></p>
-									<ul class="actions"></a>
-									</p>
-									<ul class="actions">
-										<li><a href="fxd.html" class="button">Learn more</a></li>
-									</ul>
-								</div>
-							</div>
-						</section>
-						<!-- <section>
+      <!-- One -->
+      <section id="one" class="wrapper style2 spotlights">
+        <section>
+          <a href="#" class="image"
+            ><img
+              src="images/DPM/UserFlowWithDynamic.png"
+              alt=""
+              data-position="25% 25%"
+          /></a>
+          <div class="content">
+            <div class="inner">
+              <h2>
+                Promptly / Dynamic Prompt Middleware: Generating UX to help
+                users get more out of AI
+              </h2>
+              <p>
+                Prompting generative AI effectively is challenging for users,
+                particularly in expressing context for comprehension tasks. We
+                address this challenge by implementing Dynamic Prompt
+                Middleware, which generates UI elements for prompt refinement
+                based on the user's specific prompt. Users found Dynamic Prompt
+                Middleware afforded more control, lowered barriers to providing
+                context, encouraged task exploration and reflection, and
+                improved the user experience of generative AI workflows.<br />
+                <a href="https://arxiv.org/pdf/2412.02357" class="link"
+                  >CHIWORK 2025</a
+                >
+              </p>
+              <ul class="actions">
+                <li><a href="promptly.html" class="button">Learn more</a></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section>
+          <a href="#" class="image"
+            ><img
+              src="images/chrome-png-highres.png"
+              alt=""
+              data-position="center center"
+          /></a>
+          <div class="content">
+            <div class="inner">
+              <h2>
+                Wrex: A Unifed Programming-by-Example Interaction for
+                Synthesizing Readable Code for Data Scientists
+              </h2>
+              <p>
+                Wrex is a unifed interaction model, implemented as a Jupyter
+                notebook extension, that generates readable code for a variety
+                of useful data transformations. User study results demonstrate
+                Wrex made data scientists signifcantly more effective and
+                efficient at data wrangling. <br />
+                <a
+                  href="https://dl.acm.org/doi/pdf/10.1145/3313831.3376442"
+                  class="link"
+                  >CHI 2020 -
+                  <i class="fa fa-trophy" aria-hidden="true"></i> Best paper
+                  award</a
+                >
+              </p>
+              <ul class="actions">
+                <li><a href="wrex.html" class="button">Learn more</a></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section>
+          <a href="#" class="image"
+            ><img src="images/Overview.png" alt="" data-position="top center"
+          /></a>
+          <div class="content">
+            <div class="inner">
+              <h2>FxD: A Functional Debugger For Dysfunctional Spreadsheets</h2>
+              <p>
+                FxD is a novel spreadsheet debugging interface, which provides
+                structured information needed for spreadsheet users to debug
+                formulas in systematic ways. A user study revealed users felt
+                more efficient and capable, were more satisfied with the amount
+                of information shown, and agreed FxD would enhance existing
+                debugging workflows. FxD is now released as part of
+                <a
+                  href="https://www.microsoft.com/en-us/garage/profiles/excel-labs/"
+                  class="link"
+                  >Excel Labs.</a
+                ><br />
+                <a
+                  href="https://www.microsoft.com/en-us/research/publication/fxd-a-functional-debugger-for-dysfunctional-spreadsheets/"
+                  class="link"
+                  >VLHCC 2023 -
+                  <i class="fa fa-trophy" aria-hidden="true"></i> Best paper,
+                  Honorable Mention award</a
+                >
+              </p>
+              <ul class="actions">
+                <li><a href="fxd.html" class="button">Learn more</a></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <!-- <section>
 							<a href="#" class="image"><img src="images/VideoStudyDiagram.png" alt="" data-position="25% 25%" /></a>
 							<div class="content">
 								<div class="inner">
@@ -122,71 +191,115 @@
 								</div>
 							</div>
 						</section> -->
-						<section>
-							<a href="#" class="image"><img src="images/productlogos.png" alt="" data-position="25% 25%" /></a>
-							<div class="content">
-								<div class="inner">
-									<h2>Microsoft Internal/Product Contributions</h2>
-									<p> 
-										A selected few contributions at Microsoft beyond AI/computer science research:
-										<ul>
-											<li>Promptly design research and codebase shared to over 18 product teams within Microsoft. Several are leveraging Promptly as part of their own explorations and development of future AI prompting experiences.</li>
-											<li>2024 Promptly (Dynamic Prompt Middleware) - <i class="fa fa-trophy" aria-hidden="true"></i> "2nd place 'Everyday AI' Executive Challenge Hackathon chosen by Microsoft Research President Peter Lee.</li>
-											<li>2023 Game Design Copilot - <i class="fa fa-trophy" aria-hidden="true"></i> "2nd place 'Change the Game' Executive Challenge Hackathon chosen by Microsoft Gaming CEO and Head of XBOX Phil Spencer.</li>
-											<li>Presenter to the internal Machine Learning, AI & Data Science Conference (MLADS) on designs for LLMs in Excel.</li>
-											<li>Design for LLM co-audit in Excel and beyond.</li>
-										</ul> 
-									</p>
-									<ul class="actions">
-										<!-- <li><a href="gaps.html" class="button">Learn more</a></li> -->
-									</ul>
-								</div>
-							</div>
-						</section>
-					</section>
+        <section>
+          <a href="#" class="image"
+            ><img src="images/productlogos.png" alt="" data-position="25% 25%"
+          /></a>
+          <div class="content">
+            <div class="inner">
+              <h2>Microsoft Internal/Product Contributions</h2>
+              <p>
+                A selected few contributions at Microsoft beyond AI/computer
+                science research:
+              </p>
+              <ul>
+                <li>
+                  Promptly design research and codebase shared to over 18
+                  product teams within Microsoft. Several are leveraging
+                  Promptly as part of their own explorations and development of
+                  future AI prompting experiences.
+                </li>
+                <li>
+                  2024 Promptly (Dynamic Prompt Middleware) -
+                  <i class="fa fa-trophy" aria-hidden="true"></i> "2nd place
+                  'Everyday AI' Executive Challenge Hackathon chosen by
+                  Microsoft Research President Peter Lee.
+                </li>
+                <li>
+                  2023 Game Design Copilot -
+                  <i class="fa fa-trophy" aria-hidden="true"></i> "2nd place
+                  'Change the Game' Executive Challenge Hackathon chosen by
+                  Microsoft Gaming CEO and Head of XBOX Phil Spencer.
+                </li>
+                <li>
+                  Presenter to the internal Machine Learning, AI & Data Science
+                  Conference (MLADS) on designs for LLMs in Excel.
+                </li>
+                <li>Design for LLM co-audit in Excel and beyond.</li>
+              </ul>
+              <ul class="actions">
+                <!-- <li><a href="gaps.html" class="button">Learn more</a></li> -->
+              </ul>
+            </div>
+          </div>
+        </section>
+      </section>
 
-				<!-- Two -->
-					<section id="two" class="wrapper style3 fade-up">
-						<div class="inner">
-							<h2>EDU and XP</h2>
-							<p>I am currently an <a href="https://www.microsoft.com/en-us/research/people/t-iandrosos/" class="link">HCI researcher at Microsoft Research</a>. Previously, I was a full-stack software engineer at Verizon. <br />
-								I have a PhD in Cognitive Science from UC San Diego and a MS in Computer Science from NC State. </p>
-							<div class="features">
-								<section>
-									<span class="icon solid major fa-graduation-cap"></span>
-									<h3>Education</h3>
-									<p><strong>UCSD</strong> <br />
-									La Jolla, California <br />
-									PhD Cognitive Science <br />
-									2017 - 2022</p> 
-									<p><strong>NCSU</strong> <br />
-									Raleigh, North Carolina <br />
-									MS Computer Science <br />
-									2015 - 2017</p>
-									<p><strong>SPSU</strong> <br />
-									Marietta, Georgia <br />
-									BS Computer Science <br />
-									2007 - 2011</p>								
-								</section>
-								<section>
-									<span class="icon solid major fa-cog"></span>
-									<h3>Experience</h3>
-									<p><strong>Researcher</strong> -- Microsoft Research <br />
-										2022 - <br />
-									<strong>Researcher</strong> -- The Design Lab <br />
-										2017 - 2022 <br />
-									<strong>Instructor</strong> -- UCSD <br />
-										2022 - 2022 <br />
-									<strong>Teaching Assistant</strong> -- UCSD <br />
-										2018 - 2022 <br />
-									<strong>Research Intern</strong> -- Autodesk Research <br /> 
-										2021 - 2021 <br />
-									<strong>Research Intern</strong> -- Microsoft <br />
-										2018 - 2018 <br />
-									<strong>Software Engineer</strong> -- Verizon <br />
-										2011 - 2015</p>								
-								</section>
-								<!-- <section>
+      <!-- Two -->
+      <section id="two" class="wrapper style3 fade-up">
+        <div class="inner">
+          <h2>EDU and XP</h2>
+          <p>
+            I am currently
+            <a href="https://trent.ai" class="link"
+              >leading UX design engineering at Trent AI</a
+            >
+            (2025 - ). Previously, I was an HCI researcher at
+            <a
+              href="https://www.microsoft.com/en-us/research/people/t-iandrosos/"
+              class="link"
+              >Microsoft Research</a
+            >
+            (2022-2025) and a full-stack software engineer at Verizon. I have a
+            PhD in Cognitive Science from UC San Diego and a MS in Computer
+            Science from NC State.
+          </p>
+          <div class="features">
+            <section>
+              <span class="icon solid major fa-graduation-cap"></span>
+              <h3>Education</h3>
+              <p>
+                <strong>UCSD</strong> <br />
+                La Jolla, California <br />
+                PhD Cognitive Science <br />
+                2017 - 2022
+              </p>
+              <p>
+                <strong>NCSU</strong> <br />
+                Raleigh, North Carolina <br />
+                MS Computer Science <br />
+                2015 - 2017
+              </p>
+              <p>
+                <strong>SPSU</strong> <br />
+                Marietta, Georgia <br />
+                BS Computer Science <br />
+                2007 - 2011
+              </p>
+            </section>
+            <section>
+              <span class="icon solid major fa-cog"></span>
+              <h3>Experience</h3>
+              <p>
+                <strong>Member of Technical Staff</strong> -- Trent AI <br />
+                2025 - present <br />
+                <strong>Researcher</strong> -- Microsoft Research <br />
+                2022 - 2025 <br />
+                <strong>Researcher</strong> -- The Design Lab <br />
+                2017 - 2022 <br />
+                <strong>Instructor</strong> -- UCSD <br />
+                2022 - 2022 <br />
+                <strong>Teaching Assistant</strong> -- UCSD <br />
+                2018 - 2022 <br />
+                <strong>Research Intern</strong> -- Autodesk Research <br />
+                2021 - 2021 <br />
+                <strong>Research Intern</strong> -- Microsoft <br />
+                2018 - 2018 <br />
+                <strong>Software Engineer</strong> -- Verizon <br />
+                2011 - 2015
+              </p>
+            </section>
+            <!-- <section>
 									<span class="icon solid major fa-cog"></span>
 									<h3>Sed erat ullam corper</h3>
 									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
@@ -206,21 +319,27 @@
 									<h3>Aliquam urna dapibus</h3>
 									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
 								</section> -->
-							</div>
-							<ul class="actions">
-								<!-- <li><a href="generic.html" class="button">Learn more</a></li> -->
-								<li><a href="https://www.iandrosos.me/images/CV_Ian_Drosos.pdf" class="button scrolly">Download my CV</a></li>
-							</ul>
-						</div>
-					</section>
+          </div>
+          <ul class="actions">
+            <!-- <li><a href="generic.html" class="button">Learn more</a></li> -->
+            <li>
+              <a
+                href="https://www.iandrosos.me/images/CV_Ian_Drosos.pdf"
+                class="button scrolly"
+                >Download my CV</a
+              >
+            </li>
+          </ul>
+        </div>
+      </section>
 
-				<!-- Three -->
-					<section id="three" class="wrapper style1 fade-up">
-						<div class="inner">
-							<!-- <h2>Get in touch</h2>
+      <!-- Three -->
+      <section id="three" class="wrapper style1 fade-up">
+        <div class="inner">
+          <!-- <h2>Get in touch</h2>
 							<p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet imperdiet est velit quis lorem.</p> -->
-							<!-- <div class="split style1"> -->
-								<!-- <section>
+          <!-- <div class="split style1"> -->
+          <!-- <section>
 									<form method="post" action="#">
 										<div class="fields">
 											<div class="field half">
@@ -241,41 +360,65 @@
 										</ul>
 									</form>
 								</section> -->
-								<section>
-									<ul class="contact">
-										<li>
-											<h3>Socials</h3>
-											<ul class="icons">
-												<li><a href="https://scholar.google.com/citations?hl=en&amp;user=3gqaN9YAAAAJ" class="icon brands fa-google"><span class="label">Google Scholar</span></a></li>
-												<li><a href="https://twitter.com/iandrosos" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-												<li><a href="https://www.linkedin.com/in/ian-drosos/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-												<li><a href="https://github.com/wddlz/" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-											</ul>
-										</li>
-									</ul>
-								</section>
-							<!-- </div> -->
-						</div>
-					</section>
-			</div>
+          <section>
+            <ul class="contact">
+              <li>
+                <h3>Socials</h3>
+                <ul class="icons">
+                  <li>
+                    <a
+                      href="https://scholar.google.com/citations?hl=en&amp;user=3gqaN9YAAAAJ"
+                      class="icon brands fa-google"
+                      ><span class="label">Google Scholar</span></a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://twitter.com/iandrosos"
+                      class="icon brands fa-twitter"
+                      ><span class="label">Twitter</span></a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.linkedin.com/in/ian-drosos/"
+                      class="icon brands fa-linkedin-in"
+                      ><span class="label">LinkedIn</span></a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/wddlz/"
+                      class="icon brands fa-github"
+                      ><span class="label">GitHub</span></a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </section>
+          <!-- </div> -->
+        </div>
+      </section>
+    </div>
 
-		<!-- Footer -->
-			<footer id="footer" class="wrapper style1-alt">
-				<div class="inner">
-					<ul class="menu">
-						<li>&copy; Ian Drosos. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-					</ul>
-				</div>
-			</footer>
+    <!-- Footer -->
+    <footer id="footer" class="wrapper style1-alt">
+      <div class="inner">
+        <ul class="menu">
+          <li>&copy; Ian Drosos. All rights reserved.</li>
+          <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+        </ul>
+      </div>
+    </footer>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-
-	</body>
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/jquery.scrolly.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
 </html>
