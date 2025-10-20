@@ -1,313 +1,1078 @@
-<!DOCTYPE HTML>
-<!--
-	Hyperspace by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Promptly/Dynamic Prompt Middleware: Contextual Prompt Refinement Controls for Comprehension Tasks</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promptly/Dynamic Prompt Middleware - Ian Drosos</title>
+    <meta
+      name="description"
+      content="Dynamic Prompt Middleware: Generating UX to help users get more out of AI. CHIWORK 2025 publication."
+    />
 
-		<!-- Header -->
-			<header id="header" class="wrapper">
-				<a href="index.html" class="title">Home</a>
-				<nav>
-					<ul>
-						<li><a href="index.html">Home</a></li>
-						<li><a href="promptly.html" class="active">Promptly</a></li>
-					</ul>
-				</nav>
-			</header>
+    <!-- Preload critical fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-		<!-- Sidebar -->
-		<section id="sidebar">
-			<div class="inner">
-				<nav>
-					<ul>
-						<li><a href="#promptly">Summary</a></li>
-						<li><a href="#intro">Intro</a></li>
-						<li><a href="#usecase">Usecase</a></li>
-						<li><a href="#design">Design</a></li>
-						<li><a href="#methods">Methods</a></li>
-						<li><a href="#results">Results</a></li>
-						<li><a href="#disc">Conclusion</a></li>
-					</ul>
-				</nav>
-			</div>
-		</section>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/variables.css" />
+    <link rel="stylesheet" href="assets/css/modern.css" />
 
-		<!-- Wrapper -->
-			<div id="wrapper">
-				<!-- Main -->
-					<section id="promptly" class="wrapper style2-alt fullscreen fade-up">
-						<div class="inner">
-							<h1 class="major">Promptly</h1>
-							<p>Prompting generative AI effectively is challenging for users, particularly in expressing context for comprehension tasks like explaining spreadsheet formulas, Python code, and text passages. 
-								Through a formative survey (n=38), we uncovered a trade-off between standardized but predictable prompting support, and context-adaptive but unpredictable support.
-								We explore this trade-off by implementing two prompt middleware approaches: Dynamic Prompt Refinement Controls (PRCs), which generates UI elements for prompt refinement based on the user's specific prompt, and Static PRCs, which offers generic controls.
-								Our controlled user study (n=16) showed that the Dynamic PRC approach afforded more control, lowered barriers to providing context, and encouraged task exploration and reflection, but reasoning about the effects of generated controls on the final output remains challenging.
-								Our findings suggest that dynamic prompt middleware can improve the user experience of generative AI workflows.</p>
-							<p>Promptly was published at CHIWORK 2025 and won 2nd/1,064 projects in the Every Day AI Executive Challenge as part of the 2024 MS Hackathon.</p>
-							<p>	You can find the full paper <a href="https://iandrosos.me/images/chiwork25-27.pdf" class="link">here</a>. Below you will find a summary of the full research paper.</p>
-						</div>
-					</section>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="avatar.png" />
 
-					<section id="wrexintro" class="wrapper style2 fullscreen fade-up">
-						<div class="inner">
-							<h1 class="major">Introduction</h1>
-							<p>
-								Prompting seems easy right? You just tell the chatbot to "Plan a workshop" and it knows exactly what you want and gives you a good response...
-								<span class="image fit"><img src="images/DPM/Prob1.png" alt="" /></span>
-								
-								Well, not quite, because what you really wanted was a 3-day, in-person, machine learning workshop, etc.
-								<span class="image fit"><img src="images/DPM/Prob2.png" alt="" /></span>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
+    <style>
+      /* Case Study Specific Styles */
+      .case-study-nav {
+        position: sticky;
+        top: 0;
+        background: var(--color-background);
+        border-bottom: 1px solid var(--color-border);
+        z-index: var(--z-sticky);
+        padding: var(--space-4) 0;
+        backdrop-filter: blur(var(--glass-blur));
+        -webkit-backdrop-filter: blur(var(--glass-blur));
+      }
 
-								And then you wanted to go even further by telling the AI how you want it to respond. For example, the format of the response.
-								<span class="image fit"><img src="images/DPM/Prob3.png" alt="" /></span>
+      .case-study-nav-inner {
+        max-width: var(--container-xl);
+        margin: 0 auto;
+        padding: 0 var(--space-6);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-								Each one of these represents context, or prompt options, that the user needs to provide to the AI to control it and get the response they need most. However, expressing this context via natural language is challenging and tedious for users to do.
-								<span class="image fit"><img src="images/DPM/Prob4.png" alt="" /></span>
+      .case-study-nav-links {
+        display: flex;
+        gap: var(--space-6);
+        list-style: none;
+        overflow-x: auto;
+        margin: 0;
+        padding: 0;
+        background: transparent;
+      }
 
-								<strong>A better way... Promptly:</strong>
-								<br/>
-								We propose instead to <b>generate</b> prompt middleware customized to the user and task. 
-								Our approach instantiates a language model agent (the "Option Module") whose responsibility is to analyze the user's prompt and generate a set of options for refining that prompt. 
-								These options are rendered using graphical elements such as radio buttons, checkboxes, and free text boxes, which the user can select and edit to cause deterministic additions, removals, and modifications of their original prompt, which are passed as context to a conventional language model agent (the "Chat Module").
-								This not only produces a better result for the user by producing higher-detailed initial prompt, but also allows users to quickly select from alternatives to help steer the AI towards producing the best personalized response for their task.
-								<br/>	
+      .case-study-nav-links::-webkit-scrollbar {
+        display: none;
+      }
 
-								<span class="image"><img src="images/DPM/Teaser.png" alt="" /></span>
-								<p><small><i>Schematic overview of Dynamic Prompt Refinement Control interface for generating inline prompt refinement options to increase user control of AI-generated explanations (derived from real system use). 
-									(1) User prompts the system.
-									(2) The Option Module takes the user's prompt as context to generate prompt options which provide prompt refinements for the user to select. 
-									(3) The Chat Module uses the user's prompt and pre-selected options to generate an initial response.
-									(4) The user can initiate refinements by selecting their preferred options in the UI.
-									(5) On each change, the Chat Module regenerates the response based on the new selections.</i></small></p>
-								<br/>								<br/>		
-								
-								<strong>Contributions of this project:</strong>
-								<br/>								
-								(1) A formative survey (n = 38) including an interactive design probe to understand user needs around
-								customized explanations of GenAI output which found users desire greater direct control over AI
-								responses than afforded by traditional chat interfaces, and that controls should adapt to the task and user.
-								<br/>								<br/>
-								
-								(2) We develop two variations of an interface with graphical controls for steering AI responses, one with static
-								controls, and one with dynamic controls that are generated based on the user's prompt. We report a
-								second controlled, within-subjects study comparing the two interfaces (n = 16), finding that users
-								preferred dynamic controls because they lower barriers to providing context, offer guidance for better prompts,
-								facilitate greater exploration and reflection.
-								<br/>								<br/>
+      .case-study-nav-links {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
 
-								(3) We derive design implications for dynamic controls, such as greater control of how the AI interprets and applies
-								options, leveraging of user context and data to generate helpful controls, and expanding dynamic prompt middleware
-								to richer modalities.			
-							</p>
-						</div>
-					</section>
+      .case-study-nav-links li {
+        margin: 0;
+        padding: 0;
+        background: transparent;
+      }
 
-					<section id="usecase" class="wrapper style2-alt fullscreen fade-up">
-						<div class="inner">
-							<h1 class="major">Formative Design Probe</h1>
-							<p>
-								First, we needed to understand what to build to address this issue. So, we ran a design probe survey of 38 copilot users with the idea of a set of options that helped control AI responses as a primer to collect user needs for AI explanations.
-							</p>
-							<span class="image right"><img src="images/DPM/DesignProbeCensoredLetters.png" alt="" /></span>
-							
-							Through these survey responses we found that users found it difficult to control AI responses due to current AI chat prompting interfaces. 
+      .case-study-nav-links a {
+        font-size: var(--text-sm);
+        font-weight: var(--font-medium);
+        color: var(--color-text-secondary);
+        white-space: nowrap;
+        transition: color var(--transition-fast);
+        position: relative;
+        padding-bottom: var(--space-2);
+      }
 
-							Participants wanted the AI to respond in a predictable manner, and saw the control afforded by the design as a way to "tailor the experience to your specific needs" and put users in control of the AI. 
-							This lead to design goal 1: 
-							<br/>
-							&emsp;&emsp;<strong>DG1: </strong><i>Generative AI tools should afford users <strong>direct control</strong> of the AI's responses.</i>
-							<br/>
-							<br/>
+      .case-study-nav-links a:hover {
+        color: var(--color-text-primary);
+      }
 
-							Participants also wanted options generated based on the prompt they gave AI, and wanted these options to be quick to change within the chat interface and adapted to the type of task the user was trying to accomplish.								
-							This lead to design goal 2: 
-							<br/>
-							&emsp;&emsp;<strong>DG2: </strong><i>Control affordances should be <strong>flexible</strong>, so users can quickly correct AI assumptions, and <strong>dynamic</strong>, so control surfaces adapt to the task and user.</i>
-							<br/>
-						</div>
-					</section>
-					
-					<section id="design" class="wrapper style2 fullscreen fade-up">
-						<div class="inner">
-							<h1 class="major">Promptly design and implementation</h1>
-							<p>Informed by the formative survey's findings, we developed Dynamic Prompt Middleware or Promptly.  
-							</p>
-							<span class="image fit"><img src="images/DPM/UserFlowWithDynamic.png" alt="" /></span>
-							<p><small><i>User flow with the Dynamic Prompt Middleware system. (1) User submits their prompt. 
-								(2) The Option Module generates a set of options to help steer the Chat Module's response. 
-								(3) User can update the refinements sent to the Chat Module by clicking their preferences. 
-								(4) On change, Chat Module regenerates the response with the new chosen refinements. 
-								(5) User can request controls through NL prompting. 
-								(6) The Option Module generates a set of session options based on this prompt. 
-								(7) The session options apply to the current and every subsequent response from the Chat Module.</i></small></p>
-							
-							<p><strong>System Overview</strong></p>
-							<span class="image fit"><img src="images/DPM/SystemOverview.png" alt="" /></span>
-							<br/>
-							<i>Inline: </i>
-							(1) The Option Module takes the user's prompt input and conversation history. 
-							(2) The Option Module returns a set of prompt options with initial values based on the prompt. 
-							(3) Prompt options are rendered inline using a rendering engine. 
-							(4) The Chat Module uses these refinements as grounding, along with the user's prompt input and conversation history, to generate a chat response. 
-							(5) User can adjust GUI controls which updates the refinements and re-invokes the Chat Module to regenerate the current response. 
-							<br/>
-							<i>Session:</i> 
-							(6) Users can directly invoke the Option Module to generate Session options through natural language prompting within the Session control panel. 
-							(7) Users can also directly add and modify options manually through JSON input in the Session control panel. 
-							(8) Users can pin Inline options to the Session by clicking the pin icon on each inline option, which applies the inline option to follow-up queries.
+      .case-study-nav-links a.active {
+        color: var(--color-accent-primary);
+        font-weight: var(--font-semibold);
+      }
 
-						</div>
-					</section>
-					<section id="methods" class="wrapper style2-alt fullscreen fade-up">
-						<div class="inner">
-							<h1 class="major">In-lab comparative study</h1>
-							<p><strong>Participants:</strong> 16 knowedge workers familiar with generative AI tools with varying experience with data analysis and programming.
-							</p>
-							<p><strong>Tasks:</strong>  Participants completed 6 tasks, organized into 2 task-sets. 
-								Each task-set involved 3 common tasks done with GenAI assistance: code explanation, complex topic understanding, and skill learning. 
-								The goal of each task was to interact with the system to craft an explanation based on each task prompt that helped the participant understand each task and made them confident that they could answer questions about the task with the explanation.
-							</p>
+      .case-study-nav-links a.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--color-accent-primary);
+        border-radius: var(--radius-full);
+      }
 
+      .case-study-hero {
+        padding: var(--space-24) 0 var(--space-16);
+        text-align: center;
+      }
 
-							<p><strong>Protocol:</strong>
-								<span class="image fit"><img src="images/DPM/StudyDiagram.png" alt="" /></span>
-							Our two conditions for this within-subjects user study were Dynamic and a Static version of the system that provided generally applicable prompt refinements which did not change between prompts or task (see image to right) <span class="image right"><img src="images/DPM/StaticUXOptionsCropped.png" alt="" /></span>. 
+      .case-study-content {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 var(--space-6);
+      }
 
-							Every other element and interaction within the system was identical between conditions. 
-							We chose a within-subjects protocol so that participants could reflect on the similarities, differences, and trade-offs of using the two systems. 
-							<br/><br/>
-							We did not compare Dynamic or Static systems to a 'baseline' ChatGPT or similar system, as our formative study results showed that users strongly desired control of AI-generated content, which we suspect would be replicated in the comparative tool study. 
-							Instead, we directly compare Dynamic against Static Prompt Middleware to better understand the effectiveness of different approaches of control for users, and the trade-offs of each.
-							<br/><br/>
-							Participants were assigned Dynamic and Static conditions and A and B task-sets through a counterbalanced design, such that half the participants received the Dynamic condition first, and the other half received the Static condition first. 
-							Within each of these condition-first groups, each task-set was balanced such that half of each condition saw the A task-set first, and the other half received the B task-set first. 
-							Therefore, there were four equal groups of participants during the study.
-							</p>
-						</div>
-					</section>
-					<section id="results" class="wrapper style2 fullscreen fade-up">
-						<div class="inner">
-							<h1 class="major">Results</h1>
-						<p><strong>User preferences for control:</strong>
-						Participants preferred to use the Dynamic system over the Static system, as they felt it made them more successful at interacting with the AI.  
-						<span class="image fit"><img src="images/DPM/boxplot_questions.png" alt="" /></span>
+      .case-study-section {
+        padding: var(--space-16) 0;
+        scroll-margin-top: 80px;
+      }
 
-						<br/>
-						<strong>User perceived effectiveness:</strong>
-						Participants thought the dynamic controls were more effective for controlling AI output, and were satisfied with the level of control granted vs in the static condition where many felt they still needed more control over the AI responses.
-						<span class="image fit"><img src="images/DPM/q3_comparison_boxplots.png" alt="" /></span>
-						<p>
-						<br/>
-						<strong>Promptly lowers barriers to providing context to AI:</strong>
-						Current participant workflows for prompt engineering was seen as tedious (P4), inconsistently effective (P4, P5), time-consuming (P5), and a current barrier participants had with using GenAI that new control affordances, like that of the Dynamic system, could help address. 
-						Participants found it difficult to <i>"even have the words for the context"</i> they wanted to convey in their prompts as there was a noticeable gap in expertise needed between prompting and prompt engineering (P4).
-						Providing task and user context within prompts was seen as critical for obtaining responses that aligned with user needs (P2). 
-						Promptly was described as helpful for assisting the users in providing much of the context necessary for the AI to effectively respond to a user's needs for a task and eliminate much of their struggles due to forming prompts (P2, P4, P8, P15). 
-						For example:  
-						<i>"I felt like [Promptly] would really help me shortcut what I'm doing manually today." (P15)</i>
-						<br/><br/>
-						
-						<strong>Promptly improves user perception of control over AI:</strong>
-						Participants felt that the Dynamic system gave more effective control over the Static system and their current prompting strategies (P4, P6, P8). 
-						Without the control provided by Promptly, one participant felt: 
-						<br/><i>"restricted by the current Copilot [because I] don't have these options, I'm trying to modify the prompt to get the answer out and the AI just goes out of control after some time, so I have to refresh and start again and change my prompts." (P12)</i>
-						<br/>
-						
-						The greater control afforded through generated options was seen as useful for receiving AI responses that fit the personal preferences of the user (P14), which participants felt was made possible through Promptly's afforded flexibility (P7), greater precision in defining the task (P8), better predictability of AI responses (P6), and greater adaptation to user needs (P13).
-						<br/><br/>
-						<strong>Promptly provides guidance for AI steering interactions. :</strong>
-						Participants saw the Dynamic system as a guide in interacting with AI by providing helpful, and relevant, options (P1, P2, P4, P6, P7, P9, P14). 
-						For example, P7 saw the generated options as a form of debugging the AI's response since it <i>"gives you some ideas around if you change [the response] in this way then you might get better answers."</i>
-						Participants felt that Dynamic PRC guided them towards better responses (P7, P10, P11), giving alternatives of what they might do to solve their problem (P7). 
-						Dynamic options did this by helping participants review potential refinements to their prompt (P1, P4, P9) and give greater structure to their AI interactions through generated options (P14). 
-						P11 said it even helped them learn potential strategies for future prompts, saying that Promptly was <i>"giving me more of a prompt learning experience, and I'm getting out of [the AI] what I want. And actually, it's a better response."</i>
-						<br/>
-					
-					</p>
-				</div>
-					</section>
-					<section id="disc" class="wrapper style2-alt fullscreen fade-up">
-						<div class="inner">
-							<h1 class="major">Design Implications</h1>
-							<p>From our analysis of participants' reflections, we derive four implications for improving the design of Dynamic PRC systems: 
-								balance appropriate/useful mental load to users, provide control over how options are applied, leverage relevant context, and allow direct manipulation of options.</p>
-							
-							<p><strong>Dynamic PRC should provide appropriate mental load to users:</strong>
-								Dynamic PRC was found to be more mentally demanding to use over Static PRC. 
-								This might have been due to the amount of novel prompt refinements generated that the user had to attend to and understand with each prompt. 
-								One potential UX-pattern to address this is progressive disclosure, where Dynamic PRC initially only offers a few critical meta-refinements and allows the user to request that the Dynamic PRC system generates more when interested or required. 
-								Dynamic PRC might also leverage what it knows about the user, through system usage or user personas, to automatically select refinements it is confident about. 
-								Dynamic PRC might present these refinements in a separate part of the UI, so that the user does not have to attend to them while they are effective, while still retaining control over these refinements when necessary.
-							</p>
+      .case-study-section h2 {
+        margin-bottom: var(--space-8);
+      }
 
-							<p><strong>Dynamic PRC should gather and leverage relevant context for the user:</strong>
-								While the current implementation of Dynamic PRC uses the user's prompt and currently selected options to generate options, participants wanted the system to leverage their past AI usage and 
-								other context or tool usage to inform the generation, and selection, of Dynamic PRC and provide greater context to the AI. 
-								For example, for code generation tasks systems could use previous AI code generation requests to infer what programming language to use (P10), or incorporate the files the user has open in their IDE.
-								As with the previous need for understanding how AI interprets options, transparency was cited as a critical need for understanding and controlling what data the AI uses to form a response (P6, P7, P9, P12). 
-								Forming user personas based on information like user-provided expertise level and job position (P2) and interacting with the user to let the user select what relevant data AI should use to form responses (P1, P11, P12, P15) 
-								were also seen useful features for greater specificity and personalization of responses. 
-								This need might be fulfilled by explicit signals from the AI in the response on when data comes from an external source, or from the model itself, by highlighting each within a response (P6). 
-								Users might then select these highlights to steer the AI toward using sources and data that the users prefer (P4, P10).
-								
-								<br/><br/><span class="image right"><img src="images/DPM/Promptly.png" alt="" /></span>
-								Dynamic PRC systems might also generate richer PRC modalities, like interactive maps to reveal and collect geographic needs or visual representations of options to provide the user inspiration for what kind of context the AI is looking for, 
-								which might improve the process of context gathering from the user (see image). 
-								However, there must be a balance between the amount of context-gathering interactions that the user must attend to, so that information overload and fatigue in providing preferences to the Chat Module is avoided. 
-								This issue can potentially be eased through PRC option reuse, similar to what session options in the Dynamic PRC and options in the Static PRC approaches provide.
-							</p>
-							
-							<p><strong>Dynamic PRC should provide control of how and where the AI applies options:</strong>
-								Though participants believed the control afforded by Dynamic PRC was useful and made them more effective, they felt that more control over the application of options could help address the barriers that remain.
-								Participants noted a need for greater transparency on how the AI interprets the options selected and prompt given to the AI (P1, P14, P15). 
-								This might be achieved through providing several potential examples of the structure and format of the response for selection (P3, P8), supporting interventions within an AI response where users prompt the AI to 
-								adjust specific sections of a response by directly interacting with the response to communicate intent (P6, P10, P15), or even provide response diffs (similar to code diffs) to allow comparisons between responses 
-								based on the selections made by the user to address barriers to user understanding around how the option selections impacted the response (P1). 
-								The current design of the Dynamic PRC system is capable of supporting such response branching and exploration,
-								but the addition of informative diffs would help address the barrier to user understanding of the impact of options on responses.
-								<br/><br/>
-								Another useful ability would be to allow the user to make targeted changes to the response, so that users can keep results that they like, and refine what they do not through Dynamic PRC interactions. 
-								The user might wish to preserve some aspects of the structure of the response while refining the content (P14) which can be lost when modifying prompts.
-							</p>
+      .case-study-hero {
+        scroll-margin-top: 80px;
+      }
 
-							<p><strong>Dynamic PRC should provide direct manipulation to update options:</strong>
-								While it was uncommon for participants to want to modify the generated Dynamic PRC options during the study (as participants could either prompt the Option Module to regenerate the option with changes or 
-								modify the JSON representation), some felt the need to directly update options (e.g., click on an option to edit the text and regenerate the option based on the changed text) (P2).
-								The Dynamic PRC system can be improved to allow users to update parts of the UI (e.g., the option labels) to send these modifications to the Option Module as user intent. Based on this intent, the Option Module could regenerate the
-								option to better suit the user's needs, supporting a form of response-by-example similar to programming-by-example interfaces.
-							</p>
-						</div>
-					</section>
-			</div>
+      .case-study-image {
+        width: 100%;
+        border-radius: var(--radius-xl);
+        margin: var(--space-6) 0;
+        box-shadow: var(--shadow-lg);
+        cursor: pointer;
+        transition: transform var(--transition-base),
+          box-shadow var(--transition-base);
+      }
 
-		<!-- Footer -->
-			<footer id="footer" class="wrapper alt">
-				<div class="inner">
-					<ul class="menu">
-						<li>&copy; Ian Drosos. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-					</ul>
-				</div>
-			</footer>
+      .case-study-image:hover {
+        transform: scale(1.02);
+        box-shadow: var(--shadow-xl);
+      }
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+      /* Image modal for full-screen viewing */
+      .image-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 9999;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-6);
+      }
 
-	</body>
+      .image-modal.active {
+        display: flex;
+      }
+
+      .image-modal img {
+        max-width: 95%;
+        max-height: 95%;
+        object-fit: contain;
+        border-radius: var(--radius-lg);
+      }
+
+      .image-modal-close {
+        position: absolute;
+        top: var(--space-6);
+        right: var(--space-6);
+        font-size: var(--text-3xl);
+        color: white;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-full);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background var(--transition-fast);
+      }
+
+      .image-modal-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .case-study-image-caption {
+        font-size: var(--text-sm);
+        color: var(--color-text-secondary);
+        text-align: center;
+        margin-top: var(--space-3);
+        font-style: italic;
+      }
+
+      .case-study-quote {
+        border-left: 4px solid var(--color-accent-primary);
+        padding-left: var(--space-6);
+        margin: var(--space-8) 0;
+        font-style: italic;
+        color: var(--color-text-secondary);
+      }
+
+      @media (max-width: 768px) {
+        .case-study-nav-links {
+          gap: var(--space-4);
+        }
+
+        .case-study-nav-links a {
+          font-size: var(--text-xs);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+      <button class="image-modal-close" aria-label="Close">&times;</button>
+      <img src="" alt="" id="modalImage" />
+    </div>
+
+    <!-- Navigation -->
+    <nav class="case-study-nav">
+      <div class="case-study-nav-inner">
+        <a
+          href="index.html"
+          style="
+            font-size: var(--text-sm);
+            font-weight: var(--font-medium);
+            color: var(--color-text-secondary);
+            transition: color var(--transition-fast);
+          "
+          >← Home</a
+        >
+        <ul class="case-study-nav-links">
+          <li><a href="#summary">Summary</a></li>
+          <li><a href="#intro">Intro</a></li>
+          <li><a href="#usecase">Formative</a></li>
+          <li><a href="#design">Design</a></li>
+          <li><a href="#methods">Methods</a></li>
+          <li><a href="#results">Results</a></li>
+          <li><a href="#conclusion">Conclusion</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="summary" class="case-study-hero">
+      <div class="case-study-content">
+        <h1 style="margin-bottom: var(--space-4)">Promptly</h1>
+        <div
+          class="badge-group"
+          style="justify-content: center; margin-bottom: var(--space-6)"
+        >
+          <span class="badge badge-publication">CHIWORK 2025</span>
+          <span class="badge badge-award">
+            <i data-lucide="trophy" style="width: 14px; height: 14px"></i>
+            2nd Place Hackathon
+          </span>
+        </div>
+        <p
+          style="
+            font-size: var(--text-xl);
+            color: var(--color-text-secondary);
+            max-width: 800px;
+            margin: 0 auto var(--space-8);
+          "
+        >
+          Promptly was published at CHIWORK 2025 and won 2nd/1,064 projects in
+          the Every Day AI Executive Challenge as part of the 2024 MS Hackathon.
+          Below you will find a summary of the research paper.
+        </p>
+        <div style="margin-bottom: var(--space-12)">
+          <a href="images/chiwork25-27.pdf" class="btn btn-primary"
+            >Read Full Paper</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Summary -->
+    <section
+      class="case-study-section"
+      style="
+        background: var(--color-surface);
+        padding-top: var(--space-12);
+        padding-bottom: var(--space-12);
+      "
+    >
+      <div class="case-study-content">
+        <p
+          style="
+            font-size: var(--text-lg);
+            line-height: var(--leading-relaxed);
+            margin-bottom: var(--space-6);
+          "
+        >
+          Abstract: Prompting generative AI effectively is challenging for
+          users, particularly in expressing context for comprehension tasks like
+          explaining spreadsheet formulas, Python code, and text passages.
+          Through a formative survey (n=38), we uncovered a trade-off between
+          standardized but predictable prompting support, and context-adaptive
+          but unpredictable support. We explore this trade-off by implementing
+          two prompt middleware approaches: Dynamic Prompt Refinement Controls
+          (PRCs), which generates UI elements for prompt refinement based on the
+          user's specific prompt, and Static PRCs, which offers generic
+          controls.
+        </p>
+        <p
+          style="font-size: var(--text-lg); line-height: var(--leading-relaxed)"
+        >
+          Our controlled user study (n=16) showed that the Dynamic PRC approach
+          afforded more control, lowered barriers to providing context, and
+          encouraged task exploration and reflection, but reasoning about the
+          effects of generated controls on the final output remains challenging.
+          Our findings suggest that dynamic prompt middleware can improve the
+          user experience of generative AI workflows.
+        </p>
+      </div>
+    </section>
+
+    <!-- Introduction -->
+    <section id="intro" class="case-study-section reveal">
+      <div class="case-study-content">
+        <h2>Introduction</h2>
+        <p>
+          Prompting seems easy right? You just tell the chatbot to "Plan a
+          workshop" and it knows exactly what you want and gives you a good
+          response...
+        </p>
+        <img
+          src="images/DPM/Prob1.png"
+          alt="Initial prompt problem"
+          class="case-study-image"
+          loading="lazy"
+          style="
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+          "
+        />
+
+        <p>
+          Well, not quite, because what you really wanted was a 3-day,
+          in-person, machine learning workshop, etc.
+        </p>
+        <img
+          src="images/DPM/Prob2.png"
+          alt="Context specification problem"
+          class="case-study-image"
+          loading="lazy"
+          style="
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+          "
+        />
+
+        <p>
+          And then you wanted to go even further by telling the AI how you want
+          it to respond. For example, the format of the response.
+        </p>
+        <img
+          src="images/DPM/Prob3.png"
+          alt="Format specification problem"
+          class="case-study-image"
+          loading="lazy"
+          style="
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+          "
+        />
+
+        <p>
+          Each one of these represents context, or prompt options, that the user
+          needs to provide to the AI to control it and get the response they
+          need most. However, expressing this context via natural language is
+          challenging and tedious for users to do.
+        </p>
+        <img
+          src="images/DPM/Prob4.png"
+          alt="Complexity of prompting"
+          class="case-study-image"
+          loading="lazy"
+          style="
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+          "
+        />
+
+        <h3 style="margin-top: var(--space-12); margin-bottom: var(--space-6)">
+          A better way... Promptly
+        </h3>
+        <p>
+          We propose instead to <strong>generate</strong> prompt middleware
+          customized to the user and task. Our approach instantiates a language
+          model agent (the "Option Module") whose responsibility is to analyze
+          the user's prompt and generate a set of options for refining that
+          prompt. These options are rendered using graphical elements such as
+          radio buttons, checkboxes, and free text boxes, which the user can
+          select and edit to cause deterministic additions, removals, and
+          modifications of their original prompt, which are passed as context to
+          a conventional language model agent (the "Chat Module").
+        </p>
+
+        <p>
+          This not only produces a better result for the user by producing
+          higher-detailed initial prompt, but also allows users to quickly
+          select from alternatives to help steer the AI towards producing the
+          best personalized response for their task.
+        </p>
+
+        <img
+          src="images/DPM/Teaser.png"
+          alt="Promptly system overview"
+          class="case-study-image"
+          loading="lazy"
+          style="
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+          "
+        />
+        <p class="case-study-image-caption">
+          Schematic overview of Dynamic Prompt Refinement Control interface for
+          generating inline prompt refinement options to increase user control
+          of AI-generated explanations (derived from real system use). (1) User
+          prompts the system. (2) The Option Module takes the user's prompt as
+          context to generate prompt options which provide prompt refinements
+          for the user to select. (3) The Chat Module uses the user's prompt and
+          pre-selected options to generate an initial response. (4) The user can
+          initiate refinements by selecting their preferred options in the UI.
+          (5) On each change, the Chat Module regenerates the response based on
+          the new selections.
+        </p>
+
+        <h3 style="margin-top: var(--space-12); margin-bottom: var(--space-6)">
+          Contributions of this project
+        </h3>
+        <ol
+          style="
+            margin-left: var(--space-8);
+            line-height: var(--leading-relaxed);
+            color: var(--color-text-secondary);
+          "
+        >
+          <li style="margin-bottom: var(--space-4)">
+            A formative survey (n = 38) including an interactive design probe to
+            understand user needs around customized explanations of GenAI output
+            which found users desire greater direct control over AI responses
+            than afforded by traditional chat interfaces, and that controls
+            should adapt to the task and user.
+          </li>
+          <li style="margin-bottom: var(--space-4)">
+            We develop two variations of an interface with graphical controls
+            for steering AI responses, one with static controls, and one with
+            dynamic controls that are generated based on the user's prompt. We
+            report a second controlled, within-subjects study comparing the two
+            interfaces (n = 16), finding that users preferred dynamic controls
+            because they lower barriers to providing context, offer guidance for
+            better prompts, facilitate greater exploration and reflection.
+          </li>
+          <li>
+            We derive design implications for dynamic controls, such as greater
+            control of how the AI interprets and applies options, leveraging of
+            user context and data to generate helpful controls, and expanding
+            dynamic prompt middleware to richer modalities.
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Use Case / Formative Design Probe -->
+    <section
+      id="usecase"
+      class="case-study-section reveal"
+      style="background: var(--color-surface)"
+    >
+      <div class="case-study-content">
+        <h2>Formative Design Probe</h2>
+        <p>
+          <img
+            src="images/DPM/DesignProbeCensoredLetters.png"
+            alt="Design probe interface"
+            class="case-study-image"
+            loading="lazy"
+            style="
+              max-width: 550px;
+              float: right;
+              margin-left: var(--space-6);
+              margin-bottom: var(--space-6);
+              margin-top: 0;
+            "
+          />
+          First, we needed to understand what to build to address this issue.
+          So, we ran a design probe survey of 38 copilot users with the idea of
+          a set of options that helped control AI responses as a primer to
+          collect user needs for AI explanations.
+        </p>
+
+        <p>
+          Through these survey responses we found that users found it difficult
+          to control AI responses due to current AI chat prompting interfaces.
+        </p>
+
+        <p>
+          Participants wanted the AI to respond in a predictable manner, and saw
+          the control afforded by the design as a way to "tailor the experience
+          to your specific needs" and put users in control of the AI. This lead
+          to design goal 1:
+        </p>
+
+        <div
+          class="card"
+          style="
+            margin: var(--space-6) 0;
+            padding: var(--space-6);
+            background: var(--color-background);
+            clear: both;
+            text-align: center;
+          "
+        >
+          <p style="margin: 0">
+            <strong>DG1:</strong>
+            <em
+              >Generative AI tools should afford users
+              <strong>direct control</strong> of the AI's responses.</em
+            >
+          </p>
+        </div>
+
+        <p>
+          Participants also wanted options generated based on the prompt they
+          gave AI, and wanted these options to be quick to change within the
+          chat interface and adapted to the type of task the user was trying to
+          accomplish. This lead to design goal 2:
+        </p>
+
+        <div
+          class="card"
+          style="
+            margin: var(--space-6) 0;
+            padding: var(--space-6);
+            background: var(--color-background);
+            text-align: center;
+          "
+        >
+          <p style="margin: 0">
+            <strong>DG2:</strong>
+            <em
+              >Control affordances should be <strong>flexible</strong>, so users
+              can quickly correct AI assumptions, and <strong>dynamic</strong>,
+              so control surfaces adapt to the task and user.</em
+            >
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Design -->
+    <section id="design" class="case-study-section reveal">
+      <div class="case-study-content">
+        <h2>Promptly Design and Implementation</h2>
+        <p>
+          Informed by the formative survey's findings, we developed Dynamic
+          Prompt Middleware or Promptly.
+        </p>
+
+        <img
+          src="images/DPM/UserFlowWithDynamic.png"
+          alt="User flow diagram"
+          class="case-study-image"
+          loading="lazy"
+        />
+        <p class="case-study-image-caption">
+          User flow with the Dynamic Prompt Middleware system. (1) User submits
+          their prompt. (2) The Option Module generates a set of options to help
+          steer the Chat Module's response. (3) User can update the refinements
+          sent to the Chat Module by clicking their preferences. (4) On change,
+          Chat Module regenerates the response with the new chosen refinements.
+          (5) User can request controls through NL prompting. (6) The Option
+          Module generates a set of session options based on this prompt. (7)
+          The session options apply to the current and every subsequent response
+          from the Chat Module.
+        </p>
+
+        <h3 style="margin-top: var(--space-12); margin-bottom: var(--space-6)">
+          System Overview
+        </h3>
+        <img
+          src="images/DPM/SystemOverview.png"
+          alt="System architecture"
+          class="case-study-image"
+          loading="lazy"
+        />
+
+        <div style="margin-top: var(--space-8)">
+          <p><strong>Inline:</strong></p>
+          <ol
+            style="
+              margin-left: var(--space-8);
+              line-height: var(--leading-relaxed);
+              color: var(--color-text-secondary);
+            "
+          >
+            <li>
+              The Option Module takes the user's prompt input and conversation
+              history.
+            </li>
+            <li>
+              The Option Module returns a set of prompt options with initial
+              values based on the prompt.
+            </li>
+            <li>
+              Prompt options are rendered inline using a rendering engine.
+            </li>
+            <li>
+              The Chat Module uses these refinements as grounding, along with
+              the user's prompt input and conversation history, to generate a
+              chat response.
+            </li>
+            <li>
+              User can adjust GUI controls which updates the refinements and
+              re-invokes the Chat Module to regenerate the current response.
+            </li>
+          </ol>
+
+          <p style="margin-top: var(--space-6)"><strong>Session:</strong></p>
+          <ol
+            start="6"
+            style="
+              margin-left: var(--space-8);
+              line-height: var(--leading-relaxed);
+              color: var(--color-text-secondary);
+            "
+          >
+            <li>
+              Users can directly invoke the Option Module to generate Session
+              options through natural language prompting within the Session
+              control panel.
+            </li>
+            <li>
+              Users can also directly add and modify options manually through
+              JSON input in the Session control panel.
+            </li>
+            <li>
+              Users can pin Inline options to the Session by clicking the pin
+              icon on each inline option, which applies the inline option to
+              follow-up queries.
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Methods -->
+    <section
+      id="methods"
+      class="case-study-section reveal"
+      style="background: var(--color-surface)"
+    >
+      <div class="case-study-content">
+        <h2>In-lab Comparative Study</h2>
+
+        <p>
+          <strong>Participants:</strong> 16 knowedge workers familiar with
+          generative AI tools with varying experience with data analysis and
+          programming.
+        </p>
+
+        <p>
+          <strong>Tasks:</strong> Participants completed 6 tasks, organized into
+          2 task-sets. Each task-set involved 3 common tasks done with GenAI
+          assistance: code explanation, complex topic understanding, and skill
+          learning. The goal of each task was to interact with the system to
+          craft an explanation based on each task prompt that helped the
+          participant understand each task and made them confident that they
+          could answer questions about the task with the explanation.
+        </p>
+
+        <p><strong>Protocol:</strong></p>
+        <img
+          src="images/DPM/StudyDiagram.png"
+          alt="Study protocol diagram"
+          class="case-study-image"
+          loading="lazy"
+        />
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: var(--space-6);
+            align-items: start;
+            margin-top: var(--space-6);
+          "
+        >
+          <div>
+            <p>
+              Our two conditions for this within-subjects user study were
+              Dynamic and a Static version of the system that provided generally
+              applicable prompt refinements which did not change between prompts
+              or tasks. Every other element and interaction within the system
+              was identical between conditions. We chose a within-subjects
+              protocol so that participants could reflect on the similarities,
+              differences, and trade-offs of using the two systems.
+            </p>
+
+            <p>
+              We did not compare Dynamic or Static systems to a 'baseline'
+              ChatGPT or similar system, as our formative study results showed
+              that users strongly desired control of AI-generated content, which
+              we suspect would be replicated in the comparative tool study.
+              Instead, we directly compare Dynamic against Static Prompt
+              Middleware to better understand the effectiveness of different
+              approaches of control for users, and the trade-offs of each.
+            </p>
+
+            <p>
+              Participants were assigned Dynamic and Static conditions and A and
+              B task-sets through a counterbalanced design, such that half the
+              participants received the Dynamic condition first, and the other
+              half received the Static condition first. Within each of these
+              condition-first groups, each task-set was balanced such that half
+              of each condition saw the A task-set first, and the other half
+              received the B task-set first. Therefore, there were four equal
+              groups of participants during the study.
+            </p>
+          </div>
+          <img
+            src="images/DPM/StaticUXOptionsCropped.png"
+            alt="Static UI options"
+            style="max-width: 550px; border-radius: var(--radius-lg)"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section id="results" class="case-study-section reveal">
+      <div class="case-study-content">
+        <h2>Results</h2>
+
+        <h3>User preferences for control</h3>
+        <p>
+          Participants preferred to use the Dynamic system over the Static
+          system, as they felt it made them more successful at interacting with
+          the AI.
+        </p>
+        <img
+          src="images/DPM/boxplot_questions.png"
+          alt="User preference results"
+          class="case-study-image"
+          loading="lazy"
+        />
+
+        <h3 style="margin-top: var(--space-12)">
+          User perceived effectiveness
+        </h3>
+        <p>
+          Participants thought the dynamic controls were more effective for
+          controlling AI output, and were satisfied with the level of control
+          granted vs in the static condition where many felt they still needed
+          more control over the AI responses.
+        </p>
+        <img
+          src="images/DPM/q3_comparison_boxplots.png"
+          alt="Effectiveness comparison"
+          class="case-study-image"
+          loading="lazy"
+        />
+
+        <h3 style="margin-top: var(--space-12)">
+          Promptly lowers barriers to providing context to AI
+        </h3>
+        <p>
+          Current participant workflows for prompt engineering was seen as
+          tedious, inconsistently effective, time-consuming, and a current
+          barrier participants had with using GenAI that new control
+          affordances, like that of the Dynamic system, could help address.
+          Participants found it difficult to
+          <em>"even have the words for the context"</em> they wanted to convey
+          in their prompts as there was a noticeable gap in expertise needed
+          between prompting and prompt engineering.
+        </p>
+
+        <div class="case-study-quote">
+          <p>
+            "I felt like [Promptly] would really help me shortcut what I'm doing
+            manually today." (P15)
+          </p>
+        </div>
+
+        <h3 style="margin-top: var(--space-12)">
+          Promptly improves user perception of control over AI
+        </h3>
+        <p>
+          Participants felt that the Dynamic system gave more effective control
+          over the Static system and their current prompting strategies. Without
+          the control provided by Promptly, one participant felt:
+        </p>
+
+        <div class="case-study-quote">
+          <p>
+            "restricted by the current Copilot [because I] don't have these
+            options, I'm trying to modify the prompt to get the answer out and
+            the AI just goes out of control after some time, so I have to
+            refresh and start again and change my prompts." (P12)
+          </p>
+        </div>
+
+        <p>
+          The greater control afforded through generated options was seen as
+          useful for receiving AI responses that fit the personal preferences of
+          the user, which participants felt was made possible through Promptly's
+          afforded flexibility, greater precision in defining the task, better
+          predictability of AI responses, and greater adaptation to user needs.
+        </p>
+
+        <h3 style="margin-top: var(--space-12)">
+          Promptly provides guidance for AI steering interactions
+        </h3>
+        <p>
+          Participants saw the Dynamic system as a guide in interacting with AI
+          by providing helpful, and relevant, options. For example, one
+          participant saw the generated options as a form of debugging the AI's
+          response since it
+          <em
+            >"gives you some ideas around if you change [the response] in this
+            way then you might get better answers."</em
+          >
+        </p>
+
+        <div class="case-study-quote">
+          <p>
+            "[Promptly is] giving me more of a prompt learning experience, and
+            I'm getting out of [the AI] what I want. And actually, it's a better
+            response." (P11)
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conclusion / Design Implications -->
+    <section
+      id="conclusion"
+      class="case-study-section reveal"
+      style="background: var(--color-surface)"
+    >
+      <div class="case-study-content">
+        <h2>Design Implications</h2>
+        <p>
+          From our analysis of participants' reflections, we derive four
+          implications for improving the design of Dynamic PRC systems:
+        </p>
+
+        <div
+          class="card"
+          style="margin: var(--space-8) 0; background: var(--color-background)"
+        >
+          <h3>Provide appropriate mental load to users</h3>
+          <p>
+            Dynamic PRC was found to be more mentally demanding to use over
+            Static PRC. This might have been due to the amount of novel prompt
+            refinements generated that the user had to attend to and understand
+            with each prompt. One potential UX-pattern to address this is
+            progressive disclosure, where Dynamic PRC initially only offers a
+            few critical meta-refinements and allows the user to request that
+            the Dynamic PRC system generates more when interested or required.
+          </p>
+        </div>
+
+        <div
+          class="card"
+          style="margin: var(--space-8) 0; background: var(--color-background)"
+        >
+          <h3>Gather and leverage relevant context for the user</h3>
+          <p>
+            While the current implementation of Dynamic PRC uses the user's
+            prompt and currently selected options to generate options,
+            participants wanted the system to leverage their past AI usage and
+            other context or tool usage to inform the generation, and selection,
+            of Dynamic PRC and provide greater context to the AI.
+          </p>
+          <img
+            src="images/DPM/Promptly.png"
+            alt="Context gathering interface"
+            class="case-study-image"
+            loading="lazy"
+            style="margin-top: var(--space-6)"
+          />
+          <p style="margin-top: var(--space-6)">
+            Dynamic PRC systems might also generate richer PRC modalities, like
+            interactive maps to reveal and collect geographic needs or visual
+            representations of options to provide the user inspiration for what
+            kind of context the AI is looking for.
+          </p>
+        </div>
+
+        <div
+          class="card"
+          style="margin: var(--space-8) 0; background: var(--color-background)"
+        >
+          <h3>Provide control of how and where the AI applies options</h3>
+          <p>
+            Though participants believed the control afforded by Dynamic PRC was
+            useful and made them more effective, they felt that more control
+            over the application of options could help address the barriers that
+            remain. Participants noted a need for greater transparency on how
+            the AI interprets the options selected and prompt given to the AI.
+          </p>
+        </div>
+
+        <div
+          class="card"
+          style="margin: var(--space-8) 0; background: var(--color-background)"
+        >
+          <h3>Provide direct manipulation to update options</h3>
+          <p>
+            While it was uncommon for participants to want to modify the
+            generated Dynamic PRC options during the study, some felt the need
+            to directly update options. The Dynamic PRC system can be improved
+            to allow users to update parts of the UI to send these modifications
+            to the Option Module as user intent, supporting a form of
+            response-by-example similar to programming-by-example interfaces.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Next Case Study -->
+    <section
+      style="
+        padding: var(--space-16) 0;
+        text-align: center;
+        border-top: 1px solid var(--color-border);
+      "
+    >
+      <div class="container">
+        <h3 style="margin-bottom: var(--space-6)">Explore More Work</h3>
+        <div class="btn-group">
+          <a href="wrex.html" class="btn btn-primary">Next: Wrex →</a>
+          <a href="index.html#one" class="btn btn-secondary">All Projects</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+      style="
+        padding: var(--space-12) 0;
+        text-align: center;
+        background: var(--color-surface);
+      "
+    >
+      <div class="container">
+        <p style="color: var(--color-text-tertiary); font-size: var(--text-sm)">
+          &copy; 2025 Ian Drosos. All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/animations.js"></script>
+    <script src="assets/js/modern.js"></script>
+    <script>
+      // Initialize Lucide icons
+      if (typeof lucide !== "undefined") {
+        lucide.createIcons();
+      }
+
+      // Image modal functionality
+      const imageModal = document.getElementById("imageModal");
+      const modalImage = document.getElementById("modalImage");
+      const closeButton = document.querySelector(".image-modal-close");
+
+      // Add click handler to all case study images
+      document.querySelectorAll(".case-study-image").forEach((img) => {
+        img.addEventListener("click", () => {
+          modalImage.src = img.src;
+          modalImage.alt = img.alt;
+          imageModal.classList.add("active");
+          document.body.style.overflow = "hidden";
+        });
+      });
+
+      // Close modal on click
+      imageModal.addEventListener("click", () => {
+        imageModal.classList.remove("active");
+        document.body.style.overflow = "";
+      });
+
+      // Close button
+      closeButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+        imageModal.classList.remove("active");
+        document.body.style.overflow = "";
+      });
+
+      // Close on escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && imageModal.classList.contains("active")) {
+          imageModal.classList.remove("active");
+          document.body.style.overflow = "";
+        }
+      });
+
+      // Case study navigation highlighting
+      document.addEventListener("DOMContentLoaded", () => {
+        const navLinks = document.querySelectorAll(".case-study-nav-links a");
+        const sections = document.querySelectorAll("section[id]");
+
+        // Function to update active link
+        const updateActiveLink = (sectionId) => {
+          navLinks.forEach((link) => {
+            link.classList.remove("active");
+            if (link.getAttribute("href") === `#${sectionId}`) {
+              link.classList.add("active");
+            }
+          });
+        };
+
+        // Intersection Observer for section tracking
+        const observerOptions = {
+          root: null,
+          rootMargin: "-100px 0px -60% 0px",
+          threshold: 0,
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const sectionId = entry.target.getAttribute("id");
+              updateActiveLink(sectionId);
+            }
+          });
+        }, observerOptions);
+
+        sections.forEach((section) => observer.observe(section));
+
+        // Smooth scroll on nav click
+        navLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute("href").substring(1);
+            const targetSection = document.getElementById(targetId);
+
+            if (targetSection) {
+              targetSection.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          });
+        });
+
+        // Set initial active link
+        updateActiveLink("summary");
+      });
+    </script>
+  </body>
 </html>

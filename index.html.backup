@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ian Drosos - HCI+AI Researcher/Designer/Developer</title>
+    <meta
+      name="description"
+      content="Ian Drosos - HCI+AI Researcher/Designer/Developer. Mixed-methods HCI researcher designing tools for developers, data scientists, and learners. Currently leading UX at Trent AI."
+    />
+
+    <!-- Preload critical fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/variables.css" />
+    <link rel="stylesheet" href="assets/css/modern.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="avatar.png" />
+  </head>
+  <body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" aria-label="Toggle theme">
+      <i data-lucide="moon" style="width: 20px; height: 20px"></i>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar-nav">
+      <ul class="sidebar-nav-links">
+        <li><a href="#intro" class="sidebar-nav-link active" data-section="intro">
+          <span class="sidebar-nav-dot"></span>
+          <span class="sidebar-nav-label">About</span>
+        </a></li>
+        <li><a href="#one" class="sidebar-nav-link" data-section="one">
+          <span class="sidebar-nav-dot"></span>
+          <span class="sidebar-nav-label">Work</span>
+        </a></li>
+        <li><a href="#two" class="sidebar-nav-link" data-section="two">
+          <span class="sidebar-nav-dot"></span>
+          <span class="sidebar-nav-label">Experience</span>
+        </a></li>
+        <li><a href="#three" class="sidebar-nav-link" data-section="three">
+          <span class="sidebar-nav-dot"></span>
+          <span class="sidebar-nav-label">Connect</span>
+        </a></li>
+      </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="intro" class="hero">
+      <div class="hero-content">
+        <img
+          src="avatar.png"
+          alt="Ian Drosos"
+          style="
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            margin-bottom: var(--space-6);
+            border: 3px solid var(--color-accent-primary);
+            box-shadow: var(--shadow-glow);
+          "
+          loading="eager"
+        />
+        <h1 class="hero-title">Ian Drosos</h1>
+        <p class="hero-subtitle">Security & AI Designer / Developer</p>
+        <p class="hero-description">
+          I lead UX design engineering at Trent AI, a security startup making
+          code and organizations safer. I am a mixed-methods HCI researcher
+          designing tools for developers, data scientists, content creators, and
+          learners. Publishing at venues such as
+          <a href="https://dl.acm.org/conference/chi">CHI</a>,
+          <a href="https://dl.acm.org/conference/dis">DIS</a>, and
+          <a href="https://conferences.computer.org/VLHCC/">VLHCC</a>.
+        </p>
+        <div class="btn-group">
+          <a href="#one" class="btn btn-primary">View My Work</a>
+          <a href="#two" class="btn btn-secondary">Experience</a>
+          <a href="images/Ian_Drosos_Resume.pdf" class="btn btn-secondary"
+            >Resume</a
+          >
+          <a href="images/CV_Ian_Drosos.pdf" class="btn btn-secondary">CV</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="one" class="section">
+      <div class="container">
+        <h2 style="text-align: center; margin-bottom: var(--space-12)">
+          Featured Work
+        </h2>
+
+        <div class="bento-grid">
+          <!-- Promptly - Large Featured Card -->
+          <div
+            class="bento-item bento-item-large reveal"
+            style="position: relative"
+          >
+            <img
+              src="images/DPM/UserFlowWithDynamic.png"
+              alt="Promptly Interface"
+              class="bento-image"
+              loading="lazy"
+            />
+            <div
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(
+                  to bottom,
+                  rgba(0, 0, 0, 0.85) 0%,
+                  rgba(0, 0, 0, 0.95) 100%
+                );
+                border-radius: var(--radius-xl);
+              "
+            ></div>
+            <div class="bento-content" style="position: relative; z-index: 1">
+              <h3 class="card-title">Promptly / Dynamic Prompt Middleware</h3>
+              <p class="card-description">
+                Prompting generative AI effectively is challenging for users,
+                particularly in expressing context for comprehension tasks. We
+                address this challenge by creating Dynamic Prompt Middleware,
+                which generates UI elements for prompt refinement based on the
+                user's specific prompt. Users found it afforded more control,
+                lowered barriers to providing context, encouraged task
+                exploration and reflection, and improved the user experience of
+                generative AI workflows. Promptly won 2nd place at Microsoft's
+                2024 Hackathon as part of the 'Everyday AI' Executive Challenge.
+              </p>
+              <div class="badge-group">
+                <span class="badge badge-publication">CHIWORK 2025</span>
+                <span class="badge badge-award">
+                  <i data-lucide="trophy" style="width: 14px; height: 14px"></i>
+                  2nd Place Hackathon
+                </span>
+              </div>
+              <div style="margin-top: var(--space-6)">
+                <a href="promptly.html" class="btn btn-primary">Learn More</a>
+                <a
+                  href="https://arxiv.org/pdf/2412.02357"
+                  class="btn btn-secondary"
+                  style="margin-left: var(--space-3)"
+                  >Read Paper</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Wrex -->
+          <div class="bento-item reveal" style="position: relative">
+            <img
+              src="images/chrome-png-highres.png"
+              alt="Wrex Interface"
+              class="bento-image"
+              loading="lazy"
+            />
+            <div
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(
+                  to bottom,
+                  rgba(0, 0, 0, 0.85) 0%,
+                  rgba(0, 0, 0, 0.95) 100%
+                );
+                border-radius: var(--radius-xl);
+              "
+            ></div>
+            <div class="bento-content" style="position: relative; z-index: 1">
+              <h3 class="card-title">Wrex</h3>
+              <p class="card-description">
+                Created a unified programming-by-example interaction for
+                synthesizing readable code within Jupyter notebooks. Data
+                scientists found it made them significantly more effective at
+                data wrangling.
+              </p>
+              <div class="badge-group">
+                <span class="badge badge-publication">CHI 2020</span>
+                <span class="badge badge-award">
+                  <i data-lucide="trophy" style="width: 14px; height: 14px"></i>
+                  Best Paper Award
+                </span>
+              </div>
+              <div style="margin-top: var(--space-4)">
+                <a href="wrex.html" class="btn btn-primary">Learn More</a>
+                <a
+                  href="https://dl.acm.org/doi/pdf/10.1145/3313831.3376442"
+                  class="btn btn-secondary"
+                  style="margin-left: var(--space-3)"
+                  >Read Paper</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- FxD -->
+          <div class="bento-item reveal" style="position: relative">
+            <img
+              src="images/Overview.png"
+              alt="FxD Interface"
+              class="bento-image"
+              loading="lazy"
+            />
+            <div
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(
+                  to bottom,
+                  rgba(0, 0, 0, 0.85) 0%,
+                  rgba(0, 0, 0, 0.95) 100%
+                );
+                border-radius: var(--radius-xl);
+              "
+            ></div>
+            <div class="bento-content" style="position: relative; z-index: 1">
+              <h3 class="card-title">FxD</h3>
+              <p class="card-description">
+                Led HCI research on a novel functional debugger for
+                dysfunctional spreadsheets which provided structured information
+                for improved systematic formula debugging. Released as part of
+                Excel Labs.
+              </p>
+              <div class="badge-group">
+                <span class="badge badge-publication">VLHCC 2023</span>
+                <span class="badge badge-award">
+                  <i data-lucide="trophy" style="width: 14px; height: 14px"></i>
+                  Best Paper HM
+                </span>
+              </div>
+              <div style="margin-top: var(--space-4)">
+                <a href="fxd.html" class="btn btn-primary">Learn More</a>
+                <a
+                  href="https://www.microsoft.com/en-us/research/publication/fxd-a-functional-debugger-for-dysfunctional-spreadsheets/"
+                  class="btn btn-secondary"
+                  style="margin-left: var(--space-3)"
+                  >Read Paper</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Trent AI - Coming Soon -->
+          <div class="bento-item reveal" style="position: relative">
+            <div
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(
+                    135deg,
+                    rgba(59, 130, 246, 0.2) 0%,
+                    rgba(139, 92, 246, 0.2) 100%
+                  ),
+                  linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0.85) 0%,
+                    rgba(0, 0, 0, 0.95) 100%
+                  );
+                border-radius: var(--radius-xl);
+              "
+            ></div>
+            <div
+              class="bento-content"
+              style="
+                position: relative;
+                z-index: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                min-height: 400px;
+                text-align: center;
+              "
+            >
+              <div style="margin-bottom: var(--space-4)">
+                <i
+                  data-lucide="shield"
+                  style="
+                    width: 64px;
+                    height: 64px;
+                    color: var(--color-accent-primary);
+                    margin: 0 auto;
+                  "
+                ></i>
+              </div>
+              <h3 class="card-title" style="font-size: var(--text-3xl)">
+                Trent.AI
+              </h3>
+              <p
+                class="card-description"
+                style="font-size: var(--text-lg); margin-bottom: var(--space-6)"
+              >
+                Leading UX design engineering for agentic AI-based software and
+                AI security to make code and organizations safer.
+              </p>
+              <div
+                class="badge-group"
+                style="justify-content: center; margin-bottom: var(--space-6)"
+              >
+                <span
+                  class="badge"
+                  style="
+                    background: rgba(59, 130, 246, 0.2);
+                    color: var(--color-accent-primary);
+                    border-color: var(--color-accent-primary);
+                  "
+                >
+                  <i data-lucide="lock" style="width: 14px; height: 14px"></i>
+                  Security
+                </span>
+                <span
+                  class="badge"
+                  style="
+                    background: rgba(139, 92, 246, 0.2);
+                    color: var(--color-accent-secondary);
+                    border-color: var(--color-accent-secondary);
+                  "
+                >
+                  <i
+                    data-lucide="sparkles"
+                    style="width: 14px; height: 14px"
+                  ></i>
+                  AI UX Design
+                </span>
+                <span class="badge badge-award">
+                  <i data-lucide="clock" style="width: 14px; height: 14px"></i>
+                  Coming Soon
+                </span>
+              </div>
+              <div>
+                <a
+                  href="https://trent.ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-primary"
+                  style="
+                    display: inline-flex;
+                    align-items: center;
+                    gap: var(--space-2);
+                  "
+                >
+                  <i
+                    data-lucide="external-link"
+                    style="width: 18px; height: 18px"
+                  ></i>
+                  Visit Trent AI
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Microsoft Contributions -->
+          <div
+            class="bento-item bento-item-wide reveal"
+            style="position: relative"
+          >
+            <img
+              src="images/productlogos.png"
+              alt="Microsoft Products"
+              class="bento-image"
+              loading="lazy"
+            />
+            <div
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(
+                  to bottom,
+                  rgba(0, 0, 0, 0.85) 0%,
+                  rgba(0, 0, 0, 0.95) 100%
+                );
+                border-radius: var(--radius-xl);
+              "
+            ></div>
+            <div class="bento-content" style="position: relative; z-index: 1">
+              <h3 class="card-title">Microsoft Research & Product Impact</h3>
+              <p class="card-description">
+                Selected contributions beyond AI/CS research:
+              </p>
+              <ul
+                style="
+                  margin-left: var(--space-6);
+                  line-height: var(--leading-relaxed);
+                "
+              >
+                <li>
+                  Promptly design research shared with 18+ product teams for
+                  improving AI prompting experiences
+                </li>
+                <li>
+                  <i
+                    data-lucide="trophy"
+                    style="
+                      width: 14px;
+                      height: 14px;
+                      margin-right: var(--space-2);
+                      display: inline-block;
+                      vertical-align: middle;
+                    "
+                  ></i>
+                  2024: 2nd place 'Everyday AI' Executive Challenge by Peter Lee
+                  (MSR President)
+                </li>
+                <li>
+                  <i
+                    data-lucide="trophy"
+                    style="
+                      width: 14px;
+                      height: 14px;
+                      margin-right: var(--space-2);
+                      display: inline-block;
+                      vertical-align: middle;
+                    "
+                  ></i>
+                  2023: 2nd place 'Change the Game' Challenge by Phil Spencer
+                  (Xbox CEO)
+                </li>
+                <li>Presenter at MLADS Conference on LLM designs for Excel</li>
+                <li>Design work for LLM co-audit in Excel and beyond</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education & Experience Section -->
+    <section id="two" class="section" style="background: var(--color-surface)">
+      <div class="container container-lg">
+        <h2 style="text-align: center; margin-bottom: var(--space-12)">
+          Education & Experience
+        </h2>
+
+        <div
+          style="
+            max-width: 800px;
+            margin: 0 auto;
+            margin-bottom: var(--space-12);
+          "
+        >
+          <p
+            style="
+              text-align: center;
+              font-size: var(--text-lg);
+              color: var(--color-text-secondary);
+            "
+          >
+            Currently
+            <a href="https://trent.ai"
+              >leading UX design engineering at Trent AI</a
+            >
+            (2025-present). Previously HCI researcher at
+            <a
+              href="https://www.microsoft.com/en-us/research/people/t-iandrosos/"
+              >Microsoft Research</a
+            >
+            (2022-2025) and full-stack software engineer at Verizon. PhD in
+            Cognitive Science from UC San Diego, MS in Computer Science from NC
+            State.
+          </p>
+        </div>
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-8);
+          "
+        >
+          <!-- Education Box -->
+          <div class="edu-exp-card">
+            <h3>
+              <i data-lucide="graduation-cap" style="width: 28px; height: 28px; color: var(--color-accent-primary);"></i>
+              Education
+            </h3>
+            <div>
+              <div class="edu-exp-item">
+                <div class="edu-exp-date">2017 - 2022</div>
+                <div class="edu-exp-title">PhD Cognitive Science</div>
+                <div class="edu-exp-description">UC San Diego, La Jolla, CA</div>
+              </div>
+              <div class="edu-exp-item">
+                <div class="edu-exp-date">2015 - 2017</div>
+                <div class="edu-exp-title">MS Computer Science</div>
+                <div class="edu-exp-description">NC State University, Raleigh, NC</div>
+              </div>
+              <div class="edu-exp-item">
+                <div class="edu-exp-date">2007 - 2011</div>
+                <div class="edu-exp-title">BS Computer Science</div>
+                <div class="edu-exp-description">Southern Polytechnic State University, Marietta, GA</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Experience Box -->
+          <div class="edu-exp-card">
+            <h3>
+              <i data-lucide="briefcase" style="width: 28px; height: 28px; color: var(--color-accent-primary);"></i>
+              Experience
+            </h3>
+            <div>
+              <div class="edu-exp-item">
+                <div class="edu-exp-date">2025 - present</div>
+                <div class="edu-exp-title">Member of Technical Staff</div>
+                <div class="edu-exp-description">Trent AI</div>
+              </div>
+              <div>
+                <div
+                  style="
+                    font-size: var(--text-sm);
+                    color: var(--color-accent-primary);
+                    font-weight: var(--font-semibold);
+                    margin-bottom: var(--space-2);
+                  "
+                >
+                  2022 - 2025
+                </div>
+                <div
+                  style="
+                    font-size: var(--text-xl);
+                    font-weight: var(--font-semibold);
+                    color: #ffffff;
+                    margin-bottom: var(--space-1);
+                  "
+                >
+                  Researcher
+                </div>
+                <div style="font-size: var(--text-base); color: #a1a1aa">
+                  Microsoft Research
+                </div>
+              </div>
+              <div>
+                <div
+                  style="
+                    font-size: var(--text-sm);
+                    color: var(--color-accent-primary);
+                    font-weight: var(--font-semibold);
+                    margin-bottom: var(--space-2);
+                  "
+                >
+                  2017 - 2022
+                </div>
+                <div
+                  style="
+                    font-size: var(--text-xl);
+                    font-weight: var(--font-semibold);
+                    color: #ffffff;
+                    margin-bottom: var(--space-1);
+                  "
+                >
+                  Researcher
+                </div>
+                <div style="font-size: var(--text-base); color: #a1a1aa">
+                  The Design Lab, UCSD
+                </div>
+              </div>
+              <div>
+                <div
+                  style="
+                    font-size: var(--text-sm);
+                    color: var(--color-accent-primary);
+                    font-weight: var(--font-semibold);
+                    margin-bottom: var(--space-2);
+                  "
+                >
+                  2018 - 2022
+                </div>
+                <div
+                  style="
+                    font-size: var(--text-xl);
+                    font-weight: var(--font-semibold);
+                    color: #ffffff;
+                    margin-bottom: var(--space-1);
+                  "
+                >
+                  Instructor & Teaching Assistant
+                </div>
+                <div style="font-size: var(--text-base); color: #a1a1aa">
+                  UC San Diego
+                </div>
+              </div>
+              <div>
+                <div
+                  style="
+                    font-size: var(--text-sm);
+                    color: var(--color-accent-primary);
+                    font-weight: var(--font-semibold);
+                    margin-bottom: var(--space-2);
+                  "
+                >
+                  2021, 2018
+                </div>
+                <div
+                  style="
+                    font-size: var(--text-xl);
+                    font-weight: var(--font-semibold);
+                    color: #ffffff;
+                    margin-bottom: var(--space-1);
+                  "
+                >
+                  Research Intern
+                </div>
+                <div style="font-size: var(--text-base); color: #a1a1aa">
+                  Autodesk Research, Microsoft
+                </div>
+              </div>
+              <div>
+                <div
+                  style="
+                    font-size: var(--text-sm);
+                    color: var(--color-accent-primary);
+                    font-weight: var(--font-semibold);
+                    margin-bottom: var(--space-2);
+                  "
+                >
+                  2011 - 2015
+                </div>
+                <div
+                  style="
+                    font-size: var(--text-xl);
+                    font-weight: var(--font-semibold);
+                    color: #ffffff;
+                    margin-bottom: var(--space-1);
+                  "
+                >
+                  Software Engineer
+                </div>
+                <div style="font-size: var(--text-base); color: #a1a1aa">
+                  Verizon
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: var(--space-12)">
+          <a href="images/CV_Ian_Drosos.pdf" class="btn btn-primary"
+            >Download Full CV</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="three" class="section">
+      <div class="container">
+        <h2 style="text-align: center; margin-bottom: var(--space-8)">
+          Connect
+        </h2>
+
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            gap: var(--space-4);
+            flex-wrap: wrap;
+            align-items: center;
+          "
+        >
+          <a
+            href="https://scholar.google.com/citations?hl=en&user=3gqaN9YAAAAJ"
+            class="btn btn-secondary"
+            title="Google Scholar"
+            style="
+              display: inline-flex;
+              align-items: center;
+              gap: var(--space-2);
+            "
+          >
+            <i data-lucide="book-open" style="width: 18px; height: 18px"></i>
+            Google Scholar
+          </a>
+          <a
+            href="https://twitter.com/iandrosos"
+            class="btn btn-secondary"
+            title="Twitter"
+            style="
+              display: inline-flex;
+              align-items: center;
+              gap: var(--space-2);
+            "
+          >
+            <i data-lucide="twitter" style="width: 18px; height: 18px"></i>
+            Twitter
+          </a>
+          <a
+            href="https://www.linkedin.com/in/ian-drosos/"
+            class="btn btn-secondary"
+            title="LinkedIn"
+            style="
+              display: inline-flex;
+              align-items: center;
+              gap: var(--space-2);
+            "
+          >
+            <i data-lucide="linkedin" style="width: 18px; height: 18px"></i>
+            LinkedIn
+          </a>
+          <a
+            href="https://github.com/wddlz/"
+            class="btn btn-secondary"
+            title="GitHub"
+            style="
+              display: inline-flex;
+              align-items: center;
+              gap: var(--space-2);
+            "
+          >
+            <i data-lucide="github" style="width: 18px; height: 18px"></i>
+            GitHub
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+      style="
+        padding: var(--space-12) 0;
+        text-align: center;
+        border-top: 1px solid var(--color-border);
+      "
+    >
+      <div class="container">
+        <p style="color: var(--color-text-tertiary); font-size: var(--text-sm)">
+          &copy; 2025 Ian Drosos. All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/animations.js"></script>
+    <script src="assets/js/modern.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
