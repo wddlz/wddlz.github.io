@@ -1,0 +1,929 @@
+/*
+ * The console look, shared by every page: fonts, colors, type, the bar,
+ * the footer, buttons, panels, stamps, and the motion they share. The home
+ * page's own parts are in home.css. Plan:
+ * _plans/2026-10-06_console-restyle.md.
+ *
+ * Motion sits behind two gates: the reader's setting
+ * (`prefers-reduced-motion: no-preference`) and the page's Motion switch
+ * (`data-motion="off"` on <html>, console.js). With either closed, everything
+ * stands where it lands. Nothing strobes: nothing steps back down in
+ * brightness as it comes in, and nothing blinks (WCAG 2.3.1).
+ */
+
+/* ── Fonts ─────────────────────────────────────────────────────────────── */
+
+/* The title cards' serif: a free stand-in for the show's Matisse EB, the
+   heaviest weight, Latin only. Its license: ../fonts/OFL-NotoSerifDisplay.txt. */
+@font-face {
+  font-family: "Card Serif";
+  src: url("../fonts/noto-serif-display-900-latin.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+/* The labels' condensed sans (the show's Helvetica Condensed Bold), one
+   variable file for 400 to 700. Its license: ../fonts/OFL-Oswald.txt. */
+@font-face {
+  font-family: "Oswald";
+  src: url("../fonts/oswald-latin.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+/* ── Colors and sizes ─────────────────────────────────────────────────── */
+
+:root {
+  /* Each color has one job. */
+  /* The instrument: frames, labels, links, buttons. 8.2:1 on black. */
+  --c-orange: #ff9830;
+  /* The award stamps. 5.9:1 on black. */
+  --c-red: #ff3b30;
+  /* What is current. */
+  --c-green: #52f58f;
+  /* The Connect tiles. */
+  --c-mint: #7cf0bb;
+  /* The words: titles and names. */
+  --c-white: #f3efe4;
+  /* Body text, 13:1 on black. */
+  --c-text: #d2ccbb;
+  /* Small print and places, 7.8:1 on black. */
+  --c-muted: #a39d8c;
+  /* A panel's fill, a step off the void. */
+  --c-panel: #0b0a08;
+  --c-line: color-mix(in oklab, var(--c-orange) 32%, transparent);
+  --c-line-strong: color-mix(in oklab, var(--c-orange) 62%, transparent);
+
+  /* How far the card serif is squeezed: 80% of its width. */
+  --squeeze: 0.8;
+
+  --font-card: "Card Serif", "Times New Roman", serif;
+  --font-label: "Oswald", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body:
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --bar-h: 3.5rem;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --wrap: 80rem;
+
+  color-scheme: dark;
+  background: #000;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* An anchor lands below the bar. */
+  scroll-padding-top: calc(var(--bar-h) + 0.75rem);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-motion="off"]) {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #000;
+  color: var(--c-text);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+li,
+figure {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--c-orange);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  color: var(--c-white);
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-orange);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--c-orange);
+  color: #000;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* The skip link: off screen until a keyboard reaches it. */
+.skip {
+  position: absolute;
+  left: 1rem;
+  top: -6rem;
+  z-index: 100;
+  padding: 0.55rem 0.9rem;
+  background: var(--c-orange);
+  color: #000;
+  font-family: var(--font-label);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.skip:focus-visible {
+  top: 0.6rem;
+  color: #000;
+}
+
+/* ── The bar ──────────────────────────────────────────────────────────── */
+
+/* A console bar, solid so nothing reads through it, ruled twice underneath
+   the way the show boxes its labels: a bright rule at the foot, a dim one
+   four pixels above it. */
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  height: var(--bar-h);
+  padding-inline: var(--gutter);
+  background: #000;
+  box-shadow:
+    inset 0 -1px 0 color-mix(in oklab, var(--c-orange) 60%, transparent),
+    inset 0 -4px 0 #000,
+    inset 0 -5px 0 color-mix(in oklab, var(--c-orange) 22%, transparent);
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.bar a {
+  text-decoration: none;
+}
+
+.bar-name {
+  flex-shrink: 0;
+  color: var(--c-white);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+}
+
+.bar-nav {
+  display: none;
+  gap: clamp(1rem, 2vw, 1.75rem);
+}
+
+.bar-nav a {
+  position: relative;
+  padding-block: 0.4rem;
+  color: var(--c-muted);
+}
+
+.bar-nav a:hover {
+  color: var(--c-white);
+}
+
+/* The section in view, marked as the show marks a live readout: lit, with
+   a bar under it. */
+.bar-nav a[aria-current] {
+  color: var(--c-orange);
+}
+
+.bar-nav a[aria-current]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--c-orange);
+}
+
+.bar-end {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.bar-file {
+  display: inline-flex;
+  align-items: center;
+  height: 2rem;
+  padding-inline: 0.7rem;
+  border: 1px solid var(--c-line-strong);
+  border-radius: 2px;
+  color: var(--c-orange);
+}
+
+.bar-file:hover {
+  border-color: var(--c-orange);
+  background: color-mix(in oklab, var(--c-orange) 14%, transparent);
+  color: var(--c-white);
+}
+
+.bar-motion {
+  display: none;
+}
+
+@media (min-width: 720px) {
+  .bar-nav {
+    display: flex;
+  }
+}
+
+@media (min-width: 960px) {
+  .bar-motion {
+    display: inline-flex;
+  }
+}
+
+/* ── The Motion switch ────────────────────────────────────────────────── */
+
+/* Its name, and its state beside it, lit while on. It holds its place until
+   the script that runs it is ready, so nothing shifts when it appears. */
+.motion {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  height: 2rem;
+  padding-inline: 0.65rem;
+  border: 1px solid var(--c-line-strong);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--c-text);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+html:not([data-ready]) .motion {
+  visibility: hidden;
+}
+
+.motion:hover {
+  border-color: var(--c-orange);
+  color: var(--c-white);
+}
+
+.motion-state {
+  color: var(--c-orange);
+}
+
+.motion[aria-checked="false"] .motion-state {
+  color: var(--c-muted);
+}
+
+/* With nothing moving, there is nothing for the switch to stop. */
+@media (prefers-reduced-motion: reduce) {
+  .motion {
+    display: none !important;
+  }
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  min-height: 2.75rem;
+  padding: 0.55rem 1.15rem;
+  border: 1px solid var(--c-orange);
+  border-radius: 2px;
+  background: var(--c-orange);
+  color: #000;
+  font-family: var(--font-label);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1.1;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.btn:hover {
+  border-color: var(--c-white);
+  background: var(--c-white);
+  color: #000;
+}
+
+.btn-quiet {
+  border-color: var(--c-line-strong);
+  background: transparent;
+  color: var(--c-orange);
+}
+
+.btn-quiet:hover {
+  border-color: var(--c-orange);
+  background: color-mix(in oklab, var(--c-orange) 14%, transparent);
+  color: var(--c-white);
+}
+
+/* A link that leaves the site carries an arrow out. */
+.out::after {
+  content: "\2197";
+  font-family: var(--font-body);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* ── Title cards ──────────────────────────────────────────────────────── */
+
+/* The cards' serif: heavy, white, in capitals. */
+.card-serif {
+  font-family: var(--font-card);
+  font-weight: 900;
+  color: var(--c-white);
+}
+
+/* The squeeze: laid out wider by the squeeze's inverse, then squeezed back,
+   so the text fills the column it shows in and its verticals thin, the
+   way the show's typesetter pressed its cards. The section around it
+   clips the wider box. */
+.squeeze {
+  display: block;
+  width: calc(100% / var(--squeeze));
+  transform: scaleX(var(--squeeze));
+  transform-origin: left center;
+}
+
+.squeeze-end {
+  margin-left: calc(100% - 100% / var(--squeeze));
+  transform-origin: right center;
+  text-align: right;
+}
+
+.squeeze-center {
+  margin-left: calc((100% - 100% / var(--squeeze)) / 2);
+  transform-origin: center;
+  text-align: center;
+}
+
+/* A card measures its block against its own width. */
+.card {
+  container-type: inline-size;
+}
+
+/* A title: its big line fills the block from its measured width (`--em`,
+   in ems, on the heading), up to a cap on the screen's height; the small
+   lines over it stand at half that. */
+.title {
+  --big: min(
+    calc(var(--block, 100cqw) / (var(--em) * var(--squeeze))),
+    var(--cap, 24svh)
+  );
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+
+.line-big {
+  display: block;
+  font-size: var(--big);
+}
+
+.line-small {
+  display: block;
+  font-size: calc(var(--big) * 0.5);
+}
+
+/* "SECTION:01" in condensed capitals, over its title. */
+.card-label {
+  margin-bottom: 0.5rem;
+  font-family: var(--font-label);
+  font-size: clamp(1rem, 0.85rem + 0.6vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--c-white);
+}
+
+/* A card's own line, at its foot and flush to the far side, in mixed case,
+   as the show's cards set an episode's title. */
+.card-line {
+  --origin: right;
+  margin-top: 0.65em;
+  font-family: var(--font-card);
+  font-weight: 900;
+  font-size: clamp(1.3rem, 0.95rem + 1.6vw, 2.6rem);
+  line-height: 1.08;
+  color: var(--c-white);
+  text-wrap: balance;
+}
+
+/* ── Panels ───────────────────────────────────────────────────────────── */
+
+/* A panel: a step off the void, ruled in dim orange, its corners marked
+   bright. */
+.panel {
+  position: relative;
+  background: var(--c-panel);
+  border: 1px solid var(--c-line);
+}
+
+/* Corner marks, on a panel or on anything marked for them. */
+.marked {
+  position: relative;
+}
+
+.panel::before,
+.marked::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  --k: 14px;
+  background:
+    linear-gradient(var(--c-orange), var(--c-orange)) top left / var(--k) 2px
+      no-repeat,
+    linear-gradient(var(--c-orange), var(--c-orange)) top left / 2px var(--k)
+      no-repeat,
+    linear-gradient(var(--c-orange), var(--c-orange)) top right / var(--k) 2px
+      no-repeat,
+    linear-gradient(var(--c-orange), var(--c-orange)) top right / 2px var(--k)
+      no-repeat,
+    linear-gradient(var(--c-orange), var(--c-orange)) bottom left / var(--k) 2px
+      no-repeat,
+    linear-gradient(var(--c-orange), var(--c-orange)) bottom left / 2px var(--k)
+      no-repeat,
+    linear-gradient(var(--c-orange), var(--c-orange)) bottom right / var(--k)
+      2px no-repeat,
+    linear-gradient(var(--c-orange), var(--c-orange)) bottom right / 2px
+      var(--k) no-repeat;
+}
+
+/* The panel's top rule: its number, and what it was published in. */
+.panel-rule {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+  min-height: 2.5rem;
+  padding: 0.45rem 1rem;
+  border-bottom: 1px solid var(--c-line);
+  font-family: var(--font-label);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--c-orange);
+}
+
+.panel-number {
+  color: var(--c-white);
+  font-weight: 600;
+}
+
+/* A heading set on a panel's top rule takes the rule's type. */
+.panel-rule :is(h2, h3) {
+  margin: 0;
+  font: inherit;
+  color: var(--c-white);
+}
+
+/* A figure in its frame, shown as it is: no tint. */
+.panel-figure {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border-bottom: 1px solid var(--c-line);
+  background: #fff;
+}
+
+.panel-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: clamp(1.1rem, 2.5vw, 1.75rem);
+}
+
+/* The name and its stamp, side by side while they fit. */
+.panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.9rem 1.25rem;
+}
+
+.panel-title {
+  display: flex;
+  flex: 1 1 14rem;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.panel-name {
+  display: block;
+  font-size: clamp(2.4rem, 1.7rem + 2.4vw, 4.25rem);
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+
+.panel-sub {
+  display: block;
+  font-family: var(--font-card);
+  font-weight: 900;
+  font-size: clamp(1.1rem, 0.95rem + 0.6vw, 1.5rem);
+  line-height: 1.15;
+  color: var(--c-white);
+}
+
+.panel-text {
+  max-width: 68ch;
+}
+
+/* ── The frame ────────────────────────────────────────────────────────── */
+
+/* An opening card's instrument frame: corner marks inset from the screen's
+   edges, and the page's name boxed in two tiers at the top, the way the
+   show boxes its labels. Decoration: hidden from screen readers. The home
+   page's hero adds its rulers, status and clock (home.css). */
+.frame {
+  position: absolute;
+  inset: 0.75rem;
+  pointer-events: none;
+  color: var(--c-orange);
+}
+
+.corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 0 solid var(--c-orange);
+}
+
+.corner-tl {
+  top: 0;
+  left: 0;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+
+.corner-tr {
+  top: 0;
+  right: 0;
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.corner-bl {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.corner-br {
+  bottom: 0;
+  right: 0;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+
+.readout {
+  position: absolute;
+  display: none;
+  font-family: var(--font-label);
+  text-transform: uppercase;
+  color: var(--c-orange);
+}
+
+.readout-name {
+  top: 0.75rem;
+  left: 2.25rem;
+  flex-direction: column;
+  padding: 0.25rem 0.65rem 0.3rem;
+  border: 1px solid var(--c-orange);
+  background: rgb(0 0 0 / 0.8);
+}
+
+.readout-main {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+}
+
+.readout-sub {
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  line-height: 1.3;
+  opacity: 0.8;
+}
+
+/* A phone keeps the corners; a tablet up gets the readouts. */
+@media (min-width: 640px) {
+  .readout {
+    display: block;
+  }
+
+  .readout-name {
+    display: flex;
+  }
+}
+
+/* A short screen (a phone on its side) has no room around the words for
+   instruments: the frame keeps its corners and nothing else. */
+@media (max-height: 520px) {
+  .frame :is(.readout, .ruler) {
+    display: none;
+  }
+}
+
+/* ── Stamps and lamps ─────────────────────────────────────────────────── */
+
+/* An award, stamped: a red box, set a little crooked. Real text, read as
+   one phrase ("Best Paper Award"). */
+.stamp {
+  display: inline-flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.3rem 0.75rem 0.4rem;
+  border: 2px solid currentColor;
+  color: var(--c-red);
+  font-family: var(--font-label);
+  line-height: 1.15;
+  text-align: center;
+  text-transform: uppercase;
+  rotate: -3deg;
+}
+
+.stamp-main {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.stamp-sub {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+/* A status and its lamp: green for what is current. */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-label);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.status-now {
+  color: var(--c-green);
+}
+
+.lamp {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* ── The footer ───────────────────────────────────────────────────────── */
+
+.foot {
+  border-top: 1px solid var(--c-line);
+  padding-block: 2rem 2.25rem;
+}
+
+.foot-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.foot p {
+  color: var(--c-muted);
+  font-size: 0.875rem;
+}
+
+/* ── Names ────────────────────────────────────────────────────────────── */
+
+/* A name with its own casing keeps it inside capitals: Trent AI is never
+   "TRENT", FxD is never "FXD". Last in the file, so it wins over the
+   capitals of a title or a panel's name set on the same element. */
+.keep-case {
+  text-transform: none;
+}
+
+/* ── Motion: arrivals ─────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* What arrives waits, once the script has marked the page, until it is
+     in view (console.js marks it `data-entered`). Without the script,
+     everything stands. */
+  html[data-armed]:not([data-motion="off"]) .enter:not([data-entered]) .beat,
+  html[data-armed]:not([data-motion="off"]) .enter:not([data-entered]) .stamp {
+    opacity: 0;
+  }
+
+  /* Each beat cuts in, a third of a second after the one before: in the
+     orange and too wide, then white and overshooting its squeeze, then
+     still. Hard cuts, frame to frame, as the show cuts its cards. */
+  html:not([data-motion="off"]) .enter[data-entered] .beat {
+    transform-origin: var(--origin, left) center;
+    animation: c-cut 0.36s steps(1, end) calc(var(--beat, 0) * 0.3s) both;
+  }
+
+  /* A stamp lands once its panel is in view: too big, then pressed past
+     its size, then still. */
+  html:not([data-motion="off"]) .enter[data-entered] .stamp {
+    animation: c-stamp 0.5s steps(1, end) 0.35s both;
+  }
+
+  /* A panel's corners power on in three steps, each brighter than the
+     last. */
+  html[data-armed]:not([data-motion="off"])
+    .panel.enter:not([data-entered])::before {
+    opacity: 0.25;
+  }
+
+  html:not([data-motion="off"]) .panel.enter[data-entered]::before {
+    animation: c-power 0.3s steps(1, end) both;
+  }
+
+  /* A page's opening card (`.plays`) runs as the page opens, script or
+     not: its frame powers on, the card's beats cut in, then its stamp
+     lands. */
+  html:not([data-motion="off"]) .plays .frame {
+    animation: c-power 0.3s steps(1, end) both;
+  }
+
+  html:not([data-motion="off"]) .plays .beat {
+    transform-origin: var(--origin, left) center;
+    animation: c-cut 0.36s steps(1, end) calc(0.2s + var(--beat, 0) * 0.3s) both;
+  }
+
+  html:not([data-motion="off"]) .plays .stamp {
+    animation: c-stamp 0.5s steps(1, end) 1.1s both;
+  }
+}
+
+/* With the switch off, everything stands, wherever it was. */
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+@keyframes c-cut {
+  0% {
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+    color: var(--c-orange);
+    transform: scaleX(1.16);
+  }
+  38% {
+    opacity: 1;
+    color: var(--c-white);
+    transform: scaleX(0.95) translateX(0.01em);
+    text-shadow: 0.04em 0 0
+      color-mix(in oklab, var(--c-orange) 70%, transparent);
+  }
+  62% {
+    transform: scaleX(1.02);
+    text-shadow: none;
+  }
+  84%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes c-stamp {
+  0% {
+    opacity: 0;
+  }
+  16% {
+    opacity: 1;
+    scale: 1.7;
+  }
+  42% {
+    opacity: 1;
+    scale: 0.94;
+  }
+  66%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes c-power {
+  0% {
+    opacity: 0.25;
+  }
+  33% {
+    opacity: 0.55;
+  }
+  66%,
+  100% {
+    opacity: 1;
+  }
+}

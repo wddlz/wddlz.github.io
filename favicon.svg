@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- The tab icon: "ID" in the console's orange on black, with two of the frame's corner marks. Shapes, not type, so it draws the same everywhere. -->
+  <rect width="32" height="32" fill="#000" />
+  <g fill="#ff9830">
+    <path d="M2 2h7v1.5H3.5V9H2z" />
+    <path d="M30 30h-7v-1.5h5.5V23H30z" />
+    <rect x="7.75" y="8" width="3.5" height="16" />
+    <path fill-rule="evenodd" d="M13.25 8h5a6 8 0 0 1 0 16h-5zm3.5 3.5v9h1.5a2.6 4.5 0 0 0 0-9z" />
+  </g>
+</svg>

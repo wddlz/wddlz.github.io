@@ -1,0 +1,652 @@
+/*
+ * The home page's own parts: the hero and its instrument frame, the
+ * sections' title cards, the work panels, the history lists and the
+ * Connect tiles. The shared look is console.css. Plan:
+ * _plans/2026-10-06_console-restyle.md.
+ */
+
+/* ── The hero ─────────────────────────────────────────────────────────── */
+
+/* The first screen: the title card, the intro and the links, inside the
+   instrument frame, and nothing else: the show's cards are type alone. Its
+   lines are laid out wider than they show (the squeeze), so it clips them. */
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: calc(100svh - var(--bar-h));
+  padding-block: clamp(3rem, 8svh, 6rem) clamp(4.75rem, 10svh, 7rem);
+  overflow-x: clip;
+}
+
+/* The frame keeps clear of the rulers on a wide screen. */
+@media (min-width: 1200px) {
+  .hero > .wrap {
+    padding-inline: max(var(--gutter), 5rem);
+  }
+}
+
+.hero-inner {
+  display: grid;
+  gap: clamp(1.5rem, 3.5svh, 2.5rem);
+}
+
+.hero-card {
+  /* The name may stand up to a third of the screen. Held to that name's
+     width, so on a short wide screen its line stays at its foot instead of
+     drifting off to the far side. */
+  --cap: 30svh;
+  max-width: calc(var(--cap) * var(--em) * var(--squeeze));
+}
+
+.hero-about p {
+  max-width: 40rem;
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+}
+
+.hero-about .actions {
+  margin-top: 1.5rem;
+}
+
+/* A short laptop screen (1280 by 720): the name stands a little lower, so
+   the whole frame, its clock included, fits the first screen. */
+@media (min-width: 1024px) and (max-height: 820px) {
+  .hero-card {
+    --cap: 24svh;
+  }
+}
+
+/* A wide screen gives the name most of the width, not all of it: the
+   black to its right is the card's, as on the show's. */
+@media (min-width: 1024px) {
+  .hero-card {
+    width: 64%;
+  }
+}
+
+/* ── The instrument frame ─────────────────────────────────────────────── */
+
+/* The hero's frame (console.css draws its corners and its name) adds
+   rulers with signed numbers down the left and along the foot (the show's
+   graph axes), a status at the top, the fields at the foot and the clock.
+   Decoration, all of it: hidden from screen readers. */
+.ruler {
+  position: absolute;
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1;
+  color: color-mix(in oklab, var(--c-orange) 70%, transparent);
+}
+
+.ruler-y {
+  top: 4.5rem;
+  bottom: 4.5rem;
+  left: 0.4rem;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ruler-y span::after {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 1px;
+  margin-left: 4px;
+  vertical-align: middle;
+  background: currentColor;
+}
+
+.ruler-x {
+  left: 9rem;
+  right: 15rem;
+  bottom: 0.45rem;
+  justify-content: space-between;
+}
+
+.ruler-x span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.ruler-x span::before {
+  content: "";
+  width: 1px;
+  height: 6px;
+  background: currentColor;
+}
+
+@media (min-width: 1200px) {
+  .ruler {
+    display: flex;
+  }
+}
+
+.readout-status {
+  top: 0.75rem;
+  right: 0.75rem;
+}
+
+.readout-status .status {
+  padding: 0.3rem 0.65rem;
+  border: 1px solid currentColor;
+  background: rgb(0 0 0 / 0.8);
+  font-size: 0.85rem;
+}
+
+.readout-place {
+  bottom: 1.75rem;
+  left: 2.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+}
+
+/* A phone keeps the corners and the clock; a tablet up gets the rest. */
+.readout-time {
+  bottom: 1.75rem;
+  right: 0.75rem;
+  display: block;
+}
+
+@media (min-width: 640px) {
+  /* Room for the readouts over the title card. */
+  .hero {
+    padding-top: clamp(5rem, 10svh, 6.5rem);
+  }
+}
+
+/* A short screen (a phone on its side): console.css strips the frame to
+   its corners, and the hero gives up its tall padding. */
+@media (max-height: 520px) {
+  .hero {
+    padding-block: 2.5rem 2.5rem;
+  }
+}
+
+/* The clock: boxed seven-segment digits, the hundredths on strips behind a
+   one-digit window each (console.js draws them). Hidden until the script
+   has drawn it. */
+.clock {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 0.3rem;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--c-orange);
+  background: rgb(0 0 0 / 0.8);
+  color: var(--c-orange);
+  /* Its own layer: a new second repaints the clock, not the whole page. */
+  will-change: transform;
+}
+
+html:not([data-ready]) .clock {
+  display: none;
+}
+
+.clock-key {
+  align-self: center;
+  margin-right: 0.25rem;
+  font-family: var(--font-label);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.clock-digits svg {
+  display: block;
+  width: auto;
+  height: 1.35rem;
+}
+
+.roll {
+  position: relative;
+  height: 1.35rem;
+  aspect-ratio: 0.685;
+  overflow: hidden;
+}
+
+.roll svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1000%;
+}
+
+@media (max-width: 639px) {
+  .clock-digits svg,
+  .roll {
+    height: 1rem;
+  }
+}
+
+/* A digit's lit segments, and the faint ghost of the rest. */
+.seg-on {
+  fill: currentColor;
+}
+
+.seg-off {
+  fill: currentColor;
+  opacity: 0.1;
+}
+
+/* ── Sections and their title cards ───────────────────────────────────── */
+
+.section {
+  padding-block: clamp(4.5rem, 12svh, 8rem) clamp(3rem, 8svh, 5rem);
+  overflow-x: clip;
+}
+
+.section-card {
+  /* A section's title stands up to a fifth of the screen. */
+  --cap: 19svh;
+  margin-bottom: clamp(2rem, 6svh, 3.5rem);
+}
+
+/* A card's block is the whole card on a narrow screen and its larger part
+   on a wide one. The cards alternate sides, the way v2.2's phases did, and
+   the last one stands in the middle. */
+@media (min-width: 768px) {
+  .section-card .block {
+    --block: 58cqw;
+    width: 58cqw;
+  }
+
+  .section-end .section-card .block {
+    --origin: right;
+    margin-left: auto;
+  }
+
+  .section-end .card-label {
+    text-align: right;
+  }
+
+  .section-center .section-card .block {
+    --origin: center;
+    margin-inline: auto;
+  }
+
+  .section-center .card-label {
+    text-align: center;
+  }
+}
+
+/* A narrow screen sets every card flush left, so a card set to the far
+   side squeezes from the left too. */
+@media (max-width: 767px) {
+  .section-end .squeeze-end,
+  .section-center .squeeze-center {
+    margin-left: 0;
+    transform-origin: left center;
+    text-align: left;
+  }
+}
+
+/* ── Featured work ────────────────────────────────────────────────────── */
+
+.work {
+  display: grid;
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.work .panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.work .panel-body {
+  flex: 1;
+}
+
+/* The links sit at a panel's foot, level across a row. */
+.work .panel-body .actions {
+  margin-top: auto;
+  padding-top: 0.25rem;
+}
+
+@media (min-width: 900px) {
+  .work {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* The lead project runs the full width: its figure on the left, its
+     words on the right. */
+  .work .panel-feature {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+  }
+
+  .panel-feature .panel-rule {
+    grid-column: 1 / -1;
+  }
+
+  .panel-feature .panel-figure {
+    aspect-ratio: auto;
+    height: 100%;
+    min-height: 22rem;
+    border-bottom: 0;
+    border-right: 1px solid var(--c-line);
+  }
+
+  .panel-feature .panel-figure img {
+    object-fit: contain;
+    object-position: center;
+  }
+}
+
+/* The tags a project carries, boxed like the show's small labels. */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tags li {
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--c-line-strong);
+  font-family: var(--font-label);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--c-orange);
+}
+
+/* A case study still to come: a screen standing by, striped the way the
+   show stripes a board that is not live, its label boxed over the stripes.
+   It takes whatever height its panel has spare. */
+.pending {
+  display: grid;
+  flex: 1 1 auto;
+  place-content: center;
+  min-height: 8rem;
+  padding: 1rem;
+  border: 1px solid var(--c-line);
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent 0 10px,
+    color-mix(in oklab, var(--c-orange) 12%, transparent) 10px 20px
+  );
+}
+
+.pending p {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.45rem 1rem 0.5rem;
+  border: 1px solid var(--c-orange);
+  background: #000;
+  color: var(--c-orange);
+  font-family: var(--font-label);
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.pending-main {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.pending-sub {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+}
+
+/* A list read off an instrument: a tick before each line, red for an
+   award. */
+.readout-list {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.readout-list li {
+  position: relative;
+  padding-left: 1.4rem;
+}
+
+.readout-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.8em;
+  width: 0.65rem;
+  height: 2px;
+  background: var(--c-orange);
+}
+
+.readout-list .award::before {
+  top: 0.55em;
+  width: 0.55rem;
+  height: 0.55rem;
+  background: var(--c-red);
+}
+
+/* A panel's logo, straight on the panel's dark fill: Microsoft's and
+   Excel's marks with their light tile cut away, and Trent AI's white
+   wordmark, the file the product shows in dark mode. A white box behind
+   them read as a light theme (review, 2026-10-06). */
+.panel-logo {
+  flex: none;
+  width: 4.5rem;
+}
+
+.panel-logo-wordmark {
+  width: auto;
+  height: 2.5rem;
+  margin-top: 0.35rem;
+}
+
+/* ── Education and experience ─────────────────────────────────────────── */
+
+.lede {
+  max-width: 46rem;
+  margin-bottom: clamp(2rem, 5svh, 3rem);
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+}
+
+@media (min-width: 768px) {
+  .section-end .lede {
+    margin-left: auto;
+  }
+}
+
+.history {
+  display: grid;
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+/* Education above experience, each a panel of readout cells, three to a
+   row on a wide screen: three schools make one row, six roles two. Side by
+   side, a list of three stood beside a list of six, one box half the other's
+   height (review, 2026-10-06). */
+.timeline {
+  display: grid;
+  gap: 1.5rem 2rem;
+  padding: clamp(1.1rem, 2.5vw, 1.75rem);
+}
+
+@media (min-width: 860px) {
+  .timeline {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* A cell: its dates, then what, then where, on a thin rule. */
+.timeline li {
+  display: grid;
+  align-content: start;
+  row-gap: 0.2rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--c-line);
+}
+
+.when {
+  padding-bottom: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--c-orange);
+}
+
+.what {
+  color: var(--c-white);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.where {
+  color: var(--c-muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+/* The role held now, lit green. */
+.now .when {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--c-green);
+}
+
+.cv {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(2rem, 5svh, 3rem);
+}
+
+/* ── Connect ──────────────────────────────────────────────────────────── */
+
+/* Three tiles, as the show's three-panel board: each a number and a name,
+   lit in turn as the section arrives. On a phone they stack as bars, the
+   number beside the name. */
+.tiles {
+  display: grid;
+  gap: clamp(0.9rem, 2vw, 1.5rem);
+  max-width: 44rem;
+  margin-inline: auto;
+}
+
+.tile {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1.25rem;
+  min-height: 4.75rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--c-mint);
+  color: #000;
+  text-decoration: none;
+  box-shadow:
+    0 0 0 2px #000,
+    0 0 0 3px color-mix(in oklab, var(--c-mint) 60%, transparent);
+}
+
+.tile:hover {
+  background: var(--c-white);
+  color: #000;
+}
+
+.tile:focus-visible {
+  outline-offset: 6px;
+}
+
+.tile-number {
+  font-family: var(--font-label);
+  font-size: clamp(2.6rem, 1.8rem + 3vw, 4.25rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tile-name {
+  font-family: var(--font-label);
+  font-size: clamp(0.8rem, 0.72rem + 0.35vw, 1rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+@media (min-width: 560px) {
+  .tiles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .tile {
+    grid-template-columns: none;
+    grid-template-rows: minmax(0, 1fr) auto;
+    place-items: center;
+    aspect-ratio: 1;
+    padding: 0.9rem 0.6rem;
+  }
+
+  .tile-name {
+    text-align: center;
+  }
+}
+
+/* ── Motion ───────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The clock's hundredths run on their strips, by transform, while the
+     clock runs. */
+  html:not([data-motion="off"]) .clock[data-running] .roll-tenths svg {
+    animation: c-roll 1s steps(10, end) infinite;
+  }
+
+  html:not([data-motion="off"]) .clock[data-running] .roll-hundredths svg {
+    animation: c-roll 0.1s steps(10, end) infinite;
+  }
+
+  /* The tiles wait, once the script has marked the page, until Connect is
+     in view; then each cuts in dark and lights in its turn. They never
+     step back down to dark: three tiles flickering together would flash a
+     large bright area (WCAG 2.3.1). Held only before it plays, so a
+     hover still lights a tile. */
+  html[data-armed]:not([data-motion="off"])
+    .tiles.enter:not([data-entered])
+    .tile {
+    opacity: 0;
+  }
+
+  /* They start once the title above them has landed. */
+  html:not([data-motion="off"]) .tiles.enter[data-entered] .tile {
+    animation: c-vote 0.6s steps(1, end) calc(0.55s + var(--i, 0) * 0.22s)
+      backwards;
+  }
+}
+
+@keyframes c-roll {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes c-vote {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+    background: #000;
+    color: var(--c-orange);
+    box-shadow: 0 0 0 2px var(--c-orange);
+  }
+  70%,
+  100% {
+    opacity: 1;
+    background: var(--c-mint);
+    color: #000;
+  }
+}

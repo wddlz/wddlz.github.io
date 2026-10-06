@@ -1,0 +1,564 @@
+/*
+ * The case studies' own parts: the bar's section links and gauge, the
+ * opening title card, the reading column, framed figures and their
+ * enlarged view, design goals, quotes, the implications, and the link to
+ * the next study. The shared look is console.css. Plan:
+ * _plans/2026-10-06_console-restyle.md.
+ */
+
+/* ── The bar ──────────────────────────────────────────────────────────── */
+
+/* The name leads home, with an arrow back. */
+.bar-back {
+  margin-right: 0.5em;
+  color: var(--c-orange);
+}
+
+/* The study's sections, at every width: on a narrow screen they scroll
+   sideways and fade at the far edge. */
+.bar-sections {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-right: 1.5rem;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 calc(100% - 2rem),
+    transparent
+  );
+  mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
+}
+
+.bar-sections::-webkit-scrollbar {
+  display: none;
+}
+
+.bar-sections a {
+  flex: none;
+}
+
+/* The gauge: a thin line along the bar's foot, filled as far down the
+   page as the reader is (console.js). */
+.bar-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--c-orange);
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+/* ── The reading frame ────────────────────────────────────────────────── */
+
+/* Everything below the bar sits in one frame: words in a column a line's
+   comfortable length, figures and panels out to the frame's full width. */
+.cs-frame {
+  max-width: 68rem;
+  margin-inline: auto;
+}
+
+/* ── The opening card ─────────────────────────────────────────────────── */
+
+/* The study opens as an episode does: its title card, inside the
+   instrument frame, then what it was and where it was published. */
+.opener {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: calc(86svh - var(--bar-h));
+  padding-block: clamp(3rem, 8svh, 5rem) clamp(2.5rem, 6svh, 4rem);
+  overflow-x: clip;
+}
+
+.opener > .wrap {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  /* Room for the frame's readout over the title. */
+  .opener {
+    padding-top: clamp(5rem, 10svh, 6.5rem);
+  }
+}
+
+@media (max-height: 520px) {
+  .opener {
+    padding-block: 2.5rem;
+  }
+}
+
+/* The title fills most of the frame's width, held to a quarter of the
+   screen's height, so a short name (WREX) does not tower. Held to the
+   name's width too, so its line stays at its foot. */
+.opener-card {
+  --cap: 26svh;
+  max-width: calc(var(--cap) * var(--em) * var(--squeeze));
+}
+
+@media (min-width: 768px) {
+  .opener-card {
+    width: 80%;
+  }
+}
+
+.opener-facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  margin-top: clamp(1.5rem, 4svh, 2.5rem);
+}
+
+/* Where it was published, boxed as the show boxes a label. */
+.venue {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.25rem 0.7rem;
+  border: 1px solid var(--c-line-strong);
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-orange);
+}
+
+.opener-text {
+  max-width: 44rem;
+  margin-top: 1.25rem;
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+}
+
+.opener .actions {
+  margin-top: 1.5rem;
+}
+
+/* The abstract, in a panel of its own under the card, as wide as its
+   words want and no wider. */
+.abstract {
+  max-width: 48rem;
+}
+
+/* ── Sections ─────────────────────────────────────────────────────────── */
+
+.cs-section {
+  padding-top: clamp(4rem, 11svh, 7rem);
+  overflow-x: clip;
+}
+
+.cs-card {
+  margin-bottom: clamp(1.5rem, 4svh, 2.5rem);
+}
+
+/* A section's title: the cards' serif, squeezed, at a size that opens the
+   section without taking the screen. */
+.cs-title {
+  font-size: clamp(2.2rem, 1.4rem + 3.4vw, 4.4rem);
+  line-height: 0.92;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+/* ── The reading column ───────────────────────────────────────────────── */
+
+/* A section's content: words held to about 75 characters a line, and the
+   figures, splits and panels let out to the frame's width. */
+.flow > * {
+  max-width: 44rem;
+}
+
+.flow > :is(.split, .cards, .panel) {
+  max-width: none;
+}
+
+/* A figure is let out as far as it was made to go (`--w`, on the figure),
+   up to the frame. */
+.flow > .fig {
+  max-width: var(--w, none);
+}
+
+.flow > * + * {
+  margin-top: 1.35rem;
+}
+
+.flow p,
+.flow li {
+  line-height: 1.75;
+}
+
+.flow strong {
+  color: var(--c-white);
+  font-weight: 650;
+}
+
+/* A subsection's heading: the cards' serif in mixed case, as a card sets
+   an episode's title. */
+.flow h3 {
+  margin-top: 3rem;
+  font-family: var(--font-card);
+  font-size: clamp(1.45rem, 1.15rem + 1.1vw, 2.1rem);
+  font-weight: 900;
+  line-height: 1.12;
+  color: var(--c-white);
+}
+
+.flow ol {
+  padding-left: 2.75rem;
+  list-style: decimal-leading-zero;
+}
+
+.flow ol li + li {
+  margin-top: 0.75rem;
+}
+
+.flow ol li::marker {
+  color: var(--c-orange);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
+/* A plain list: an orange tick before each line, as on an instrument. */
+.flow ul:not([class]) {
+  padding-left: 0;
+  list-style: none;
+}
+
+.flow ul:not([class]) li {
+  position: relative;
+  padding-left: 1.4rem;
+}
+
+.flow ul:not([class]) li + li {
+  margin-top: 0.6rem;
+}
+
+.flow ul:not([class]) li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.85em;
+  width: 0.65rem;
+  height: 2px;
+  background: var(--c-orange);
+}
+
+/* A heading under a subheading ("Task Completion"): a label, set as the
+   show sets one. */
+.flow h4 {
+  margin-top: 2.5rem;
+  font-family: var(--font-label);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--c-white);
+}
+
+.flow h3 + h4 {
+  margin-top: 1.25rem;
+}
+
+/* "Inline:", "Session:", "Protocol:": a list's or figure's name, set as
+   the show sets a small label. */
+.lead-in {
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-orange);
+}
+
+.flow .lead-in + ol {
+  margin-top: 0.6rem;
+}
+
+/* Words beside a figure, on a wide screen. */
+.split {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.split > div > * + * {
+  margin-top: 1.35rem;
+}
+
+/* Half and half: a narrower figure column shrank a screenshot's text past
+   reading. A wide strip of a screenshot goes under its words instead. */
+@media (min-width: 960px) {
+  .split {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+/* ── Figures ──────────────────────────────────────────────────────────── */
+
+/* A figure in a frame: its number on a strip over it, the image as it is
+   (no tint), never wider than the image was made. The whole frame links to
+   the image; console.js opens it over the page instead. */
+.fig {
+  width: 100%;
+  max-width: var(--w, none);
+}
+
+.flow > .fig {
+  margin-top: 2rem;
+}
+
+.fig-frame {
+  display: block;
+  border: 1px solid var(--c-line);
+  background: #000;
+  color: inherit;
+  text-decoration: none;
+  cursor: zoom-in;
+}
+
+.fig-frame:hover {
+  border-color: var(--c-orange);
+  color: inherit;
+}
+
+.fig-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.35rem 0.8rem;
+  border-bottom: 1px solid var(--c-line);
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--c-orange);
+}
+
+.fig-strip :first-child {
+  color: var(--c-white);
+  font-weight: 600;
+}
+
+.fig-frame:hover .fig-strip :last-child {
+  color: var(--c-white);
+}
+
+.fig-image {
+  display: block;
+  background: #fff;
+}
+
+.fig-image img {
+  width: 100%;
+}
+
+.fig figcaption {
+  max-width: 60rem;
+  margin-top: 0.75rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--c-muted);
+}
+
+/* ── Design goals ─────────────────────────────────────────────────────── */
+
+/* A design goal, as a readout: its name small in orange, the goal itself
+   in the cards' serif, its key words lit. */
+.goal {
+  padding: 1.1rem 1.4rem 1.3rem;
+  border: 1px solid var(--c-line-strong);
+  background: var(--c-panel);
+}
+
+.flow > .goal {
+  margin-top: 2rem;
+}
+
+.flow > .goal + p {
+  margin-top: 2rem;
+}
+
+.goal-label {
+  font-family: var(--font-label);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-orange);
+}
+
+.goal .goal-text {
+  margin-top: 0.45rem;
+  font-family: var(--font-card);
+  font-size: clamp(1.2rem, 1rem + 0.9vw, 1.65rem);
+  font-weight: 900;
+  line-height: 1.28;
+  color: var(--c-white);
+}
+
+.goal-text strong {
+  color: var(--c-orange);
+  font-weight: 900;
+}
+
+/* ── Quotes ───────────────────────────────────────────────────────────── */
+
+/* A participant's words, on an orange rule, and who said them. */
+.quote {
+  margin-block: 2rem;
+  padding: 0.2rem 0 0.2rem 1.5rem;
+  border-left: 3px solid var(--c-orange);
+}
+
+.quote blockquote {
+  margin: 0;
+}
+
+.quote blockquote p {
+  font-size: clamp(1.1rem, 1rem + 0.35vw, 1.3rem);
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--c-white);
+}
+
+.quote figcaption {
+  margin-top: 0.55rem;
+  font-family: var(--font-label);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-orange);
+}
+
+/* ── Numbered panels ──────────────────────────────────────────────────── */
+
+/* Findings, features, implications: each a panel numbered on its rule.
+   A run of them is an ordered list (`.cards`), so the column's own list
+   numbers stay off; one standing alone between figures is a `.panel`. */
+.flow > .panel {
+  margin-top: 2rem;
+}
+
+.flow .cards {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin-top: 2rem;
+  padding-left: 0;
+  list-style: none;
+}
+
+.flow .cards > li + li {
+  margin-top: 0;
+}
+
+:is(.cards, .flow > .panel) .panel-body {
+  max-width: 50rem;
+}
+
+:is(.cards, .flow > .panel) .panel-body > * + * {
+  margin-top: 1.1rem;
+}
+
+/* A panel's own heading: the cards' serif, in mixed case. */
+.flow :is(.cards, .panel) :is(h3, h4) {
+  margin-top: 0;
+  font-family: var(--font-card);
+  font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.8rem);
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.15;
+  text-transform: none;
+  color: var(--c-white);
+}
+
+/* ── The next study ───────────────────────────────────────────────────── */
+
+.next {
+  margin-top: clamp(4rem, 11svh, 7rem);
+  padding-block: clamp(3.5rem, 9svh, 6rem);
+  border-top: 1px solid var(--c-line);
+  overflow-x: clip;
+}
+
+.next-link {
+  display: block;
+  margin-block: 0.25rem 1.75rem;
+  color: var(--c-white);
+  text-decoration: none;
+}
+
+.next-link:hover {
+  color: var(--c-orange);
+}
+
+.next-title {
+  display: block;
+  font-size: clamp(2.6rem, 1.6rem + 4.2vw, 5.75rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+/* ── An enlarged figure ───────────────────────────────────────────────── */
+
+/* The figure over a darkened page, as large as the screen allows, with a
+   way to close it at the top. */
+.zoom {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--c-text);
+}
+
+.zoom[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.zoom::backdrop {
+  background: rgb(0 0 0 / 0.92);
+}
+
+.zoom-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.9rem var(--gutter);
+}
+
+.zoom-stage {
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  padding: 0 var(--gutter) var(--gutter);
+}
+
+/* Held to the screen, less the Close bar and the gutter under it: a
+   percentage height against the grid's row let a tall figure run off the
+   screen. */
+.zoom-stage img {
+  max-width: 100%;
+  max-height: calc(100dvh - 4.75rem - var(--gutter));
+  object-fit: contain;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--c-line-strong);
+}
+
+/* The page under the dialog stays put. */
+html:has(.zoom[open]) {
+  overflow: hidden;
+}
