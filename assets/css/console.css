@@ -103,10 +103,11 @@ html {
   }
 }
 
+/* No fill of its own: the page's black is the root's, so the screen behind
+   the page (screen.css) shows through. */
 body {
   margin: 0;
   min-height: 100vh;
-  background: #000;
   color: var(--c-text);
   font-family: var(--font-body);
   font-size: 1.0625rem;
@@ -291,7 +292,10 @@ a:hover {
   color: var(--c-white);
 }
 
-.bar-motion {
+/* The bar's switch waits for a wide screen; the footer's is always there.
+   Scoped to the bar, or `.motion`'s own display (below) wins the tie, and a
+   320px phone's bar ran past the screen's edge. */
+.bar .bar-motion {
   display: none;
 }
 
@@ -302,7 +306,7 @@ a:hover {
 }
 
 @media (min-width: 960px) {
-  .bar-motion {
+  .bar .bar-motion {
     display: inline-flex;
   }
 }

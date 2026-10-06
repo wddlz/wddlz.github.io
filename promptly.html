@@ -34,6 +34,7 @@
       crossorigin
     />
     <link rel="stylesheet" href="assets/css/console.css" />
+    <link rel="stylesheet" href="assets/css/screen.css" />
     <link rel="stylesheet" href="assets/css/case.css" />
     <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
@@ -41,6 +42,23 @@
     <script src="assets/js/console.js" defer></script>
   </head>
   <body>
+    <!-- The screen behind the page, light on a case study: the display for
+         the section in the middle of the screen (screen.css, console.js).
+         Decoration. -->
+    <div class="screen screen-light" data-show="scope" aria-hidden="true">
+      <div class="screen-grid"></div>
+      <div class="screen-display screen-map">
+        <div class="screen-map-base"></div>
+        <div class="screen-map-scan"><div class="screen-map-lit"></div></div>
+        <span></span><span></span><span></span>
+      </div>
+      <div class="screen-display screen-scope">
+        <div class="screen-scope-face"></div>
+        <div class="screen-scope-ring"></div>
+        <div class="screen-sweep"></div>
+        <span></span><span></span><span></span>
+      </div>
+    </div>
     <a class="skip" href="#main">Skip to content</a>
 
     <header class="bar">
@@ -73,7 +91,7 @@
 
     <main id="main">
       <!-- The opening card, then the abstract. -->
-      <section id="summary" aria-labelledby="title">
+      <section id="summary" aria-labelledby="title" data-screen="scope">
         <div class="opener plays">
           <div class="frame" aria-hidden="true">
             <span class="corner corner-tl"></span>
@@ -160,7 +178,12 @@
       </section>
 
       <!-- Introduction. -->
-      <section id="intro" class="cs-section" aria-labelledby="intro-title">
+      <section
+        id="intro"
+        class="cs-section"
+        aria-labelledby="intro-title"
+        data-screen="map"
+      >
         <div class="wrap">
           <div class="cs-frame">
             <div class="cs-card enter">
@@ -375,7 +398,12 @@
       </section>
 
       <!-- The formative design probe. -->
-      <section id="usecase" class="cs-section" aria-labelledby="usecase-title">
+      <section
+        id="usecase"
+        class="cs-section"
+        aria-labelledby="usecase-title"
+        data-screen="map"
+      >
         <div class="wrap">
           <div class="cs-frame">
             <div class="cs-card enter">
@@ -466,7 +494,12 @@
       </section>
 
       <!-- Design and implementation. -->
-      <section id="design" class="cs-section" aria-labelledby="design-title">
+      <section
+        id="design"
+        class="cs-section"
+        aria-labelledby="design-title"
+        data-screen="map"
+      >
         <div class="wrap">
           <div class="cs-frame">
             <div class="cs-card enter">
@@ -591,7 +624,12 @@
       </section>
 
       <!-- The in-lab comparative study. -->
-      <section id="methods" class="cs-section" aria-labelledby="methods-title">
+      <section
+        id="methods"
+        class="cs-section"
+        aria-labelledby="methods-title"
+        data-screen="map"
+      >
         <div class="wrap">
           <div class="cs-frame">
             <div class="cs-card enter">
@@ -709,7 +747,12 @@
       </section>
 
       <!-- Results. -->
-      <section id="results" class="cs-section" aria-labelledby="results-title">
+      <section
+        id="results"
+        class="cs-section"
+        aria-labelledby="results-title"
+        data-screen="map"
+      >
         <div class="wrap">
           <div class="cs-frame">
             <div class="cs-card enter">
@@ -875,6 +918,7 @@
         id="conclusion"
         class="cs-section"
         aria-labelledby="conclusion-title"
+        data-screen="map"
       >
         <div class="wrap">
           <div class="cs-frame">

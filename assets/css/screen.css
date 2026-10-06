@@ -1,0 +1,527 @@
+/*
+ * The main screen behind every page, as the command room has one: the
+ * console's instruments in faint orange line, behind the words and the
+ * panels, at work. A honeycomb is its ground. Over it, one display at a
+ * time, named by the section crossing the middle of the screen (console.js
+ * sets `data-show`), cutting in as the reader moves between sections:
+ *
+ * - map: a survey map low on the right, a scan crossing it, each survey
+ *   mark pinging as the scan reaches it (the home page's opening; a case
+ *   study's reading, lightly);
+ * - scope: a range finder high on the right, its sweep lighting the
+ *   contacts it passes (Work; a case study's opening card);
+ * - board: a patch of the honeycomb's own cells on the left, lighting one
+ *   by one (Education & Experience);
+ * - signal: rings going out from the middle (Connect).
+ *
+ * A case study's screen is light (`.screen-light`): dimmer, slower, no
+ * contacts or pings, so it never pulls at a reader. Everything moves by
+ * transform and opacity alone, so an idle page repaints nothing, and slowly.
+ * Under the reader's reduced-motion setting or with the Motion switch off
+ * (console.css), the displays still change with the sections but stand
+ * still, and what only moves (the sweep, the scan, the lights) is not drawn.
+ * Without the script, the display the markup names stays. The pictures are
+ * drawn for this site (`../screen/`, by `_tools/screen-art.py`). Decoration:
+ * hidden from screen readers and out of the pointer's way. Plan:
+ * _plans/2026-10-06_console-restyle.md.
+ */
+
+.screen {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.screen > *,
+.screen-display > * {
+  position: absolute;
+}
+
+/* What only moves is drawn only while things move (the motion block). */
+.screen-display > span,
+.screen-map-scan,
+.screen-sweep {
+  display: none;
+}
+
+/* ── The ground ───────────────────────────────────────────────────────── */
+
+/* A honeycomb over the whole screen, fainter toward the left middle, where
+   the words read. One tile is 64 by 36.95px, so a cell's sides are
+   21.33px; the board's cells sit on it (below). */
+.screen-grid {
+  inset: 0;
+  background: url("../screen/hex.svg") 0 0 / 64px auto;
+  opacity: 0.1;
+  -webkit-mask-image: radial-gradient(
+    ellipse 75% 70% at 30% 50%,
+    rgb(0 0 0 / 0.3),
+    #000
+  );
+  mask-image: radial-gradient(
+    ellipse 75% 70% at 30% 50%,
+    rgb(0 0 0 / 0.3),
+    #000
+  );
+}
+
+/* ── One display at a time ────────────────────────────────────────────── */
+
+.screen-display {
+  display: none;
+}
+
+.screen[data-show="map"] .screen-map,
+.screen[data-show="scope"] .screen-scope,
+.screen[data-show="board"] .screen-board,
+.screen[data-show="signal"] .screen-signal {
+  display: block;
+}
+
+/* ── map: the survey map ──────────────────────────────────────────────── */
+
+/* Low on the right, fading out toward the reading column. */
+.screen-map {
+  right: -3vw;
+  bottom: -5vh;
+  width: min(62vw, 70rem);
+  aspect-ratio: 900 / 640;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 45%);
+  mask-image: linear-gradient(to right, transparent, #000 45%);
+}
+
+.screen-map-base,
+.screen-map-lit {
+  background: url("../screen/map.svg") 0 0 / 100% 100% no-repeat;
+}
+
+.screen-map-base {
+  inset: 0;
+  opacity: 0.26;
+}
+
+/* The scan: a band a seventh of the map wide, crossing it left to right in
+   five seconds, then resting off its edge for five. Inside the band the
+   map is drawn bright: a copy of it, moved back as far as the band moves
+   on, so it stays on the map's lines. The two moves keep step because they
+   share one timing. */
+.screen-map-scan {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 14%;
+  overflow: hidden;
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in oklab, var(--c-orange) 7%, transparent)
+  );
+}
+
+/* Its leading edge. */
+.screen-map-scan::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  background: color-mix(in oklab, var(--c-orange) 55%, transparent);
+}
+
+.screen-map-lit {
+  top: 0;
+  left: 0;
+  width: calc(100% / 0.14);
+  height: 100%;
+  opacity: 0.8;
+}
+
+/* A survey mark's ping, at the mark: the peak and two stations, where
+   `_tools/screen-art.py` drew them. Each goes off as the scan's edge
+   reaches it (`--at`). */
+.screen-map > span {
+  width: 4%;
+  aspect-ratio: 1;
+  border: 1.5px solid var(--c-orange);
+  border-radius: 50%;
+  translate: -50% -50%;
+  opacity: 0;
+}
+
+.screen-map > span:nth-of-type(1) {
+  left: 28%;
+  top: 60%;
+  --at: 1.23s;
+}
+.screen-map > span:nth-of-type(2) {
+  left: 59.22%;
+  top: 40.94%;
+  --at: 2.6s;
+}
+.screen-map > span:nth-of-type(3) {
+  left: 78%;
+  top: 76%;
+  --at: 3.42s;
+}
+
+/* ── scope: the range finder ──────────────────────────────────────────── */
+
+/* High on the right, under the bar. */
+.screen-scope {
+  top: calc(var(--bar-h) + 7vh);
+  right: 5vw;
+  width: clamp(11rem, 21vw, 21rem);
+  aspect-ratio: 1;
+  --sweep: 24%;
+}
+
+.screen-scope-face {
+  inset: 0;
+  background: url("../screen/scope.svg") center / contain no-repeat;
+  opacity: 0.3;
+}
+
+.screen-scope-ring {
+  inset: 0;
+  background: url("../screen/scope-ring.svg") center / contain no-repeat;
+  opacity: 0.34;
+}
+
+/* The sweep: a fading wedge behind a bright edge, turning once every six
+   seconds, inside the outer ring (148 of the drawing's 160). */
+.screen-sweep {
+  inset: 3.75%;
+  border-radius: 50%;
+  background: conic-gradient(
+    transparent 0deg 290deg,
+    color-mix(in oklab, var(--c-orange) 0%, transparent) 290deg,
+    color-mix(in oklab, var(--c-orange) var(--sweep), transparent) 360deg
+  );
+}
+
+/* A contact, lit as the sweep's edge passes it and fading before it comes
+   round again. `--at` is when the edge reaches it: its angle from the top,
+   clockwise, as a share of the six seconds. */
+.screen-scope > span {
+  width: 3%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  translate: -50% -50%;
+  background: var(--c-orange);
+  box-shadow: 0 0 6px var(--c-orange);
+  opacity: 0;
+}
+
+/* At 50°, 60% of the way out. */
+.screen-scope > span:nth-of-type(1) {
+  left: 71.26%;
+  top: 32.16%;
+  --at: 0.833s;
+}
+/* At 145°, 35% out. */
+.screen-scope > span:nth-of-type(2) {
+  left: 59.28%;
+  top: 63.26%;
+  --at: 2.417s;
+}
+/* At 250°, 78% out. */
+.screen-scope > span:nth-of-type(3) {
+  left: 16.1%;
+  top: 62.34%;
+  --at: 4.167s;
+}
+
+/* ── board: a patch of the honeycomb ──────────────────────────────────── */
+
+/* Thirty-seven of the ground's own cells on the left, centered on a cell
+   (snapped to the lattice with CSS `round()`), their sides drawn bright and
+   one cell after another lighting. A cell's place in the patch is `--q` and
+   `--r` (axial, flat-topped), its turn `--n`. */
+.screen-board {
+  left: calc(round(down, 22vw, 64px) + 21.333px - 117.333px);
+  top: calc(round(down, 30vh, 36.95px) + 18.475px - 129.326px);
+  width: 234.667px;
+  height: 258.652px;
+}
+
+.screen-board-face {
+  inset: 0;
+  background: url("../screen/board.svg") 0 0 / 100% 100% no-repeat;
+  opacity: 0.32;
+}
+
+.screen-board > span {
+  left: calc(50% + var(--q) * 32px);
+  top: calc(50% + (var(--r) + var(--q) / 2) * 36.95px);
+  width: 42.667px;
+  height: 36.95px;
+  translate: -50% -50%;
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+  background: var(--c-orange);
+  opacity: 0;
+}
+
+/* A browser without `round()` cannot put the board on the lattice. */
+@supports not (left: round(down, 1px, 1px)) {
+  .screen[data-show] .screen-board {
+    display: none;
+  }
+}
+
+/* ── signal: rings going out ──────────────────────────────────────────── */
+
+/* In the middle of the screen, behind Connect's title and tiles. */
+.screen-signal {
+  left: 50%;
+  top: 50%;
+  width: min(80vw, 88vh);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+}
+
+.screen-signal-face {
+  inset: 0;
+  background: url("../screen/signal.svg") center / contain no-repeat;
+  opacity: 0.22;
+}
+
+.screen-signal > span {
+  inset: 4%;
+  border: 1.5px solid var(--c-orange);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.screen-signal > span:nth-of-type(2) {
+  --at: -2s;
+}
+.screen-signal > span:nth-of-type(3) {
+  --at: -4s;
+}
+
+/* ── The edges ────────────────────────────────────────────────────────── */
+
+.screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgb(0 0 0 / 0.7) 100%
+  );
+}
+
+/* ── A case study: light ──────────────────────────────────────────────── */
+
+/* Reading comes first: the displays dimmer, the scan slower, no pings or
+   contacts. */
+.screen-light .screen-map-base {
+  opacity: 0.18;
+}
+
+.screen-light .screen-map-lit {
+  opacity: 0.5;
+}
+
+.screen-light .screen-scope-face,
+.screen-light .screen-scope-ring {
+  opacity: 0.22;
+}
+
+.screen-light .screen-scope {
+  --sweep: 14%;
+}
+
+.screen-light .screen-display > span {
+  display: none !important;
+}
+
+/* ── Smaller screens ──────────────────────────────────────────────────── */
+
+/* A narrow screen: the words take the width, so the range finder and the
+   board go, and the map lies lower and fainter, under the words. */
+@media (max-width: 899px) {
+  .screen[data-show] :is(.screen-scope, .screen-board) {
+    display: none;
+  }
+
+  .screen-map {
+    right: -25vw;
+    bottom: -4vh;
+    width: 125vw;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .screen-map-base {
+    opacity: 0.16;
+  }
+
+  .screen-map-lit {
+    opacity: 0.45;
+  }
+}
+
+/* A short screen (a phone on its side): the narrow rule's map would fill
+   the whole height behind the title, so it lies low on the right again,
+   fading toward the words, as on a wide screen. */
+@media (max-height: 520px) {
+  .screen-map {
+    right: -3vw;
+    bottom: -5vh;
+    width: 62vw;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 45%);
+    mask-image: linear-gradient(to right, transparent, #000 45%);
+  }
+}
+
+/* ── Motion ───────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* A display cuts in as its section arrives, powering on in three steps,
+     each brighter than the last: never back down, so it never flashes. */
+  html:not([data-motion="off"]) .screen-display {
+    animation: screen-power 0.3s steps(1, end) both;
+  }
+
+  html:not([data-motion="off"])
+    :is(.screen-display > span, .screen-map-scan, .screen-sweep) {
+    display: block;
+  }
+
+  html:not([data-motion="off"]) .screen-map-scan {
+    animation: screen-scan 10s linear infinite;
+  }
+
+  html:not([data-motion="off"]) .screen-map-lit {
+    animation: screen-scan-lit 10s linear infinite;
+  }
+
+  html:not([data-motion="off"])
+    .screen-light
+    :is(.screen-map-scan, .screen-map-lit) {
+    animation-duration: 22s;
+  }
+
+  html:not([data-motion="off"]) .screen-map > span {
+    animation: screen-ping 10s ease-out var(--at) infinite;
+  }
+
+  html:not([data-motion="off"]) .screen-sweep {
+    animation: screen-turn 6s linear infinite;
+  }
+
+  html:not([data-motion="off"]) .screen-light .screen-sweep {
+    animation-duration: 9s;
+  }
+
+  /* Started as far back as the sweep is from them, so each lights the
+     moment the sweep's edge reaches it, from the first turn. */
+  html:not([data-motion="off"]) .screen-scope > span {
+    animation: screen-blip 6s ease-out calc(var(--at) - 6s) infinite;
+  }
+
+  html:not([data-motion="off"]) .screen-scope-ring {
+    animation: screen-turn 50s linear infinite reverse;
+  }
+
+  /* A cell lights every 0.4s, in its turn; the patch goes round in 15. */
+  html:not([data-motion="off"]) .screen-board > span {
+    animation: screen-cell 15s ease-in-out calc(var(--n) * 0.4s - 15s) infinite;
+  }
+
+  html:not([data-motion="off"]) .screen-signal > span {
+    animation: screen-signal 6s ease-out var(--at, 0s) infinite;
+  }
+}
+
+@keyframes screen-power {
+  0% {
+    opacity: 0;
+  }
+  33% {
+    opacity: 0.35;
+  }
+  66% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes screen-scan {
+  0% {
+    transform: translateX(-100%);
+  }
+  50%,
+  100% {
+    transform: translateX(calc(100% / 0.14));
+  }
+}
+
+@keyframes screen-scan-lit {
+  0% {
+    transform: translateX(14%);
+  }
+  50%,
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes screen-ping {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.4);
+  }
+  22%,
+  100% {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+}
+
+@keyframes screen-turn {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes screen-blip {
+  0% {
+    opacity: 0.85;
+  }
+  45%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes screen-cell {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  3% {
+    opacity: 0.32;
+  }
+  12% {
+    opacity: 0;
+  }
+}
+
+@keyframes screen-signal {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.12);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}

@@ -1,7 +1,8 @@
 /*
  * The console's script, shared by every page: the Motion switch, the
- * arrivals, the section marker in the bar, the hero's clock, and on the
- * case studies the reading gauge and enlarged figures. Plan:
+ * arrivals, the section marker in the bar, the screen behind the page, the
+ * hero's clock, and on the case studies the reading gauge and enlarged
+ * figures. Plan:
  * _plans/2026-10-06_console-restyle.md.
  *
  * Everything here is an extra. Without it the page reads in full: nothing
@@ -268,6 +269,31 @@
       { rootMargin: "-45% 0px -54% 0px" },
     );
     for (const section of sections) marker.observe(section);
+  }
+
+  /* ── The screen behind the page ──────────────────────────────────────── */
+
+  /* The screen (screen.css) shows the display that the section crossing
+     the middle of the screen names, the same line the bar's marker reads.
+     Between two sections, or past the last, it keeps the one it has. It
+     follows the reader with motion off too: the displays stand still then,
+     but the screen still changes with the page. */
+  const screen = document.querySelector(".screen");
+  const named = [...document.querySelectorAll("[data-screen]")];
+  if (screen && named.length && "IntersectionObserver" in window) {
+    const middle = new Set();
+    const follow = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) middle.add(entry.target);
+          else middle.delete(entry.target);
+        }
+        const current = named.find((section) => middle.has(section));
+        if (current) screen.setAttribute("data-show", current.dataset.screen);
+      },
+      { rootMargin: "-45% 0px -54% 0px" },
+    );
+    for (const section of named) follow.observe(section);
   }
 
   /* ── How far down the page ───────────────────────────────────────────── */

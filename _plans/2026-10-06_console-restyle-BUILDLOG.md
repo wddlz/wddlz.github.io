@@ -143,3 +143,61 @@ Commit and push. Before that: the Microsoft panel's logos sat in a light square 
 - At 1440, 1024 and 390 wide: nothing scrolls sideways; on a phone the wordmark sits under the panel's name.
 - axe: no violations on the home page at 1440×900 and 390×844, with motion reduced and with motion on.
 - Contrast against the real pixels: no text below AA, and none within 0.5 of it, at 1440×900 and 390×844.
+
+## Step 4 · the screen behind the pages (2026-10-06)
+
+### Asked
+
+The pages are black behind everything but the home page's hero frame; Trent's site v2.2 has a screen of instruments behind its pages. The portfolio wants the same kind of visual interest (review, 2026-10-06).
+
+### Built
+
+- **What it is.** One still layer behind every page, under the words and the panels, in the console's orange line: a honeycomb over the whole screen, fainter toward the left middle where the words read; a survey map (contour lines, every fifth one heavier, a peak's triangle, two stations' crosses, ticks along two edges) low on the right, fading out toward the reading column; a range finder (rings, a dashed ring, ticks every 5°, an open crosshair, four lock corners) high on the right under the bar; and the screen's edges falling to black.
+- **Drawn for this site.** Trent's v2.2 screen shows Trent's own pictures (its terrain, system map, rules board, alarm and vote rings), which stay with Trent, as this plan's idea says; these are generic instruments drawn here. `_tools/screen-art.py` draws the three SVG files into `assets/screen/` (hex tile 0.2 KB, map 11.7 KB, range finder 2 KB) with plain Python: the map is marching squares over a smooth field of a few hills and hollows, its contours joined and thinned, rings under 24px dropped as specks. Run again, it writes the same files.
+- **Still.** Nothing in it moves: on this site nothing moves while someone reads (the idea's motion rule), so it needs no Motion switch gate.
+- **The sheet.** `assets/css/screen.css`, loaded by each page after `console.css`, with the layer's `<div class="screen" aria-hidden="true">` at the top of each page's body. `console.css` is at 929 lines, so the layer has its own file. The body's own black fill is gone (the root's black is the page's), or it would paint over a layer behind the page.
+- **Smaller screens.** Under 900px wide the range finder goes and the map lies lower and fainter, wider than the screen, under the words. On a short screen (a phone on its side) the map takes the wide screen's place again, low on the right, since the narrow rule's map filled the whole height behind the title.
+
+### What the browser pass found, and what changed
+
+1. **The map lost its hilltops.** The line thinning collapsed a closed ring to its seam, so every ring that closed on itself vanished and the map's middle stood empty. A ring is now thinned in two halves.
+2. **Two specks**, rings a few pixels across, read as dirt rather than hills; rings under 24px are dropped.
+3. **A phone on its side** had the map filling the screen behind the title (above).
+
+### Checks
+
+- **Sizes:** all four pages at 320×568, 390×844, 768×1024, 844×390, 1024×768, 1280×720, 1440×900, 1920×1080 and 2560×1440. Nothing scrolls sideways; the layer is clipped to the screen.
+- **Contrast** against the real pixels, a screen every 80% of the screen's height down each whole page: no text below AA, and none within 0.5 of it, on all four pages at 1440×900, 1024×768 and 390×844.
+- **axe:** no violations on all four pages at 1440×900 and 390×844, with motion reduced and on.
+- **Scrolling:** a two-second wheel scroll down Wrex makes the same paints and raster work with the layer as without it (4 paints, 49 raster tasks).
+- **Not run:** Firefox and Safari. The masks carry the `-webkit-` prefix for Safari.
+
+## Step 4, round 2 · the screen moves, and shifts with the sections (2026-10-06)
+
+### Asked
+
+The still screen read as random topographic lines, with no motion. It wants a real pass at visual interest that does not overwhelm: light on the case studies, where reading matters most, and on the home page shifting into something interesting between sections (review, 2026-10-06).
+
+### Built
+
+- **One display at a time, cutting in with the sections.** The screen holds four displays over the honeycomb, and shows the one named by the section crossing the middle of the screen (`data-screen` on each section, `data-show` on the screen, set by `console.js` with the same middle line the bar's section marker uses). A display powers on in three steps of brightness as it cuts in, never stepping back down.
+- **map** (the home page's hero; a case study's reading): the survey map, a scan band crossing it left to right in five seconds every ten, the contours inside the band drawn bright (a copy moved back as far as the band moves on, so it stays on the lines, both moves sharing one timing), and the peak and the two stations pinging as the band's edge reaches each.
+- **scope** (Work; a case study's opening card): the range finder, its sweep turning every six seconds, three contacts each lighting the moment the sweep's edge passes and fading before it comes round, its dashed ring turning slowly the other way (now its own file, `scope-ring.svg`).
+- **board** (Education & Experience): 37 of the honeycomb's own cells on the left, beside the right-aligned title, their sides drawn bright (`board.svg`) and one cell lighting every 0.4 seconds in a shuffled order. The patch is placed on the lattice with CSS `round()`; a browser without it shows no board.
+- **signal** (Connect): faint rings and ticks round the middle of the screen (`signal.svg`), with three rings going out from the middle, two seconds apart, behind the title and the tiles.
+- **Light on a case study** (`.screen-light`): the opening card shows the range finder, dimmer, its sweep slower; the reading shows the map dimmer, its scan slower (22 seconds), with no pings or contacts.
+- **Still, it stays readable as instruments.** Under reduced motion or with the Motion switch off, the displays still change with the sections, but stand still, and what only moves (the sweep, the scan, the contacts, the pings, the lit cells, the rings) is not drawn.
+- **Smaller screens:** under 900px wide the range finder and the board go and the map lies low and faint; a phone keeps the map and the rings.
+
+### Found along the way, and fixed
+
+**The bar's Motion switch ran a 320px phone's page sideways**, on the published site too. The bar hides its switch below 960px (the footer carries one), but `.motion`'s own `display` came later in the sheet with the same specificity and won, so the bar showed it at every width, and at 320 the bar was 375px wide. The bar's rules are scoped to the bar now. Under reduced motion both switches still hide, as before.
+
+### Checks
+
+- **Paints:** an idle page repaints nothing on the home page at Work, Experience and Connect, or on Wrex at its opening and its reading; at the hero the only paints are the clock's, the same six in two seconds with the screen as without it.
+- **Contrast** against the real pixels, a screen every 80% of the screen's height down the page, with every animation held at 2.5 and 3.4 seconds (the scan across the map, the pings out): no text below AA, and none within 0.5 of it, on the home page and Wrex at 1440×900 and 390×844. With motion reduced, the same on all four pages at 1440, 1024 and 390, as in round 1.
+- **axe:** no violations on the home page and Wrex at 1440×900 and 390×844, with motion reduced and on.
+- **Sizes:** all four pages at the nine sizes from 320×568 to 2560×1440, motion on: nothing scrolls sideways (the 320px case above fixed).
+- **Seen in motion,** frame by frame (every animation paused and sought): the scan crossing the map and the pings going off as it reaches each mark, the sweep and its contacts, the board's cells, the rings, and the case study's light screen at its opening and its reading.
+- **Not run:** Firefox and Safari.

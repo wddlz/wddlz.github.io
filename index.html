@@ -34,6 +34,7 @@
       crossorigin
     />
     <link rel="stylesheet" href="assets/css/console.css" />
+    <link rel="stylesheet" href="assets/css/screen.css" />
     <link rel="stylesheet" href="assets/css/home.css" />
     <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
@@ -41,6 +42,66 @@
     <script src="assets/js/console.js" defer></script>
   </head>
   <body>
+    <!-- The screen behind the page: the display for the section in the
+         middle of the screen (screen.css, console.js). Decoration. -->
+    <div class="screen" data-show="map" aria-hidden="true">
+      <div class="screen-grid"></div>
+      <div class="screen-display screen-map">
+        <div class="screen-map-base"></div>
+        <div class="screen-map-scan"><div class="screen-map-lit"></div></div>
+        <span></span><span></span><span></span>
+      </div>
+      <div class="screen-display screen-scope">
+        <div class="screen-scope-face"></div>
+        <div class="screen-scope-ring"></div>
+        <div class="screen-sweep"></div>
+        <span></span><span></span><span></span>
+      </div>
+      <div class="screen-display screen-board">
+        <div class="screen-board-face"></div>
+        <span style="--q: -3; --r: 0; --n: 23"></span>
+        <span style="--q: -3; --r: 1; --n: 24"></span>
+        <span style="--q: -3; --r: 2; --n: 13"></span>
+        <span style="--q: -3; --r: 3; --n: 26"></span>
+        <span style="--q: -2; --r: -1; --n: 7"></span>
+        <span style="--q: -2; --r: 0; --n: 6"></span>
+        <span style="--q: -2; --r: 1; --n: 8"></span>
+        <span style="--q: -2; --r: 2; --n: 18"></span>
+        <span style="--q: -2; --r: 3; --n: 0"></span>
+        <span style="--q: -1; --r: -2; --n: 33"></span>
+        <span style="--q: -1; --r: -1; --n: 34"></span>
+        <span style="--q: -1; --r: 0; --n: 27"></span>
+        <span style="--q: -1; --r: 1; --n: 21"></span>
+        <span style="--q: -1; --r: 2; --n: 11"></span>
+        <span style="--q: -1; --r: 3; --n: 10"></span>
+        <span style="--q: 0; --r: -3; --n: 22"></span>
+        <span style="--q: 0; --r: -2; --n: 31"></span>
+        <span style="--q: 0; --r: -1; --n: 1"></span>
+        <span style="--q: 0; --r: 0; --n: 17"></span>
+        <span style="--q: 0; --r: 1; --n: 2"></span>
+        <span style="--q: 0; --r: 2; --n: 4"></span>
+        <span style="--q: 0; --r: 3; --n: 9"></span>
+        <span style="--q: 1; --r: -3; --n: 14"></span>
+        <span style="--q: 1; --r: -2; --n: 3"></span>
+        <span style="--q: 1; --r: -1; --n: 30"></span>
+        <span style="--q: 1; --r: 0; --n: 19"></span>
+        <span style="--q: 1; --r: 1; --n: 20"></span>
+        <span style="--q: 1; --r: 2; --n: 15"></span>
+        <span style="--q: 2; --r: -3; --n: 16"></span>
+        <span style="--q: 2; --r: -2; --n: 25"></span>
+        <span style="--q: 2; --r: -1; --n: 5"></span>
+        <span style="--q: 2; --r: 0; --n: 12"></span>
+        <span style="--q: 2; --r: 1; --n: 32"></span>
+        <span style="--q: 3; --r: -3; --n: 36"></span>
+        <span style="--q: 3; --r: -2; --n: 29"></span>
+        <span style="--q: 3; --r: -1; --n: 35"></span>
+        <span style="--q: 3; --r: 0; --n: 28"></span>
+      </div>
+      <div class="screen-display screen-signal">
+        <div class="screen-signal-face"></div>
+        <span></span><span></span><span></span>
+      </div>
+    </div>
     <a class="skip" href="#main">Skip to content</a>
 
     <header class="bar">
@@ -68,7 +129,12 @@
 
     <main id="main">
       <!-- The hero: the title card, inside the instrument frame. -->
-      <section class="hero plays" id="top" aria-labelledby="name">
+      <section
+        class="hero plays"
+        id="top"
+        aria-labelledby="name"
+        data-screen="map"
+      >
         <div class="frame hero-frame" aria-hidden="true">
           <span class="corner corner-tl"></span>
           <span class="corner corner-tr"></span>
@@ -163,7 +229,12 @@
       </section>
 
       <!-- Featured work. -->
-      <section class="section" id="work" aria-labelledby="work-title">
+      <section
+        class="section"
+        id="work"
+        aria-labelledby="work-title"
+        data-screen="scope"
+      >
         <div class="wrap">
           <div class="card section-card enter">
             <div class="block">
@@ -462,6 +533,7 @@
         class="section section-end"
         id="experience"
         aria-labelledby="experience-title"
+        data-screen="board"
       >
         <div class="wrap">
           <div class="card section-card enter">
@@ -586,6 +658,7 @@
         class="section section-center"
         id="connect"
         aria-labelledby="connect-title"
+        data-screen="signal"
       >
         <div class="wrap">
           <div class="card section-card enter">

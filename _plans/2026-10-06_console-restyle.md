@@ -1,6 +1,6 @@
 # Portfolio restyle · the console look
 
-**Status: done (2026-10-06).** All three steps are built, checked and reviewed: the home page and all three case studies are in the new look, and the clean-up is done. Merged into `master` and pushed at Ian's go. Branch `console-restyle`. Nothing is live until it merges into `master`, which GitHub Pages publishes within about a minute of a push.
+**Status: done (2026-10-06), with one step after it.** All three steps are built, checked and reviewed: the home page and all three case studies are in the new look, and the clean-up is done. Merged into `master` and pushed at Ian's go. Step 4, a screen of moving instruments behind every page, is built, reviewed, and pushed to `master` at Ian's go (2026-10-06). Branch `console-restyle`. Nothing is live until it merges into `master`, which GitHub Pages publishes within about a minute of a push.
 
 This folder starts with `_`, so GitHub Pages leaves it off the site. It is still public on GitHub.
 
@@ -14,10 +14,11 @@ The show's loud moments become the page's chapter breaks, and between them the p
 
 - **Title cards** open the page (the name), each section, and each case study. Heavy serif squeezed sideways to 80%, white on black, cut in hard on arrival.
 - **The console's look stays on the edges:** thin orange frames and corner marks, small condensed labels, and in the home page's hero only, rulers, readouts and a seven-segment clock.
+- **A screen behind the pages**, as the command room has one: a faint honeycomb, and over it one display at a time, cutting in as the reader moves between sections. On the home page: a survey map with a scan crossing it under the hero, a range finder sweeping at Work, a patch of the honeycomb lighting cell by cell at Education & Experience, rings going out behind Connect. A case study's screen is light: the range finder, dim, at its opening card, then a dim map with a slow scan behind the reading. Thin orange line, slow, kept where the reading column leaves room.
 - **Stamps carry facts.** The awards are red stamps on their projects, in place of badges.
 - **The work stays plain.** Body text is the system sans at reading size. Screenshots and figures are framed, never tinted.
 - **Each color has one job.** White is the words. Orange is the instrument: frames, labels, links and buttons. Red is the award stamps. Green is what is current (Trent AI). Mint is the Connect tiles.
-- **Motion happens on arrival only.** Title cards cut in, stamps land, panels' corners power on, the Connect tiles light up in turn. Nothing moves while someone reads, except the hero's clock. A Motion switch stops everything and is remembered; the reader's reduced-motion setting gets a still page.
+- **Motion happens on arrival, and at the edges.** Title cards cut in, stamps land, panels' corners power on, the Connect tiles light up in turn. While someone reads, only the hero's clock and the screen behind the pages move, slowly and away from the words; on a case study the screen is light (review, 2026-10-06: the still screen read as random lines). A Motion switch stops everything and is remembered; the reader's reduced-motion setting gets a still page.
 - **Not borrowed:** any name, logo or line from the show, its title font (Matisse EB is commercial; Noto Serif Display Black stands in, as in v2.2), its strobing (WCAG 2.3.1), and Japanese. Nothing of Trent's site either: its pictures and words stay with Trent.
 
 ## The home page, top to bottom
@@ -65,6 +66,7 @@ Everything else is word for word.
    - The old stylesheets and scripts are gone, since no page loads them: `variables.css`, `modern.css`, `theme.js`, `animations.js`, `modern.js`.
    - Deleted with Ian's go (review, 2026-10-06): the old résumé copies (`/Ian_Drosos_Resume.pdf.pdf`, `images/resume_iandrosos.pdf` and `.docx`, `images/Ian_Drosos_Resume.docx`, `images/Ian_Drosos_Resume.md`), `index.html.backup`, and the images no page used (`pic01`–`pic06.jpg`, `bg.jpg`, `DProbe.png`, `Design1Annotated.png`, `Design2Annotated.png`, `VideoStudyDiagram.png`, `four-domains-vlhcc.png`, `hfbar.PNG`, `issta.PNG`, `janus.PNG`, `notebookspace.PNG`, `DPM/Promptly1.png`, `images/avatar.png`, `images/avatar.jpg`). Kept: `images/Ian_Drosos_Resume_UXR.pdf`.
    - The browser tab's icon is now an orange "ID" on black with two of the frame's corner marks (`favicon.svg`, with PNG copies for Safari and the iPhone home screen). The cat (`avatar.png` at the root) is no longer used anywhere.
+4. **The screen behind the pages** (review, 2026-10-06: the black wanted some visual interest, as v2.2 has behind its pages; then, on the first, still version: it should move, shift with the home page's sections, and stay light on the case studies). Built and reviewed.
 
 ## How it is built
 
@@ -72,6 +74,7 @@ Everything else is word for word.
 - New files beside the old: `assets/css/console.css` (shared by every page: fonts, colors, type, the bar, the opening card's frame, buttons, panels, stamps, motion), `assets/css/home.css` (the home page's own parts), `assets/css/case.css` (the case studies' own parts), `assets/js/console.js` (the Motion switch, the arrivals, the section marker in the bar, the clock, the reading gauge, enlarged figures).
 - Every page loads `console.css`, its own stylesheet (`home.css` or `case.css`) and `console.js`, and nothing else: no Google Fonts, no icon library.
 - Images are WebP copies (`images/web/`), at most 2,000px wide, lossless unless a quality-92 copy comes in under 70% of its size. The home page's two cropped screenshots are cut to their panels' 16:10 frame from the top. A figure's link still goes to the original PNG.
+- The screen behind the pages is `assets/css/screen.css`, loaded by every page after `console.css`, and one decorative `<div class="screen">` at the top of each page's body, holding its displays. Each section names its display (`data-screen`), and `console.js` sets the screen's `data-show` to the one named by the section crossing the middle of the screen; without the script the markup's first display stays. Its pictures are SVG files in `assets/screen/` (16 KB together), drawn for this site by `_tools/screen-art.py` (plain Python, no packages; run it again and the files come out the same). Everything moves by transform and opacity; the board's cells sit on the honeycomb's own cells by CSS `round()`. The body has no fill of its own now, so the screen shows through; the root's black is the page's.
 - The fonts live in `assets/fonts/`, Latin only (15 KB and 21 KB), with their SIL Open Font License files. No request goes to Google.
 - The squeeze is a transform: each line is laid out wider by the inverse and squeezed back, so it fills its column, and the section clips the wider box.
 - Each title's big line fills its block from its measured width (in ems, measured in Chrome, kept on the card as `--em`), capped by the screen's height so a short screen keeps it whole. A renamed title needs measuring again. The card is held to the capped name's width, so the line at its foot stays under the name.
